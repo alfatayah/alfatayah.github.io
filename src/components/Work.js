@@ -1,35 +1,36 @@
 import React from "react"
 import Card from "./atoms/Card"
 import Fade from "react-reveal/Fade"
-
 import data from "../yourdata"
 
 const Work = () => {
   return (
-    <div className="section" id="work">
+    <section className="section work-section" id="work">
       <div className="container">
-        <div className="work-wrapper">
-          <Fade bottom>
-            <h1>Work</h1>
-            <h4>Please hover cursor to image for details</h4>
-          </Fade>
-
-          <div className="grid">
-            <Fade bottom>
-              {data.projects.map(project => (
-                <Card
-                  key={project.id}
-                  heading={project.title}
-                  paragraph={project.para}
-                  imgUrl={project.imageSrc}
-                  projectLink={project.url}
-                ></Card>
-              ))}
-            </Fade>
+        <Fade bottom>
+          <div className="work-header">
+            <span className="work-label">Selected Projects</span>
+            <h2 className="section-heading work-title">Work</h2>
+            <p className="work-subtext">
+              A curated showcase of recent digital products, web platforms, and mobile applications.
+            </p>
           </div>
-        </div>
+        </Fade>
+        <Fade bottom delay={150}>
+          <div className="projects-grid">
+            {data.projects.map(project => (
+              <Card
+                key={project.id}
+                heading={project.title}
+                paragraph={project.para}
+                imgUrl={project.imageSrc}
+                projectLink={project.url}
+              />
+            ))}
+          </div>
+        </Fade>
       </div>
-    </div>
+    </section>
   )
 }
 

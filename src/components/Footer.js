@@ -4,30 +4,35 @@ import data from "../yourdata"
 
 const Footer = () => {
   return (
-    <div className="section" id="contact">
+    <section className="section footer-section" id="contact">
       <div className="container">
         <div className="footer-container">
           <Fade bottom cascade>
-            <h1>Contact</h1>
-            <h2>{data.contactSubHeading}</h2>
+            <h2 className="footer-heading">Get in Touch</h2>
+            <p className="footer-subheading">{data.contactSubHeading}</p>
           </Fade>
-          <a className="email-link" href={`mailto:${data.contactEmail}`}>
+          <a className="email-cta-btn" href={`mailto:${data.contactEmail}`}>
             {data.contactEmail}
           </a>
-          <div className="social-icons">
-            {data.social.map(socialLink => (
+          <div className="social-icons-wrapper">
+            {data.social.map((socialLink, i) => (
               <a
+                key={i}
                 href={socialLink.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="social-card"
               >
-                <img src={socialLink.img} alt="icons"></img>
+                <img src={socialLink.img} alt="social" />
               </a>
             ))}
           </div>
+          <p className="copyright-text">
+            © {new Date().getFullYear()} Fadhil Alfatayah
+          </p>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 

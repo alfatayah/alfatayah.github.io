@@ -1,27 +1,70 @@
-.work-wrapper {
-  width: 80vw;
-  margin-top: 10vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  h1 {
-    font-size: 3rem;
-    line-height: 20px;
-    text-decoration:  underline;
+.work-section {
+  background-color: var(--color-bg);
+  padding: 100px 0;
+
+  @include media("<tablet") {
+    padding: 64px 0;
   }
-  .grid {
-    display: grid;
-    margin-top: 20px;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 10px;
-    @include media(">=phone", "<lgphone") {
-      grid-template-columns: 1fr;
+}
+
+.work-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 56px auto;
+
+  @include media("<tablet") {
+    margin-bottom: 36px;
+  }
+
+  .work-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #888888;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+
+  .work-title {
+    font-size: 2.75rem;
+    font-weight: 700;
+    color: #111111;
+    margin: 0 0 16px 0;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    text-decoration: none; // modern clean title without old-school underline
+
+    @include media("<tablet") {
+      font-size: 2rem;
     }
-    @include media(">=lgphone", "<tablet") {
-      grid-template-columns: 1fr;
+  }
+
+  .work-subtext {
+    font-size: 1.0625rem;
+    color: #666666;
+    line-height: 1.65;
+    margin: 0;
+
+    @include media("<tablet") {
+      font-size: 0.9375rem;
     }
-    @include media(">=tablet", "<desktop") {
-      grid-template-columns: 1fr 1fr;
-    }
+  }
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  width: 100%;
+
+  @include media(">=tablet", "<desktop") {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  @include media("<tablet") {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 }

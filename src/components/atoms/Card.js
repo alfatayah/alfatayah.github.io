@@ -1,30 +1,37 @@
 import React from "react"
 
 const Card = ({ heading, paragraph, imgUrl, projectLink }) => {
-  return (
-    <div
-      className="card"
-      style={{
-        backgroundImage:
-          "linear-gradient(to bottom, rgba(245, 246, 252, 0), rgba(0, 0, 0, 0)),url(" +
-          imgUrl +
-          ")",
-      }}
-    >
-      <div className="content" style={{ backgroundColor: "black" }}>
-        <h1 className="header">{heading}</h1>
-        <p className="text" style={{fontSize: 14}}>{paragraph}</p>
-        <a
-          href={projectLink ? projectLink : "#"}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn"
-        >
-          {/* Explore */}
-        </a>
+  const cardContent = (
+    <div className="project-card">
+      <div className="card-image-container">
+        <img className="card-image" src={imgUrl} alt={heading} />
+      </div>
+      <div className="card-content">
+        <h3 className="card-title">{heading}</h3>
+        <p className="card-description">{paragraph}</p>
+        <div className="card-footer">
+          <span className="card-link">
+            Explore Project <span className="arrow">↗</span>
+          </span>
+        </div>
       </div>
     </div>
   )
+
+  if (projectLink && projectLink !== "") {
+    return (
+      <a
+        href={projectLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="card-wrapper-link"
+      >
+        {cardContent}
+      </a>
+    )
+  }
+
+  return <div className="card-wrapper-link">{cardContent}</div>
 }
 
 export default Card

@@ -4,23 +4,29 @@ import data from "../yourdata"
 
 const Skills = () => {
   return (
-    <div className="section" id="skill">
+    <section className="section" id="skill" style={{ borderTop: "1px solid #e5e5e5", borderBottom: "1px solid #e5e5e5", background: "#fafafa" }}>
       <div className="container">
         <div className="skills-container">
-          <h1>Skills</h1>
+          <Fade bottom>
+            <div className="skills-header">
+              <h2 className="section-heading">Skills</h2>
+            </div>
+          </Fade>
           <Fade bottom cascade>
             <div className="skills-grid">
               {data.skills.map(skill => (
-                <div className="skill" key={skill.id}>
-                  <img src={skill.img} alt="css"></img>
-                  <p>{skill.para}</p>
+                <div className="skill-card" key={skill.id}>
+                  <div className="icon-wrapper">
+                    <img src={skill.img} alt={skill.para} />
+                  </div>
+                  <span className="skill-name">{skill.para}</span>
                 </div>
               ))}
             </div>
           </Fade>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 
