@@ -80,29 +80,61 @@ alfatayah.github.io/
 
 ---
 
-## 🚀 Deployment Guide (Panduan Deploy)
+## 🚀 Deployment Guide (Panduan Deploy ke GitHub Pages)
 
-Website ini dideploy menggunakan paket `gh-pages` langsung ke cabang `gh-pages` di GitHub Repository.
+Tutorial ini diadaptasi dari panduan [How to deploy React App to GitHub Pages](https://dev.to/yuribenjamin/how-to-deploy-react-app-in-github-pages-2a1f) oleh Yuri Benjamin, dengan penyesuaian untuk arsitektur **Gatsby/React** pada proyek ini.
 
-### 1. Pengembangan Lokal (Development)
-Menjalankan server lokal untuk preview saat pengkodean:
+### 📋 1. Prasyarat (Prerequisites)
+- Akun GitHub & Git terinstal dan terkonfigurasi di komputer (`git --version`).
+- Node.js & Npm terinstal (`node -v` & `npm -v`).
+- Paket [`gh-pages`](https://www.npmjs.com/package/gh-pages) sudah terinstal sebagai *dev-dependency* di dalam proyek (`npm install gh-pages --save-dev`).
+
+### ⚙️ 2. Konfigurasi `package.json`
+Proyek ini membutuhkan 2 konfigurasi utama di dalam [`package.json`](file:///d:/Repo/alfatayah.github.io/package.json) agar deploy berjalan otomatis:
+1. **Properti `homepage`**: Menentukan URL situs GitHub Pages Anda.
+   ```json
+   "homepage": "https://alfatayah.github.io"
+   ```
+2. **Properti `scripts` (`predeploy` & `deploy`)**:
+   ```json
+   "scripts": {
+     "predeploy": "npm run build",
+     "deploy": "gh-pages -d public"
+   }
+   ```
+   *Catatan: Berbeda dengan Create React App yang menggunakan folder `build`, Gatsby menyimpan hasil kompilasi statis di folder `public/`, sehingga parameter yang digunakan adalah `-d public`.*
+
+### 💻 3. Menjalankan & Menguji Secara Lokal (Local Development)
+Sebelum melakukan deploy, uji tampilan website secara lokal:
 ```bash
-npm run start
-# atau
+# Menjalankan server pengembangan lokal (http://localhost:8000)
 npm run develop
-```
-Buka browser di `http://localhost:8000`.
 
-### 2. Membangun Proyek (Build)
-Menguji proses build statis secara lokal:
-```bash
+# Menguji proses build produksi statis di folder public/
 npm run build
 ```
 
-### 3. Deploy ke GitHub Pages
-Untuk mempublikasikan pembaruan ke web (`https://alfatayah.github.io`):
+### 🌐 4. Proses Deploy ke GitHub Pages
+Untuk mempublikasikan website agar *live* dan dapat diakses oleh publik:
+1. Buka Git Bash atau Terminal di VS Code pada direktori proyek.
+2. Jalankan perintah deploy:
+   ```bash
+   npm run deploy
+   ```
+3. **Alur di balik layar**: Perintah ini otomatis menjalankan `predeploy` (`npm run build` / `gatsby build`) terlebih dahulu untuk membuat bundel produksi statis, kemudian `gh-pages` akan mengunggah isi folder `public/` tersebut langsung ke branch **`gh-pages`** di GitHub Anda.
+
+### 🔧 5. Pengaturan Repository di GitHub (GitHub Pages Settings)
+1. Buka repositori proyek Anda di **GitHub.com**.
+2. Masuk ke menu **Settings** ➡️ klik **Pages** pada sidebar kiri (di bawah bagian *Code and automation*).
+3. Pada bagian **Build and deployment** ➡️ **Source**, pilih **Deploy from a branch**.
+4. Pada bagian **Branch**, pilih branch **`gh-pages`** dan folder **`/ (root)`**, lalu klik **Save**.
+5. Tunggu beberapa menit hingga proses publikasi selesai. Website Anda sekarang aktif di URL `homepage`!
+
+### 📦 6. Menyimpan Kode Sumber (Commit & Push Source Code)
+Branch `gh-pages` hanya khusus untuk file hasil *build* statis. Jangan lupa selalu menyimpan perubahan kode sumber Anda ke branch pengembangan utama (misal: `dev` atau `main`):
 ```bash
-npm run deploy
+git add .
+git commit -m "Pesan pembaruan website"
+git push origin dev
 ```
-*Catatan: Perintah `npm run deploy` secara otomatis memicu `predeploy` (`npm run build`) lalu mengunggah folder `public/` ke branch `gh-pages` di GitHub.*
 
