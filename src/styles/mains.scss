@@ -49,10 +49,10 @@ body {
 
 .section {
   width: 100%;
-  padding: 80px 0;
+  padding: 48px 0;
 
   @include media("<tablet") {
-    padding: 56px 0;
+    padding: 36px 0;
   }
 }
 
