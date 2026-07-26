@@ -1,33 +1,70 @@
 import React from "react"
-import Fade from "react-reveal/Fade"
+import { motion } from "framer-motion"
 import data from "../yourdata"
 import scrollTo from "gatsby-plugin-smoothscroll"
+import HeroBackground from "./atoms/HeroBackground"
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+    },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.215, 0.61, 0.355, 1] },
+  },
+}
 
 const Header = () => {
   return (
     <section className="hero-section" id="home">
+      <HeroBackground />
       <div className="container">
-        <div className="header-wrapper">
-          <Fade bottom>
-            <p className="hero-name"> AI engineer, full-stack developer, builder</p>
-          </Fade>
-          <Fade bottom delay={100}>
-            <h1>Building products people love to use</h1>
-          </Fade>
-          <Fade bottom delay={200}>
-            <p className="hero-paragraph">{data.headerParagraph}</p>
-          </Fade>
-          <Fade bottom delay={300}>
-            <div className="hero-cta-group">
-              <button className="btn-primary" onClick={() => scrollTo("#work")}>
-                View Work
-              </button>
-              <button className="btn-secondary" onClick={() => scrollTo("#contact")}>
-                Get in Touch
-              </button>
-            </div>
-          </Fade>
-        </div>
+        <motion.div
+          className="header-wrapper"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.p className="hero-name" variants={itemVariants}>
+            AI engineer, full-stack developer, builder
+          </motion.p>
+          <motion.h1 variants={itemVariants}>
+            Building products people love to use
+          </motion.h1>
+          <motion.p className="hero-paragraph" variants={itemVariants}>
+            {data.headerParagraph}
+          </motion.p>
+          <motion.div className="hero-cta-group" variants={itemVariants}>
+            <motion.button
+              className="btn-primary"
+              onClick={() => scrollTo("#work")}
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            >
+              View Work
+            </motion.button>
+            <motion.button
+              className="btn-secondary"
+              onClick={() => scrollTo("#contact")}
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            >
+              Get in Touch
+            </motion.button>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   )

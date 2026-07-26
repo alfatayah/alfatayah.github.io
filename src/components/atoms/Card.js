@@ -1,10 +1,21 @@
 import React from "react"
+import { motion } from "framer-motion"
 
 const Card = ({ heading, paragraph, imgUrl, projectLink }) => {
   const cardContent = (
-    <div className="project-card">
+    <motion.div
+      className="project-card"
+      whileHover={{ y: -6 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+    >
       <div className="card-image-container">
-        <img className="card-image" src={imgUrl} alt={heading} />
+        <motion.img
+          className="card-image"
+          src={imgUrl}
+          alt={heading}
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+        />
       </div>
       <div className="card-content">
         <h3 className="card-title">{heading}</h3>
@@ -15,7 +26,7 @@ const Card = ({ heading, paragraph, imgUrl, projectLink }) => {
           </span>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 
   if (projectLink && projectLink !== "") {
