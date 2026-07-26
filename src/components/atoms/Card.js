@@ -1,12 +1,14 @@
 import React from "react"
 import { motion } from "framer-motion"
 
-const Card = ({ heading, paragraph, imgUrl, projectLink }) => {
+const Card = ({ heading, paragraph, imgUrl, projectLink, onSelect }) => {
   const cardContent = (
     <motion.div
       className="project-card"
       whileHover={{ y: -6 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      onClick={onSelect}
+      style={{ cursor: onSelect ? "pointer" : "default" }}
     >
       <div className="card-image-container">
         <motion.img
@@ -36,13 +38,34 @@ const Card = ({ heading, paragraph, imgUrl, projectLink }) => {
         target="_blank"
         rel="noopener noreferrer"
         className="card-wrapper-link"
+        onClick={e => {
+          if (onSelect) {
+            e.preventDefault()
+            onSelect()
+          }
+        }}
       >
         {cardContent}
       </a>
     )
   }
 
-  return <div className="card-wrapper-link">{cardContent}</div>
+  return (
+    <div
+      className="card-wrapper-link"
+      onClick={onSelect}
+      role={onSelect ? "button" : undefined}
+      tabIndex={onSelect ? 0 : undefined}
+      onKeyDown={e => {
+        if (onSelect && (e.key === "Enter" || e.key === " ")) {
+          e.preventDefault()
+          onSelect()
+        }
+      }}
+    >
+      {cardContent}
+    </div>
+  )
 }
 
 export default Card
