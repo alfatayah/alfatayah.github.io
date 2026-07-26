@@ -42,6 +42,17 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "./public/page-data/sq/d/63159454.json":
+/*!*********************************************!*\
+  !*** ./public/page-data/sq/d/63159454.json ***!
+  \*********************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = /*#__PURE__*/JSON.parse('{"data":{"site":{"siteMetadata":{"title":"Portofolio","description":"Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.","author":"@gatsbyjs"}}}}');
+
+/***/ }),
+
 /***/ "./src/components/Navbar.js":
 /*!**********************************!*\
   !*** ./src/components/Navbar.js ***!
@@ -202,7 +213,7 @@ SEO.propTypes = {
   description: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string),
   lang: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string),
   meta: prop_types__WEBPACK_IMPORTED_MODULE_3___default().arrayOf((prop_types__WEBPACK_IMPORTED_MODULE_3___default().object)),
-  title: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string.isRequired)
+  title: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string).isRequired
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SEO);
 
@@ -240,17 +251,6 @@ const NotFoundPage = () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___defau
 /***/ (() => {
 
 
-
-/***/ }),
-
-/***/ "./public/page-data/sq/d/63159454.json":
-/*!*********************************************!*\
-  !*** ./public/page-data/sq/d/63159454.json ***!
-  \*********************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = JSON.parse('{"data":{"site":{"siteMetadata":{"title":"Portofolio","description":"Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.","author":"@gatsbyjs"}}}}');
 
 /***/ })
 

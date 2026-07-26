@@ -4,7 +4,7 @@
   "description": "Portfolio Template For Awesome Peoples",
   "version": "0.1.0",
   "author": "Chetan Verma <hello@chetanverma.com>",
-  "homepage": "https://masf4dhil.github.io",
+  "homepage": "https://alfatayah.github.io",
   "dependencies": {
     "gatsby": "^5.7.0",
     "gatsby-image": "^2.5.0",
@@ -17,8 +17,8 @@
     "gatsby-source-filesystem": "^5.7.0",
     "gatsby-transformer-sharp": "^5.7.0",
     "gh-pages": "^5.0.0",
-    "node-sass": "^8.0.0",
     "prop-types": "^15.8.1",
+    "sass": "^1.80.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
@@ -26,8 +26,17 @@
     "react-scroll": "^1.8.9"
   },
   "devDependencies": {
-    "prettier": "2.8.4",
-    "sass-loader": "^7.1.0"
+    "prettier": "2.8.4"
+  },
+  "overrides": {
+    "react-reveal": {
+      "react": "$react",
+      "react-dom": "$react-dom"
+    }
+  },
+  "resolutions": {
+    "react-reveal/react": "^18.2.0",
+    "react-reveal/react-dom": "^18.2.0"
   },
   "keywords": [
     "gatsby"

@@ -1,362 +1,6 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./node_modules/gatsby-page-utils/dist/apply-trailing-slash-option.js":
-/*!****************************************************************************!*\
-  !*** ./node_modules/gatsby-page-utils/dist/apply-trailing-slash-option.js ***!
-  \****************************************************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-
-exports.__esModule = true;
-exports.applyTrailingSlashOption = void 0;
-const applyTrailingSlashOption = (input, option = `always`) => {
-  const hasHtmlSuffix = input.endsWith(`.html`);
-  const hasXmlSuffix = input.endsWith(`.xml`);
-  const hasPdfSuffix = input.endsWith(`.pdf`);
-  if (input === `/`) return input;
-  if (hasHtmlSuffix || hasXmlSuffix || hasPdfSuffix) {
-    option = `never`;
-  }
-  if (option === `always`) {
-    return input.endsWith(`/`) ? input : `${input}/`;
-  }
-  if (option === `never`) {
-    return input.endsWith(`/`) ? input.slice(0, -1) : input;
-  }
-  return input;
-};
-exports.applyTrailingSlashOption = applyTrailingSlashOption;
-
-/***/ }),
-
-/***/ "./node_modules/gatsby-react-router-scroll/index.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/gatsby-react-router-scroll/index.js ***!
-  \**********************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-exports.__esModule = true;
-exports.useScrollRestoration = exports.ScrollContext = void 0;
-var _scrollHandler = __webpack_require__(/*! ./scroll-handler */ "./node_modules/gatsby-react-router-scroll/scroll-handler.js");
-exports.ScrollContext = _scrollHandler.ScrollHandler;
-var _useScrollRestoration = __webpack_require__(/*! ./use-scroll-restoration */ "./node_modules/gatsby-react-router-scroll/use-scroll-restoration.js");
-exports.useScrollRestoration = _useScrollRestoration.useScrollRestoration;
-
-/***/ }),
-
-/***/ "./node_modules/gatsby-react-router-scroll/scroll-handler.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/gatsby-react-router-scroll/scroll-handler.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-exports.__esModule = true;
-exports.ScrollHandler = exports.ScrollContext = void 0;
-var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "./node_modules/@babel/runtime/helpers/assertThisInitialized.js"));
-var _inheritsLoose2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inheritsLoose */ "./node_modules/@babel/runtime/helpers/inheritsLoose.js"));
-var React = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
-var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
-var _sessionStorage = __webpack_require__(/*! ./session-storage */ "./node_modules/gatsby-react-router-scroll/session-storage.js");
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-var ScrollContext = /*#__PURE__*/React.createContext(new _sessionStorage.SessionStorage());
-exports.ScrollContext = ScrollContext;
-ScrollContext.displayName = "GatsbyScrollContext";
-var ScrollHandler = /*#__PURE__*/function (_React$Component) {
-  (0, _inheritsLoose2.default)(ScrollHandler, _React$Component);
-  function ScrollHandler() {
-    var _this;
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-    _this = _React$Component.call.apply(_React$Component, [this].concat(args)) || this;
-    _this._stateStorage = new _sessionStorage.SessionStorage();
-    _this._isTicking = false;
-    _this._latestKnownScrollY = 0;
-    _this.scrollListener = function () {
-      _this._latestKnownScrollY = window.scrollY;
-      if (!_this._isTicking) {
-        _this._isTicking = true;
-        requestAnimationFrame(_this._saveScroll.bind((0, _assertThisInitialized2.default)(_this)));
-      }
-    };
-    _this.windowScroll = function (position, prevProps) {
-      if (_this.shouldUpdateScroll(prevProps, _this.props)) {
-        window.scrollTo(0, position);
-      }
-    };
-    _this.scrollToHash = function (hash, prevProps) {
-      var node = document.getElementById(hash.substring(1));
-      if (node && _this.shouldUpdateScroll(prevProps, _this.props)) {
-        node.scrollIntoView();
-      }
-    };
-    _this.shouldUpdateScroll = function (prevRouterProps, routerProps) {
-      var shouldUpdateScroll = _this.props.shouldUpdateScroll;
-      if (!shouldUpdateScroll) {
-        return true;
-      }
-
-      // Hack to allow accessing this._stateStorage.
-      return shouldUpdateScroll.call((0, _assertThisInitialized2.default)(_this), prevRouterProps, routerProps);
-    };
-    return _this;
-  }
-  var _proto = ScrollHandler.prototype;
-  _proto._saveScroll = function _saveScroll() {
-    var key = this.props.location.key || null;
-    if (key) {
-      this._stateStorage.save(this.props.location, key, this._latestKnownScrollY);
-    }
-    this._isTicking = false;
-  };
-  _proto.componentDidMount = function componentDidMount() {
-    window.addEventListener("scroll", this.scrollListener);
-    var scrollPosition;
-    var _this$props$location = this.props.location,
-      key = _this$props$location.key,
-      hash = _this$props$location.hash;
-    if (key) {
-      scrollPosition = this._stateStorage.read(this.props.location, key);
-    }
-
-    /** If a hash is present in the browser url as the component mounts (i.e. the user is navigating
-     * from an external website) then scroll to the hash instead of any previously stored scroll
-     * position. */
-    if (hash) {
-      this.scrollToHash(decodeURI(hash), undefined);
-    } else if (scrollPosition) {
-      this.windowScroll(scrollPosition, undefined);
-    }
-  };
-  _proto.componentWillUnmount = function componentWillUnmount() {
-    window.removeEventListener("scroll", this.scrollListener);
-  };
-  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
-    var _this$props$location2 = this.props.location,
-      hash = _this$props$location2.hash,
-      key = _this$props$location2.key;
-    var scrollPosition;
-    if (key) {
-      scrollPosition = this._stateStorage.read(this.props.location, key);
-    }
-
-    /**  There are two pieces of state: the browser url and
-     * history state which keeps track of scroll position
-     * Native behaviour prescribes that we ought to restore scroll position
-     * when a user navigates back in their browser (this is the `POP` action)
-     * Currently, reach router has a bug that prevents this at https://github.com/reach/router/issues/228
-     * So we _always_ stick to the url as a source of truth — if the url
-     * contains a hash, we scroll to it
-     */
-
-    if (hash) {
-      this.scrollToHash(decodeURI(hash), prevProps);
-    } else {
-      this.windowScroll(scrollPosition, prevProps);
-    }
-  };
-  _proto.render = function render() {
-    return /*#__PURE__*/React.createElement(ScrollContext.Provider, {
-      value: this._stateStorage
-    }, this.props.children);
-  };
-  return ScrollHandler;
-}(React.Component);
-exports.ScrollHandler = ScrollHandler;
-ScrollHandler.propTypes = {
-  shouldUpdateScroll: _propTypes.default.func,
-  children: _propTypes.default.element.isRequired,
-  location: _propTypes.default.object.isRequired
-};
-
-/***/ }),
-
-/***/ "./node_modules/gatsby-react-router-scroll/session-storage.js":
-/*!********************************************************************!*\
-  !*** ./node_modules/gatsby-react-router-scroll/session-storage.js ***!
-  \********************************************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-
-exports.__esModule = true;
-exports.SessionStorage = void 0;
-var STATE_KEY_PREFIX = "@@scroll|";
-var GATSBY_ROUTER_SCROLL_STATE = "___GATSBY_REACT_ROUTER_SCROLL";
-var SessionStorage = /*#__PURE__*/function () {
-  function SessionStorage() {}
-  var _proto = SessionStorage.prototype;
-  _proto.read = function read(location, key) {
-    var stateKey = this.getStateKey(location, key);
-    try {
-      var value = window.sessionStorage.getItem(stateKey);
-      return value ? JSON.parse(value) : 0;
-    } catch (e) {
-      if (true) {
-        console.warn("[gatsby-react-router-scroll] Unable to access sessionStorage; sessionStorage is not available.");
-      }
-      if (window && window[GATSBY_ROUTER_SCROLL_STATE] && window[GATSBY_ROUTER_SCROLL_STATE][stateKey]) {
-        return window[GATSBY_ROUTER_SCROLL_STATE][stateKey];
-      }
-      return 0;
-    }
-  };
-  _proto.save = function save(location, key, value) {
-    var stateKey = this.getStateKey(location, key);
-    var storedValue = JSON.stringify(value);
-    try {
-      window.sessionStorage.setItem(stateKey, storedValue);
-    } catch (e) {
-      if (window && window[GATSBY_ROUTER_SCROLL_STATE]) {
-        window[GATSBY_ROUTER_SCROLL_STATE][stateKey] = JSON.parse(storedValue);
-      } else {
-        window[GATSBY_ROUTER_SCROLL_STATE] = {};
-        window[GATSBY_ROUTER_SCROLL_STATE][stateKey] = JSON.parse(storedValue);
-      }
-      if (true) {
-        console.warn("[gatsby-react-router-scroll] Unable to save state in sessionStorage; sessionStorage is not available.");
-      }
-    }
-  };
-  _proto.getStateKey = function getStateKey(location, key) {
-    var stateKeyBase = "" + STATE_KEY_PREFIX + location.pathname;
-    return key === null || typeof key === "undefined" ? stateKeyBase : stateKeyBase + "|" + key;
-  };
-  return SessionStorage;
-}();
-exports.SessionStorage = SessionStorage;
-
-/***/ }),
-
-/***/ "./node_modules/gatsby-react-router-scroll/use-scroll-restoration.js":
-/*!***************************************************************************!*\
-  !*** ./node_modules/gatsby-react-router-scroll/use-scroll-restoration.js ***!
-  \***************************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-exports.__esModule = true;
-exports.useScrollRestoration = useScrollRestoration;
-var _scrollHandler = __webpack_require__(/*! ./scroll-handler */ "./node_modules/gatsby-react-router-scroll/scroll-handler.js");
-var _react = __webpack_require__(/*! react */ "react");
-var _reachRouter = __webpack_require__(/*! @gatsbyjs/reach-router */ "./node_modules/@gatsbyjs/reach-router/dist/index.modern.mjs");
-function useScrollRestoration(identifier) {
-  var location = (0, _reachRouter.useLocation)();
-  var state = (0, _react.useContext)(_scrollHandler.ScrollContext);
-  var ref = (0, _react.useRef)(null);
-  (0, _react.useLayoutEffect)(function () {
-    if (ref.current) {
-      var position = state.read(location, identifier);
-      ref.current.scrollTo(0, position || 0);
-    }
-  }, [location.key]);
-  return {
-    ref: ref,
-    onScroll: function onScroll() {
-      if (ref.current) {
-        state.save(location, identifier, ref.current.scrollTop);
-      }
-    }
-  };
-}
-
-/***/ }),
-
-/***/ "./node_modules/gatsby/dist/internal-plugins/bundle-optimisations/polyfills/object-assign.js":
-/*!***************************************************************************************************!*\
-  !*** ./node_modules/gatsby/dist/internal-plugins/bundle-optimisations/polyfills/object-assign.js ***!
-  \***************************************************************************************************/
-/***/ ((module) => {
-
-"use strict";
-
-
-module.exports = Object.assign;
-//# sourceMappingURL=object-assign.js.map
-
-/***/ }),
-
-/***/ "./node_modules/gatsby/dist/internal-plugins/partytown/gatsby-ssr.js":
-/*!***************************************************************************!*\
-  !*** ./node_modules/gatsby/dist/internal-plugins/partytown/gatsby-ssr.js ***!
-  \***************************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-exports.__esModule = true;
-exports.onRenderBody = void 0;
-var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-var _gatsbyScript = __webpack_require__(/*! gatsby-script */ "./node_modules/gatsby-script/dist/index.modern.mjs");
-var _getForwards = __webpack_require__(/*! ./utils/get-forwards */ "./node_modules/gatsby/dist/internal-plugins/partytown/utils/get-forwards.js");
-var _integration = __webpack_require__(/*! @builder.io/partytown/integration */ "./node_modules/@builder.io/partytown/integration/index.cjs");
-const onRenderBody = ({
-  pathname,
-  setHeadComponents
-}) => {
-  const collectedScripts = _gatsbyScript.collectedScriptsByPage.get(pathname);
-  if (!(collectedScripts !== null && collectedScripts !== void 0 && collectedScripts.length)) {
-    return;
-  }
-  const forwards = (0, _getForwards.getForwards)(collectedScripts);
-
-  // Adapted from https://github.com/BuilderIO/partytown/blob/main/src/react/snippet.tsx to only include SSR logic
-  setHeadComponents([/*#__PURE__*/_react.default.createElement("script", {
-    key: "partytown",
-    "data-partytown": "",
-    suppressHydrationWarning: true,
-    dangerouslySetInnerHTML: {
-      __html: `
-          ${(0, _integration.partytownSnippet)({
-        forward: forwards
-      })}
-          document.currentScript.dataset.partytown=""
-        `
-    }
-  })]);
-
-  // Clear scripts after we've used them to avoid leaky behavior
-  _gatsbyScript.collectedScriptsByPage.delete(pathname);
-};
-exports.onRenderBody = onRenderBody;
-//# sourceMappingURL=gatsby-ssr.js.map
-
-/***/ }),
-
-/***/ "./node_modules/gatsby/dist/internal-plugins/partytown/utils/get-forwards.js":
-/*!***********************************************************************************!*\
-  !*** ./node_modules/gatsby/dist/internal-plugins/partytown/utils/get-forwards.js ***!
-  \***********************************************************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-
-exports.__esModule = true;
-exports.getForwards = getForwards;
-function getForwards(collectedScripts) {
-  return collectedScripts === null || collectedScripts === void 0 ? void 0 : collectedScripts.flatMap(script => (script === null || script === void 0 ? void 0 : script.forward) || []);
-}
-//# sourceMappingURL=get-forwards.js.map
-
-/***/ }),
-
 /***/ "./.cache/_this_is_virtual_fs_path_/$virtual/async-requires.js":
 /*!*********************************************************************!*\
   !*** ./.cache/_this_is_virtual_fs_path_/$virtual/async-requires.js ***!
@@ -368,7 +12,6 @@ exports.components = {
   "component---src-pages-404-js": () => __webpack_require__.e(/*! import() | component---src-pages-404-js */ "component---src-pages-404-js").then(__webpack_require__.bind(__webpack_require__, /*! ./../../../src/pages/404.js?export=default */ "./src/pages/404.js?export=default")),
   "component---src-pages-index-js": () => __webpack_require__.e(/*! import() | component---src-pages-index-js */ "component---src-pages-index-js").then(__webpack_require__.bind(__webpack_require__, /*! ./../../../src/pages/index.js?export=default */ "./src/pages/index.js?export=default"))
 };
-
 exports.head = {};
 
 /***/ }),
@@ -382,8 +25,8 @@ exports.head = {};
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "apiRunner": () => (/* binding */ apiRunner),
-/* harmony export */   "apiRunnerAsync": () => (/* binding */ apiRunnerAsync)
+/* harmony export */   apiRunner: () => (/* binding */ apiRunner),
+/* harmony export */   apiRunnerAsync: () => (/* binding */ apiRunnerAsync)
 /* harmony export */ });
 var plugins = [{
   name: 'gatsby-plugin-react-helmet',
@@ -727,7 +370,7 @@ exports.wrapRootElement = true;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "createServerOrClientContext": () => (/* binding */ createServerOrClientContext)
+/* harmony export */   createServerOrClientContext: () => (/* binding */ createServerOrClientContext)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -827,11 +470,11 @@ const emitter = (0,mitt__WEBPACK_IMPORTED_MODULE_0__["default"])();
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "cleanPath": () => (/* binding */ cleanPath),
-/* harmony export */   "findMatchPath": () => (/* binding */ findMatchPath),
-/* harmony export */   "findPath": () => (/* binding */ findPath),
-/* harmony export */   "grabMatchParams": () => (/* binding */ grabMatchParams),
-/* harmony export */   "setMatchPaths": () => (/* binding */ setMatchPaths)
+/* harmony export */   cleanPath: () => (/* binding */ cleanPath),
+/* harmony export */   findMatchPath: () => (/* binding */ findMatchPath),
+/* harmony export */   findPath: () => (/* binding */ findPath),
+/* harmony export */   grabMatchParams: () => (/* binding */ grabMatchParams),
+/* harmony export */   setMatchPaths: () => (/* binding */ setMatchPaths)
 /* harmony export */ });
 /* harmony import */ var _gatsbyjs_reach_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @gatsbyjs/reach-router */ "./node_modules/@gatsbyjs/reach-router/dist/index.modern.mjs");
 /* harmony import */ var _strip_prefix__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./strip-prefix */ "./.cache/strip-prefix.js");
@@ -983,24 +626,24 @@ const cleanPath = rawPathname => {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Link": () => (/* reexport safe */ gatsby_link__WEBPACK_IMPORTED_MODULE_3__.Link),
-/* harmony export */   "PageRenderer": () => (/* reexport default from dynamic */ _public_page_renderer__WEBPACK_IMPORTED_MODULE_1___default.a),
-/* harmony export */   "Script": () => (/* reexport safe */ gatsby_script__WEBPACK_IMPORTED_MODULE_6__.Script),
-/* harmony export */   "ScriptStrategy": () => (/* reexport safe */ gatsby_script__WEBPACK_IMPORTED_MODULE_6__.ScriptStrategy),
-/* harmony export */   "Slice": () => (/* reexport safe */ _slice__WEBPACK_IMPORTED_MODULE_5__.Slice),
-/* harmony export */   "StaticQuery": () => (/* reexport safe */ _static_query__WEBPACK_IMPORTED_MODULE_4__.StaticQuery),
-/* harmony export */   "StaticQueryContext": () => (/* reexport safe */ _static_query__WEBPACK_IMPORTED_MODULE_4__.StaticQueryContext),
-/* harmony export */   "collectedScriptsByPage": () => (/* reexport safe */ gatsby_script__WEBPACK_IMPORTED_MODULE_6__.collectedScriptsByPage),
-/* harmony export */   "graphql": () => (/* binding */ graphql),
-/* harmony export */   "navigate": () => (/* reexport safe */ gatsby_link__WEBPACK_IMPORTED_MODULE_3__.navigate),
-/* harmony export */   "parsePath": () => (/* reexport safe */ gatsby_link__WEBPACK_IMPORTED_MODULE_3__.parsePath),
-/* harmony export */   "prefetchPathname": () => (/* binding */ prefetchPathname),
-/* harmony export */   "scriptCache": () => (/* reexport safe */ gatsby_script__WEBPACK_IMPORTED_MODULE_6__.scriptCache),
-/* harmony export */   "scriptCallbackCache": () => (/* reexport safe */ gatsby_script__WEBPACK_IMPORTED_MODULE_6__.scriptCallbackCache),
-/* harmony export */   "useScrollRestoration": () => (/* reexport safe */ gatsby_react_router_scroll__WEBPACK_IMPORTED_MODULE_2__.useScrollRestoration),
-/* harmony export */   "useStaticQuery": () => (/* reexport safe */ _static_query__WEBPACK_IMPORTED_MODULE_4__.useStaticQuery),
-/* harmony export */   "withAssetPrefix": () => (/* reexport safe */ gatsby_link__WEBPACK_IMPORTED_MODULE_3__.withAssetPrefix),
-/* harmony export */   "withPrefix": () => (/* reexport safe */ gatsby_link__WEBPACK_IMPORTED_MODULE_3__.withPrefix)
+/* harmony export */   Link: () => (/* reexport safe */ gatsby_link__WEBPACK_IMPORTED_MODULE_3__.Link),
+/* harmony export */   PageRenderer: () => (/* reexport default from dynamic */ _public_page_renderer__WEBPACK_IMPORTED_MODULE_1___default.a),
+/* harmony export */   Script: () => (/* reexport safe */ gatsby_script__WEBPACK_IMPORTED_MODULE_6__.Script),
+/* harmony export */   ScriptStrategy: () => (/* reexport safe */ gatsby_script__WEBPACK_IMPORTED_MODULE_6__.ScriptStrategy),
+/* harmony export */   Slice: () => (/* reexport safe */ _slice__WEBPACK_IMPORTED_MODULE_5__.Slice),
+/* harmony export */   StaticQuery: () => (/* reexport safe */ _static_query__WEBPACK_IMPORTED_MODULE_4__.StaticQuery),
+/* harmony export */   StaticQueryContext: () => (/* reexport safe */ _static_query__WEBPACK_IMPORTED_MODULE_4__.StaticQueryContext),
+/* harmony export */   collectedScriptsByPage: () => (/* reexport safe */ gatsby_script__WEBPACK_IMPORTED_MODULE_6__.collectedScriptsByPage),
+/* harmony export */   graphql: () => (/* binding */ graphql),
+/* harmony export */   navigate: () => (/* reexport safe */ gatsby_link__WEBPACK_IMPORTED_MODULE_3__.navigate),
+/* harmony export */   parsePath: () => (/* reexport safe */ gatsby_link__WEBPACK_IMPORTED_MODULE_3__.parsePath),
+/* harmony export */   prefetchPathname: () => (/* binding */ prefetchPathname),
+/* harmony export */   scriptCache: () => (/* reexport safe */ gatsby_script__WEBPACK_IMPORTED_MODULE_6__.scriptCache),
+/* harmony export */   scriptCallbackCache: () => (/* reexport safe */ gatsby_script__WEBPACK_IMPORTED_MODULE_6__.scriptCallbackCache),
+/* harmony export */   useScrollRestoration: () => (/* reexport safe */ gatsby_react_router_scroll__WEBPACK_IMPORTED_MODULE_2__.useScrollRestoration),
+/* harmony export */   useStaticQuery: () => (/* reexport safe */ _static_query__WEBPACK_IMPORTED_MODULE_4__.useStaticQuery),
+/* harmony export */   withAssetPrefix: () => (/* reexport safe */ gatsby_link__WEBPACK_IMPORTED_MODULE_3__.withAssetPrefix),
+/* harmony export */   withPrefix: () => (/* reexport safe */ gatsby_link__WEBPACK_IMPORTED_MODULE_3__.withPrefix)
 /* harmony export */ });
 /* harmony import */ var _loader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./loader */ "./.cache/loader.js");
 /* harmony import */ var _public_page_renderer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./public-page-renderer */ "./.cache/public-page-renderer.js");
@@ -1034,20 +677,18 @@ function graphql() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "BaseLoader": () => (/* binding */ BaseLoader),
-/* harmony export */   "PageResourceStatus": () => (/* binding */ PageResourceStatus),
-/* harmony export */   "ProdLoader": () => (/* binding */ ProdLoader),
+/* harmony export */   BaseLoader: () => (/* binding */ BaseLoader),
+/* harmony export */   PageResourceStatus: () => (/* binding */ PageResourceStatus),
+/* harmony export */   ProdLoader: () => (/* binding */ ProdLoader),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   "getSliceResults": () => (/* binding */ getSliceResults),
-/* harmony export */   "getStaticQueryResults": () => (/* binding */ getStaticQueryResults),
-/* harmony export */   "publicLoader": () => (/* binding */ publicLoader),
-/* harmony export */   "setLoader": () => (/* binding */ setLoader)
+/* harmony export */   getSliceResults: () => (/* binding */ getSliceResults),
+/* harmony export */   getStaticQueryResults: () => (/* binding */ getStaticQueryResults),
+/* harmony export */   publicLoader: () => (/* binding */ publicLoader),
+/* harmony export */   setLoader: () => (/* binding */ setLoader)
 /* harmony export */ });
-/* harmony import */ var react_server_dom_webpack__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-server-dom-webpack */ "./node_modules/react-server-dom-webpack/index.js");
-/* harmony import */ var _prefetch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./prefetch */ "./.cache/prefetch.js");
-/* harmony import */ var _emitter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./emitter */ "./.cache/emitter.js");
-/* harmony import */ var _find_path__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./find-path */ "./.cache/find-path.js");
-
+/* harmony import */ var _prefetch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./prefetch */ "./.cache/prefetch.js");
+/* harmony import */ var _emitter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./emitter */ "./.cache/emitter.js");
+/* harmony import */ var _find_path__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./find-path */ "./.cache/find-path.js");
 
 
 
@@ -1173,7 +814,7 @@ class BaseLoader {
     this.prefetchTriggered = new Set();
     this.prefetchCompleted = new Set();
     this.loadComponent = loadComponent;
-    (0,_find_path__WEBPACK_IMPORTED_MODULE_3__.setMatchPaths)(matchPaths);
+    (0,_find_path__WEBPACK_IMPORTED_MODULE_2__.setMatchPaths)(matchPaths);
   }
   memoizedGet(url) {
     let inFlightPromise = this.inFlightNetworkRequests.get(url);
@@ -1328,7 +969,7 @@ class BaseLoader {
     });
   }
   loadPageDataJson(rawPath) {
-    const pagePath = (0,_find_path__WEBPACK_IMPORTED_MODULE_3__.findPath)(rawPath);
+    const pagePath = (0,_find_path__WEBPACK_IMPORTED_MODULE_2__.findPath)(rawPath);
     if (this.pageDataDb.has(pagePath)) {
       const pageData = this.pageDataDb.get(pagePath);
       if (true) {
@@ -1343,7 +984,7 @@ class BaseLoader {
     });
   }
   loadPartialHydrationJson(rawPath) {
-    const pagePath = (0,_find_path__WEBPACK_IMPORTED_MODULE_3__.findPath)(rawPath);
+    const pagePath = (0,_find_path__WEBPACK_IMPORTED_MODULE_2__.findPath)(rawPath);
     if (this.partialHydrationDb.has(pagePath)) {
       const pageData = this.partialHydrationDb.get(pagePath);
       if (true) {
@@ -1376,12 +1017,12 @@ class BaseLoader {
     });
   }
   findMatchPath(rawPath) {
-    return (0,_find_path__WEBPACK_IMPORTED_MODULE_3__.findMatchPath)(rawPath);
+    return (0,_find_path__WEBPACK_IMPORTED_MODULE_2__.findMatchPath)(rawPath);
   }
 
   // TODO check all uses of this and whether they use undefined for page resources not exist
   loadPage(rawPath) {
-    const pagePath = (0,_find_path__WEBPACK_IMPORTED_MODULE_3__.findPath)(rawPath);
+    const pagePath = (0,_find_path__WEBPACK_IMPORTED_MODULE_2__.findPath)(rawPath);
     if (this.pageDb.has(pagePath)) {
       const page = this.pageDb.get(pagePath);
       if (true) {
@@ -1498,7 +1139,11 @@ class BaseLoader {
                 },
                 cancel() {}
               });
-              return waitForResponse((0,react_server_dom_webpack__WEBPACK_IMPORTED_MODULE_0__.createFromReadableStream)(readableStream)).then(result => {
+
+              // Only load this experimental module if opting in to experimental Partial Hydration
+              return __webpack_require__.e(/*! import() */ "node_modules_gatsby_node_modules_react-server-dom-webpack_index_js").then(__webpack_require__.t.bind(__webpack_require__, /*! react-server-dom-webpack */ "./node_modules/gatsby/node_modules/react-server-dom-webpack/index.js", 23)).then(({
+                createFromReadableStream
+              }) => waitForResponse(createFromReadableStream(readableStream))).then(result => {
                 pageResources.partialHydration = result;
                 return pageResources;
               });
@@ -1549,7 +1194,7 @@ class BaseLoader {
               staticQueryResults
             };
             finalResult.payload = payload;
-            _emitter__WEBPACK_IMPORTED_MODULE_2__["default"].emit(`onPostLoadPageResources`, {
+            _emitter__WEBPACK_IMPORTED_MODULE_1__["default"].emit(`onPostLoadPageResources`, {
               page: payload,
               pageResources: payload
             });
@@ -1584,7 +1229,7 @@ class BaseLoader {
 
   // returns undefined if the page does not exists in cache
   loadPageSync(rawPath, options = {}) {
-    const pagePath = (0,_find_path__WEBPACK_IMPORTED_MODULE_3__.findPath)(rawPath);
+    const pagePath = (0,_find_path__WEBPACK_IMPORTED_MODULE_2__.findPath)(rawPath);
     if (this.pageDb.has(pagePath)) {
       const pageData = this.pageDb.get(pagePath);
       if (pageData.payload) {
@@ -1676,7 +1321,7 @@ class BaseLoader {
         if (this.prefetchDisabled) {
           return dPromise.resolve(false);
         }
-        return this.doPrefetch((0,_find_path__WEBPACK_IMPORTED_MODULE_3__.findPath)(pagePath)).then(() => {
+        return this.doPrefetch((0,_find_path__WEBPACK_IMPORTED_MODULE_2__.findPath)(pagePath)).then(() => {
           if (!this.prefetchCompleted.has(pagePath)) {
             this.apiRunner(`onPostPrefetchPathname`, {
               pathname: pagePath
@@ -1700,7 +1345,7 @@ class BaseLoader {
   doPrefetch(pagePath) {
     const pageDataUrl = createPageDataUrl(pagePath);
     if (false) {} else {
-      return (0,_prefetch__WEBPACK_IMPORTED_MODULE_1__["default"])(pageDataUrl, {
+      return (0,_prefetch__WEBPACK_IMPORTED_MODULE_0__["default"])(pageDataUrl, {
         crossOrigin: `anonymous`,
         as: `fetch`
       }).then(() =>
@@ -1713,7 +1358,7 @@ class BaseLoader {
     this.loadPage(rawPath);
   }
   getResourceURLsForPathname(rawPath) {
-    const pagePath = (0,_find_path__WEBPACK_IMPORTED_MODULE_3__.findPath)(rawPath);
+    const pagePath = (0,_find_path__WEBPACK_IMPORTED_MODULE_2__.findPath)(rawPath);
     const page = this.pageDataDb.get(pagePath);
     if (page) {
       const pageResources = toPageResources(page.payload);
@@ -1723,7 +1368,7 @@ class BaseLoader {
     }
   }
   isPageNotFound(rawPath) {
-    const pagePath = (0,_find_path__WEBPACK_IMPORTED_MODULE_3__.findPath)(rawPath);
+    const pagePath = (0,_find_path__WEBPACK_IMPORTED_MODULE_2__.findPath)(rawPath);
     const page = this.pageDb.get(pagePath);
     return !page || page.notFound;
   }
@@ -1771,7 +1416,7 @@ class ProdLoader extends BaseLoader {
     };
     super(loadComponent, matchPaths);
     if (pageData) {
-      this.pageDataDb.set((0,_find_path__WEBPACK_IMPORTED_MODULE_3__.findPath)(pageData.path), {
+      this.pageDataDb.set((0,_find_path__WEBPACK_IMPORTED_MODULE_2__.findPath)(pageData.path), {
         pagePath: pageData.path,
         payload: pageData,
         status: `success`
@@ -1786,7 +1431,7 @@ class ProdLoader extends BaseLoader {
       const pageData = result.payload;
       const chunkName = pageData.componentChunkName;
       const componentUrls = createComponentUrls(chunkName);
-      return Promise.all(componentUrls.map(_prefetch__WEBPACK_IMPORTED_MODULE_1__["default"])).then(() => pageData);
+      return Promise.all(componentUrls.map(_prefetch__WEBPACK_IMPORTED_MODULE_0__["default"])).then(() => pageData);
     });
   }
   loadPageDataJson(rawPath) {
@@ -1977,7 +1622,6 @@ const prefetch = function (url, options) {
     }).catch(() => {}); // 404s are logged to the console anyway
   });
 };
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (prefetch);
 
 /***/ }),
@@ -2004,7 +1648,7 @@ if (false) {} else if (false) {} else {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "maybeGetBrowserRedirect": () => (/* binding */ maybeGetBrowserRedirect)
+/* harmony export */   maybeGetBrowserRedirect: () => (/* binding */ maybeGetBrowserRedirect)
 /* harmony export */ });
 /* harmony import */ var _redirects_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./redirects.json */ "./.cache/redirects.json");
 
@@ -2030,6 +1674,17 @@ function maybeGetBrowserRedirect(pathname) {
 
 /***/ }),
 
+/***/ "./.cache/redirects.json":
+/*!*******************************!*\
+  !*** ./.cache/redirects.json ***!
+  \*******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = [];
+
+/***/ }),
+
 /***/ "./.cache/slice.js":
 /*!*************************!*\
   !*** ./.cache/slice.js ***!
@@ -2039,7 +1694,7 @@ function maybeGetBrowserRedirect(pathname) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Slice": () => (/* binding */ Slice)
+/* harmony export */   Slice: () => (/* binding */ Slice)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -2101,14 +1756,29 @@ class SlicePropsError extends Error {
     let stack = ``;
     let message = ``;
     if (inBrowser) {
-      // They're just (kinda) kidding, I promise... You can still work here <3
-      //   https://www.gatsbyjs.com/careers/
-      const fullStack = react__WEBPACK_IMPORTED_MODULE_0___default().__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactDebugCurrentFrame.getCurrentStack();
+      var _React$__SECRET_INTER, _React$__SECRET_INTER2;
+      let fullStack = ``;
+
+      // React 19+ uses captureOwnerStack, React 18 uses ReactDebugCurrentFrame.getCurrentStack
+      if ((react__WEBPACK_IMPORTED_MODULE_0___default().captureOwnerStack)) {
+        // React 19+ approach
+        const ownerStack = react__WEBPACK_IMPORTED_MODULE_0___default().captureOwnerStack();
+        const currentStack = new Error().stack || ``;
+        fullStack = ownerStack ? `${currentStack}\n${ownerStack}` : currentStack;
+      } else if ((_React$__SECRET_INTER = (react__WEBPACK_IMPORTED_MODULE_0___default().__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED)) !== null && _React$__SECRET_INTER !== void 0 && (_React$__SECRET_INTER2 = _React$__SECRET_INTER.ReactDebugCurrentFrame) !== null && _React$__SECRET_INTER2 !== void 0 && _React$__SECRET_INTER2.getCurrentStack) {
+        // React 18 approach
+        fullStack = react__WEBPACK_IMPORTED_MODULE_0___default().__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactDebugCurrentFrame.getCurrentStack();
+      } else {
+        // Fallback if neither API is available
+        fullStack = new Error().stack || ``;
+      }
 
       // remove the first line of the stack trace
       const stackLines = fullStack.trim().split(`\n`).slice(1);
-      stackLines[0] = stackLines[0].trim();
-      stack = `\n` + stackLines.join(`\n`);
+      if (stackLines.length > 0) {
+        stackLines[0] = stackLines[0].trim();
+        stack = `\n` + stackLines.join(`\n`);
+      }
       message = `Slice "${sliceName}" was passed props that are not serializable (${errors}).`;
     } else {
       // we can't really grab any extra info outside of the browser, so just print what we can
@@ -2159,10 +1829,10 @@ const validateSliceProps = (props, errors = {}, seenObjects = [], path = null) =
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "SlicesContext": () => (/* binding */ SlicesContext),
-/* harmony export */   "SlicesMapContext": () => (/* binding */ SlicesMapContext),
-/* harmony export */   "SlicesPropsContext": () => (/* binding */ SlicesPropsContext),
-/* harmony export */   "SlicesResultsContext": () => (/* binding */ SlicesResultsContext)
+/* harmony export */   SlicesContext: () => (/* binding */ SlicesContext),
+/* harmony export */   SlicesMapContext: () => (/* binding */ SlicesMapContext),
+/* harmony export */   SlicesPropsContext: () => (/* binding */ SlicesPropsContext),
+/* harmony export */   SlicesResultsContext: () => (/* binding */ SlicesResultsContext)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -2184,7 +1854,7 @@ const SlicesPropsContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___defau
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "InlineSlice": () => (/* binding */ InlineSlice)
+/* harmony export */   InlineSlice: () => (/* binding */ InlineSlice)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -2225,7 +1895,7 @@ const InlineSlice = ({
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ServerSliceRenderer": () => (/* binding */ ServerSliceRenderer)
+/* harmony export */   ServerSliceRenderer: () => (/* binding */ ServerSliceRenderer)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -2243,7 +1913,7 @@ const ServerSliceRenderer = ({
     // if children exist, we split the slice into a before and after piece
     // see renderSlices in render-html
     contents.push(children);
-    contents.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(`slice-start`, {
+    contents.push(/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(`slice-start`, {
       id: `${sliceId}-2`
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(`slice-end`, {
       id: `${sliceId}-2`
@@ -2263,7 +1933,7 @@ const ServerSliceRenderer = ({
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ServerSlice": () => (/* binding */ ServerSlice)
+/* harmony export */   ServerSlice: () => (/* binding */ ServerSlice)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -2328,9 +1998,9 @@ const ServerSlice = ({
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaticQuery": () => (/* binding */ StaticQuery),
-/* harmony export */   "StaticQueryContext": () => (/* binding */ StaticQueryContext),
-/* harmony export */   "useStaticQuery": () => (/* binding */ useStaticQuery)
+/* harmony export */   StaticQuery: () => (/* binding */ StaticQuery),
+/* harmony export */   StaticQueryContext: () => (/* binding */ StaticQueryContext),
+/* harmony export */   useStaticQuery: () => (/* binding */ useStaticQuery)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -2373,7 +2043,7 @@ const StaticQuery = props => {
 };
 StaticQuery.propTypes = {
   data: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().object),
-  query: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string.isRequired),
+  query: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string).isRequired,
   render: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func),
   children: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func)
 };
@@ -2434,6 +2104,278 @@ function stripPrefix(str, prefix = ``) {
   }
   return str;
 }
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/assertThisInitialized.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/assertThisInitialized.js ***!
+  \**********************************************************************/
+/***/ ((module) => {
+
+function _assertThisInitialized(e) {
+  if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  return e;
+}
+module.exports = _assertThisInitialized, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/inheritsLoose.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/inheritsLoose.js ***!
+  \**************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var setPrototypeOf = __webpack_require__(/*! ./setPrototypeOf.js */ "./node_modules/@babel/runtime/helpers/setPrototypeOf.js");
+function _inheritsLoose(t, o) {
+  t.prototype = Object.create(o.prototype), t.prototype.constructor = t, setPrototypeOf(t, o);
+}
+module.exports = _inheritsLoose, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/interopRequireDefault.js ***!
+  \**********************************************************************/
+/***/ ((module) => {
+
+function _interopRequireDefault(e) {
+  return e && e.__esModule ? e : {
+    "default": e
+  };
+}
+module.exports = _interopRequireDefault, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/setPrototypeOf.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/setPrototypeOf.js ***!
+  \***************************************************************/
+/***/ ((module) => {
+
+function _setPrototypeOf(t, e) {
+  return module.exports = _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) {
+    return t.__proto__ = e, t;
+  }, module.exports.__esModule = true, module.exports["default"] = module.exports, _setPrototypeOf(t, e);
+}
+module.exports = _setPrototypeOf, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ "./node_modules/@builder.io/partytown/integration/index.cjs":
+/*!******************************************************************!*\
+  !*** ./node_modules/@builder.io/partytown/integration/index.cjs ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+
+const PartytownSnippet = "/* Partytown 0.7.6 - MIT builder.io */\n!function(t,e,n,i,r,o,a,d,s,c,p,l){function u(){l||(l=1,\"/\"==(a=(o.lib||\"/~partytown/\")+(o.debug?\"debug/\":\"\"))[0]&&(s=e.querySelectorAll('script[type=\"text/partytown\"]'),i!=t?i.dispatchEvent(new CustomEvent(\"pt1\",{detail:t})):(d=setTimeout(f,1e4),e.addEventListener(\"pt0\",w),r?h(1):n.serviceWorker?n.serviceWorker.register(a+(o.swPath||\"partytown-sw.js\"),{scope:a}).then((function(t){t.active?h():t.installing&&t.installing.addEventListener(\"statechange\",(function(t){\"activated\"==t.target.state&&h()}))}),console.error):f())))}function h(t){c=e.createElement(t?\"script\":\"iframe\"),t||(c.setAttribute(\"style\",\"display:block;width:0;height:0;border:0;visibility:hidden\"),c.setAttribute(\"aria-hidden\",!0)),c.src=a+\"partytown-\"+(t?\"atomics.js?v=0.7.6\":\"sandbox-sw.html?\"+Date.now()),e.body.appendChild(c)}function f(n,r){for(w(),i==t&&(o.forward||[]).map((function(e){delete t[e.split(\".\")[0]]})),n=0;n<s.length;n++)(r=e.createElement(\"script\")).innerHTML=s[n].innerHTML,e.head.appendChild(r);c&&c.parentNode.removeChild(c)}function w(){clearTimeout(d)}o=t.partytown||{},i==t&&(o.forward||[]).map((function(e){p=t,e.split(\".\").map((function(e,n,i){p=p[i[n]]=n+1<i.length?\"push\"==i[n+1]?[]:p[i[n]]||{}:function(){(t._ptf=t._ptf||[]).push(i,arguments)}}))})),\"complete\"==e.readyState?u():(t.addEventListener(\"DOMContentLoaded\",u),t.addEventListener(\"load\",u))}(window,document,navigator,top,window.crossOriginIsolated);";
+
+const createSnippet = (config, snippetCode) => {
+    const { forward = [], ...filteredConfig } = config || {};
+    const configStr = JSON.stringify(filteredConfig, (k, v) => {
+        if (typeof v === 'function') {
+            v = String(v);
+            if (v.startsWith(k + '(')) {
+                v = 'function ' + v;
+            }
+        }
+        return v;
+    });
+    return [
+        `!(function(w,p,f,c){`,
+        Object.keys(filteredConfig).length > 0
+            ? `c=w[p]=Object.assign(w[p]||{},${configStr});`
+            : `c=w[p]=w[p]||{};`,
+        `c[f]=(c[f]||[])`,
+        forward.length > 0 ? `.concat(${JSON.stringify(forward)})` : ``,
+        `})(window,'partytown','forward');`,
+        snippetCode,
+    ].join('');
+};
+
+/**
+ * The `type` attribute for Partytown scripts, which does two things:
+ *
+ * 1. Prevents the `<script>` from executing on the main thread.
+ * 2. Is used as a selector so the Partytown library can find all scripts to execute in a web worker.
+ *
+ * @public
+ */
+const SCRIPT_TYPE = `text/partytown`;
+
+/**
+ * Function that returns the Partytown snippet as a string, which can be
+ * used as the innerHTML of the inlined Partytown script in the head.
+ *
+ * @public
+ */
+const partytownSnippet = (config) => createSnippet(config, PartytownSnippet);
+
+exports.SCRIPT_TYPE = SCRIPT_TYPE;
+exports.partytownSnippet = partytownSnippet;
+
+
+/***/ }),
+
+/***/ "./node_modules/@gatsbyjs/reach-router/dist/index.modern.mjs":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@gatsbyjs/reach-router/dist/index.modern.mjs ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+var react__WEBPACK_IMPORTED_MODULE_0___namespace_cache;
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   BaseContext: () => (/* binding */ m),
+/* harmony export */   Link: () => (/* binding */ A),
+/* harmony export */   Location: () => (/* binding */ G),
+/* harmony export */   LocationContext: () => (/* binding */ d),
+/* harmony export */   LocationProvider: () => (/* binding */ z),
+/* harmony export */   Match: () => (/* binding */ Q),
+/* harmony export */   Redirect: () => (/* binding */ R),
+/* harmony export */   Router: () => (/* binding */ oe),
+/* harmony export */   ServerLocation: () => (/* binding */ J),
+/* harmony export */   createHistory: () => (/* binding */ i),
+/* harmony export */   createMemorySource: () => (/* binding */ c),
+/* harmony export */   globalHistory: () => (/* binding */ l),
+/* harmony export */   insertParams: () => (/* binding */ P),
+/* harmony export */   isRedirect: () => (/* binding */ g),
+/* harmony export */   match: () => (/* binding */ x),
+/* harmony export */   navigate: () => (/* binding */ p),
+/* harmony export */   pick: () => (/* binding */ w),
+/* harmony export */   redirectTo: () => (/* binding */ v),
+/* harmony export */   resolve: () => (/* binding */ k),
+/* harmony export */   shallowCompare: () => (/* binding */ D),
+/* harmony export */   startsWith: () => (/* binding */ C),
+/* harmony export */   useBaseContext: () => (/* binding */ f),
+/* harmony export */   useLocation: () => (/* binding */ se),
+/* harmony export */   useLocationContext: () => (/* binding */ y),
+/* harmony export */   useMatch: () => (/* binding */ ue),
+/* harmony export */   useNavigate: () => (/* binding */ ie),
+/* harmony export */   useParams: () => (/* binding */ ce),
+/* harmony export */   validateRedirect: () => (/* binding */ T)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var invariant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! invariant */ "./node_modules/invariant/invariant.js");
+function o(){return o=Object.assign?Object.assign.bind():function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(e[n]=r[n])}return e},o.apply(this,arguments)}function a(e,t){if(null==e)return{};var r,n,o={},a=Object.keys(e);for(n=0;n<a.length;n++)t.indexOf(r=a[n])>=0||(o[r]=e[r]);return o}const s=e=>{const{search:t,hash:r,href:n,origin:o,protocol:a,host:s,hostname:i,port:c}=e.location;let{pathname:l}=e.location;return!l&&n&&u&&(l=new URL(n).pathname),{pathname:encodeURI(decodeURI(l)),search:t,hash:r,href:n,origin:o,protocol:a,host:s,hostname:i,port:c,state:e.history.state,key:e.history.state&&e.history.state.key||"initial"}},i=(e,t)=>{let r=[],n=s(e),a=!1,i=()=>{};return{get location(){return n},get transitioning(){return a},_onTransitionComplete(){a=!1,i()},listen(t){r.push(t);const o=()=>{n=s(e),t({location:n,action:"POP"})};return e.addEventListener("popstate",o),()=>{e.removeEventListener("popstate",o),r=r.filter(e=>e!==t)}},navigate(t,{state:c,replace:u=!1}={}){if("number"==typeof t)e.history.go(t);else{c=o({},c,{key:Date.now()+""});try{a||u?e.history.replaceState(c,null,t):e.history.pushState(c,null,t)}catch(r){e.location[u?"replace":"assign"](t)}}n=s(e),a=!0;const l=new Promise(e=>i=e);return r.forEach(e=>e({location:n,action:"PUSH"})),l}}},c=(e="/")=>{const t=e.indexOf("?"),r={pathname:t>-1?e.substr(0,t):e,search:t>-1?e.substr(t):""};let n=0;const o=[r],a=[null];return{get location(){return o[n]},addEventListener(e,t){},removeEventListener(e,t){},history:{get entries(){return o},get index(){return n},get state(){return a[n]},pushState(e,t,r){const[s,i=""]=r.split("?");n++,o.push({pathname:s,search:i.length?`?${i}`:i}),a.push(e)},replaceState(e,t,r){const[s,i=""]=r.split("?");o[n]={pathname:s,search:i},a[n]=e},go(e){const t=n+e;t<0||t>a.length-1||(n=t)}}}},u=!("undefined"==typeof window||!window.document||!window.document.createElement),l=i(u?window:c()),{navigate:p}=l;function h(e,r){return react__WEBPACK_IMPORTED_MODULE_0__.createServerContext?((e,r=null)=>(globalThis.__SERVER_CONTEXT||(globalThis.__SERVER_CONTEXT={}),globalThis.__SERVER_CONTEXT[e]||(globalThis.__SERVER_CONTEXT[e]=react__WEBPACK_IMPORTED_MODULE_0__.createServerContext(e,r)),globalThis.__SERVER_CONTEXT[e]))(e,r):react__WEBPACK_IMPORTED_MODULE_0__.createContext(r)}const m=h("Base",{baseuri:"/",basepath:"/"}),d=h("Location"),f=()=>react__WEBPACK_IMPORTED_MODULE_0__.useContext(m),y=()=>react__WEBPACK_IMPORTED_MODULE_0__.useContext(d);function E(e){this.uri=e}const g=e=>e instanceof E,v=e=>{throw new E(e)};function b(t){const{to:r,replace:n=!0,state:o,noThrow:a,baseuri:s}=t;react__WEBPACK_IMPORTED_MODULE_0__.useEffect(()=>{Promise.resolve().then(()=>{const e=k(r,s);p(P(e,t),{replace:n,state:o})})},[]);const i=k(r,s);return a||v(P(i,t)),null}const R=t=>{const r=y(),{baseuri:n}=f();/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement(b,o({},r,{baseuri:n},t))};R.propTypes={from:prop_types__WEBPACK_IMPORTED_MODULE_2__.string,to:prop_types__WEBPACK_IMPORTED_MODULE_2__.string.isRequired};const C=(e,t)=>e.substr(0,t.length)===t,w=(e,t)=>{let r,o;const[a]=t.split("?"),s=N(a),i=""===s[0],c=j(e);for(let e=0,a=c.length;e<a;e++){let a=!1;const u=c[e].route;if(u.default){o={route:u,params:{},uri:t};continue}const l=N(u.path),p={},h=Math.max(s.length,l.length);let m=0;for(;m<h;m++){const e=l[m],t=s[m];if($(e)){p[e.slice(1)||"*"]=s.slice(m).map(decodeURIComponent).join("/");break}if(void 0===t){a=!0;break}const r=O.exec(e);if(r&&!i){const e=-1===U.indexOf(r[1]);invariant__WEBPACK_IMPORTED_MODULE_1__(e,`<Router> dynamic segment "${r[1]}" is a reserved name. Please use a different name in path "${u.path}".`);const o=decodeURIComponent(t);p[r[1]]=o}else if(e!==t){a=!0;break}}if(!a){r={route:u,params:p,uri:"/"+s.slice(0,m).join("/")};break}}return r||o||null},x=(e,t)=>w([{path:e}],t),k=(e,t)=>{if(C(e,"/"))return e;const[r,n]=e.split("?"),[o]=t.split("?"),a=N(r),s=N(o);if(""===a[0])return L(o,n);if(!C(a[0],".")){const e=s.concat(a).join("/");return L(("/"===o?"":"/")+e,n)}const i=s.concat(a),c=[];for(let e=0,t=i.length;e<t;e++){const t=i[e];".."===t?c.pop():"."!==t&&c.push(t)}return L("/"+c.join("/"),n)},P=(e,t)=>{const[r,n=""]=e.split("?");let o="/"+N(r).map(e=>{const r=O.exec(e);return r?t[r[1]]:e}).join("/");const{location:{search:a=""}={}}=t,s=a.split("?")[1]||"";return o=L(o,n,s),o},T=(e,t)=>{const r=e=>_(e);return N(e).filter(r).sort().join("/")===N(t).filter(r).sort().join("/")},O=/^:(.+)/,_=e=>O.test(e),$=e=>e&&"*"===e[0],S=(e,t)=>({route:e,score:e.default?0:N(e.path).reduce((e,t)=>(e+=4,(e=>""===e)(t)?e+=1:_(t)?e+=2:$(t)?e-=5:e+=3,e),0),index:t}),j=e=>e.map(S).sort((e,t)=>e.score<t.score?1:e.score>t.score?-1:e.index-t.index),N=e=>e.replace(/(^\/+|\/+$)/g,"").split("/"),L=(e,...t)=>e+((t=t.filter(e=>e&&e.length>0))&&t.length>0?`?${t.join("&")}`:""),U=["uri","path"],D=(e,t)=>{const r=Object.keys(e);return r.length===Object.keys(t).length&&r.every(r=>t.hasOwnProperty(r)&&e[r]===t[r])},M=e=>e.replace(/(^\/+|\/+$)/g,""),I=t=>r=>{if(!r)return null;if(r.type===react__WEBPACK_IMPORTED_MODULE_0__.Fragment&&r.props.children)return react__WEBPACK_IMPORTED_MODULE_0__.Children.map(r.props.children,I(t));if(invariant__WEBPACK_IMPORTED_MODULE_1__(r.props.path||r.props.default||r.type===R,`<Router>: Children of <Router> must have a \`path\` or \`default\` prop, or be a \`<Redirect>\`. None found on element type \`${r.type}\``),invariant__WEBPACK_IMPORTED_MODULE_1__(!!(r.type!==R||r.props.from&&r.props.to),`<Redirect from="${r.props.from}" to="${r.props.to}"/> requires both "from" and "to" props when inside a <Router>.`),invariant__WEBPACK_IMPORTED_MODULE_1__(!(r.type===R&&!T(r.props.from,r.props.to)),`<Redirect from="${r.props.from} to="${r.props.to}"/> has mismatched dynamic segments, ensure both paths have the exact same dynamic segments.`),r.props.default)return{value:r,default:!0};const o=r.type===R?r.props.from:r.props.path,a="/"===o?t:`${M(t)}/${M(o)}`;return{value:r,default:r.props.default,path:r.props.children?`${M(a)}/*`:a}},V=["innerRef"],q=["to","state","replace","getProps"],X=["key"];let{forwardRef:B}=/*#__PURE__*/ (react__WEBPACK_IMPORTED_MODULE_0___namespace_cache || (react__WEBPACK_IMPORTED_MODULE_0___namespace_cache = __webpack_require__.t(react__WEBPACK_IMPORTED_MODULE_0__, 2)));void 0===B&&(B=e=>e);const K=()=>{},A=B((t,r)=>{let{innerRef:n}=t,s=a(t,V);const{baseuri:i}=f(),{location:c}=y(),{to:u,state:l,replace:h,getProps:m=K}=s,d=a(s,q),E=k(u,i),g=encodeURI(E),v=c.pathname===g,b=C(c.pathname,g);/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement("a",o({ref:r||n,"aria-current":v?"page":void 0},d,m({isCurrent:v,isPartiallyCurrent:b,href:E,location:c}),{href:E,onClick:e=>{if(d.onClick&&d.onClick(e),(e=>!e.defaultPrevented&&0===e.button&&!(e.metaKey||e.altKey||e.ctrlKey||e.shiftKey))(e)){e.preventDefault();let t=h;if("boolean"!=typeof h&&v){const e=a(o({},c.state),X);t=D(o({},l),e)}p(E,{state:l,replace:t})}}}))});A.displayName="Link",A.propTypes={to:prop_types__WEBPACK_IMPORTED_MODULE_2__.string.isRequired};class F extends react__WEBPACK_IMPORTED_MODULE_0__.Component{constructor(...e){super(...e),this.displayName="ReactUseErrorBoundary"}componentDidCatch(...e){this.setState({}),this.props.onError(...e)}render(){return this.props.children}}const W=react__WEBPACK_IMPORTED_MODULE_0__.createContext({componentDidCatch:{current:void 0},error:void 0,setError:()=>!1});function H({children:t}){const[r,n]=react__WEBPACK_IMPORTED_MODULE_0__.useState(),o=react__WEBPACK_IMPORTED_MODULE_0__.useRef(),a=react__WEBPACK_IMPORTED_MODULE_0__.useMemo(()=>({componentDidCatch:o,error:r,setError:n}),[r]);/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement(W.Provider,{value:a},/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(F,{error:r,onError:(e,t)=>{n(e),null==o.current||o.current(e,t)}},t))}H.displayName="ReactUseErrorBoundaryContext";const z=function(t){var r,n;function a(r){/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement(H,null,/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(t,o({key:"WrappedComponent"},r)))}return a.displayName=`WithErrorBoundary(${null!=(r=null!=(n=t.displayName)?n:t.name)?r:"Component"})`,a}(({history:t=l,children:r})=>{const{location:n}=t,[o,a]=react__WEBPACK_IMPORTED_MODULE_0__.useState({location:n}),[s]=function(t){const r=react__WEBPACK_IMPORTED_MODULE_0__.useContext(W);r.componentDidCatch.current=void 0;const n=react__WEBPACK_IMPORTED_MODULE_0__.useCallback(()=>{r.setError(void 0)},[]);return[r.error,n]}();if(react__WEBPACK_IMPORTED_MODULE_0__.useEffect(()=>{t._onTransitionComplete()},[o.location]),react__WEBPACK_IMPORTED_MODULE_0__.useEffect(()=>{let e=!1;const r=t.listen(({location:t})=>{Promise.resolve().then(()=>{requestAnimationFrame(()=>{e||a({location:t})})})});return()=>{e=!0,r()}},[]),s){if(!g(s))throw s;p(s.uri,{replace:!0})}/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement(d.Provider,{value:o},"function"==typeof r?r(o):r||null)}),G=({children:t})=>{const r=y();return r?t(r):/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(z,null,t)},J=({url:t,children:r})=>{const n=t.indexOf("?");let o,a="";return n>-1?(o=t.substring(0,n),a=t.substring(n)):o=t,/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(d.Provider,{value:{location:{pathname:o,search:a,hash:""}}},r)},Q=({path:e,children:t})=>{const{baseuri:r}=f(),{location:n}=y(),a=k(e,r),s=x(a,n.pathname);return t({location:n,match:s?o({},s.params,{uri:s.uri,path:e}):null})},Y=["uri","location","component"],Z=["children","style","component","uri","location"],ee=t=>{let{uri:r,location:n,component:s}=t,i=a(t,Y);/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement(re,o({},i,{component:s,uri:r,location:n}))};let te=0;const re=t=>{let{children:r,style:n,component:s="div",uri:i,location:c}=t,u=a(t,Z);const l=react__WEBPACK_IMPORTED_MODULE_0__.useRef(),p=react__WEBPACK_IMPORTED_MODULE_0__.useRef(!0),h=react__WEBPACK_IMPORTED_MODULE_0__.useRef(i),m=react__WEBPACK_IMPORTED_MODULE_0__.useRef(c.pathname),d=react__WEBPACK_IMPORTED_MODULE_0__.useRef(!1);react__WEBPACK_IMPORTED_MODULE_0__.useEffect(()=>(te++,f(),()=>{te--,0===te&&(p.current=!0)}),[]),react__WEBPACK_IMPORTED_MODULE_0__.useEffect(()=>{let e=!1,t=!1;i!==h.current&&(h.current=i,e=!0),c.pathname!==m.current&&(m.current=c.pathname,t=!0),d.current=e||t&&c.pathname===i,d.current&&f()},[i,c]);const f=react__WEBPACK_IMPORTED_MODULE_0__.useCallback(()=>{var e; true&&(p.current?p.current=!1:(e=l.current,d.current&&e&&e.focus()))},[]);/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement(s,o({style:o({outline:"none"},n),tabIndex:"-1",ref:l},u),r)},ne=["location","primary","children","basepath","baseuri","component"],oe=t=>{const r=f(),n=y();/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement(ae,o({},r,n,t))};function ae(t){const{location:r,primary:n=!0,children:s,basepath:i,component:c="div"}=t,u=a(t,ne),l=react__WEBPACK_IMPORTED_MODULE_0__.Children.toArray(s).reduce((e,t)=>{const r=I(i)(t);return e.concat(r)},[]),{pathname:p}=r,h=w(l,p);if(h){const{params:t,uri:a,route:s,route:{value:l}}=h,p=s.default?i:s.path.replace(/\*$/,""),d=o({},t,{uri:a,location:r}),f=react__WEBPACK_IMPORTED_MODULE_0__.cloneElement(l,d,l.props.children?/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(oe,{location:r,primary:n},l.props.children):void 0),y=n?ee:c,E=n?o({uri:a,location:r,component:c},u):u;/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement(m.Provider,{value:{baseuri:a,basepath:p}},/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(y,E,f))}return null}const se=()=>{const e=y();if(!e)throw new Error("useLocation hook was used but a LocationContext.Provider was not found in the parent tree. Make sure this is used in a component that is a child of Router");return e.location},ie=()=>{throw new Error("useNavigate is removed. Use import { navigate } from 'gatsby' instead")},ce=()=>{const e=f();if(!e)throw new Error("useParams hook was used but a LocationContext.Provider was not found in the parent tree. Make sure this is used in a component that is a child of Router");const t=se(),r=x(e.basepath,t.pathname);return r?r.params:null},ue=e=>{if(!e)throw new Error("useMatch(path: string) requires an argument of a string to match against");const t=f();if(!t)throw new Error("useMatch hook was used but a LocationContext.Provider was not found in the parent tree. Make sure this is used in a component that is a child of Router");const r=se(),n=k(e,t.baseuri),a=x(n,r.pathname);return a?o({},a.params,{uri:a.uri,path:e}):null};
+//# sourceMappingURL=index.modern.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/gatsby-core-utils/dist/create-content-digest.mjs":
+/*!***********************************************************************!*\
+  !*** ./node_modules/gatsby-core-utils/dist/create-content-digest.mjs ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   createContentDigest: () => (/* binding */ createContentDigest)
+/* harmony export */ });
+/* harmony import */ var crypto__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! crypto */ "crypto");
+/* harmony import */ var node_object_hash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! node-object-hash */ "./node_modules/node-object-hash/dist/hasher.js");
+
+
+const hasher = node_object_hash__WEBPACK_IMPORTED_MODULE_1__({
+  coerce: false,
+  alg: `md5`,
+  enc: `hex`,
+  sort: {
+    map: true,
+    object: true,
+    array: false,
+    set: false
+  }
+});
+const hashPrimitive = input => crypto__WEBPACK_IMPORTED_MODULE_0__.createHash(`md5`).update(input).digest(`hex`);
+
+/**
+ * Hashes an input using md5 hash of hexadecimal digest.
+ *
+ * @param input The input to encrypt
+ * @return The content digest
+ */
+
+const createContentDigest = input => {
+  if (typeof input === `object` && !Buffer.isBuffer(input)) {
+    return hasher.hash(input);
+  }
+  return hashPrimitive(input);
+};
+
+/***/ }),
+
+/***/ "./node_modules/gatsby-link/dist/index.modern.mjs":
+/*!********************************************************!*\
+  !*** ./node_modules/gatsby-link/dist/index.modern.mjs ***!
+  \********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Link: () => (/* binding */ E),
+/* harmony export */   navigate: () => (/* binding */ g),
+/* harmony export */   parsePath: () => (/* binding */ a),
+/* harmony export */   withAssetPrefix: () => (/* binding */ v),
+/* harmony export */   withPrefix: () => (/* binding */ f)
+/* harmony export */ });
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var _gatsbyjs_reach_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @gatsbyjs/reach-router */ "./node_modules/@gatsbyjs/reach-router/dist/index.modern.mjs");
+/* harmony import */ var gatsby_page_utils_apply_trailing_slash_option__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! gatsby-page-utils/apply-trailing-slash-option */ "./node_modules/gatsby-page-utils/dist/apply-trailing-slash-option.js");
+"use client"
+;function i(){return i=Object.assign?Object.assign.bind():function(t){for(var e=1;e<arguments.length;e++){var n=arguments[e];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(t[r]=n[r])}return t},i.apply(this,arguments)}function a(t){let e=t||"/",n="",r="";const o=e.indexOf("#");-1!==o&&(r=e.slice(o),e=e.slice(0,o));const s=e.indexOf("?");return-1!==s&&(n=e.slice(s),e=e.slice(0,s)),{pathname:e,search:"?"===n?"":n,hash:"#"===r?"":r}}const c=/^[a-zA-Z][a-zA-Z\d+\-.]*?:/,l=t=>{if("string"==typeof t)return!(t=>c.test(t))(t)},p=()=> true? true?"":0:0,h=()=> true? true?"":0:0;function f(t,e=p()){var n;if(!l(t))return t;if(t.startsWith("./")||t.startsWith("../"))return t;const r=null!=(n=null!=e?e:h())?n:"/";return`${null!=r&&r.endsWith("/")?r.slice(0,-1):r}${t.startsWith("/")?t:`/${t}`}`}const u=t=>null==t?void 0:t.startsWith("/"),_=()=> true?"always":0;function d(t,e){const{pathname:n,search:r,hash:o}=a(t);return`${(0,gatsby_page_utils_apply_trailing_slash_option__WEBPACK_IMPORTED_MODULE_2__.applyTrailingSlashOption)(n,e)}${r}${o}`}const m=(t,e)=>"number"==typeof t?t:l(t)?u(t)?function(t){const e=f(t),n=_();return"always"===n||"never"===n?d(e,n):e}(t):function(t,e){if(u(t))return t;const r=_(),o=(0,_gatsbyjs_reach_router__WEBPACK_IMPORTED_MODULE_1__.resolve)(t,e);return"always"===r||"never"===r?d(o,r):o}(t,e):t,y=["to","getProps","onClick","onMouseEnter","activeClassName","activeStyle","innerRef","partiallyActive","state","replace","_location"];function v(t){return f(t,h())}const b={activeClassName:prop_types__WEBPACK_IMPORTED_MODULE_3__.string,activeStyle:prop_types__WEBPACK_IMPORTED_MODULE_3__.object,partiallyActive:prop_types__WEBPACK_IMPORTED_MODULE_3__.bool};function w(t){/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement(_gatsbyjs_reach_router__WEBPACK_IMPORTED_MODULE_1__.Location,null,({location:n})=>/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(P,i({},t,{_location:n})))}class P extends react__WEBPACK_IMPORTED_MODULE_0__.Component{constructor(t){super(t),this.defaultGetProps=({isPartiallyCurrent:t,isCurrent:e})=>(this.props.partiallyActive?t:e)?{className:[this.props.className,this.props.activeClassName].filter(Boolean).join(" "),style:i({},this.props.style,this.props.activeStyle)}:null;let e=!1;"undefined"!=typeof window&&window.IntersectionObserver&&(e=!0),this.state={IOSupported:e},this.abortPrefetch=null,this.handleRef=this.handleRef.bind(this)}_prefetch(){let t=window.location.pathname+window.location.search;this.props._location&&this.props._location.pathname&&(t=this.props._location.pathname+this.props._location.search);const e=a(m(this.props.to,t)),n=e.pathname+e.search;if(t!==n)return ___loader.enqueue(n)}componentWillUnmount(){if(!this.io)return;const{instance:t,el:e}=this.io;this.abortPrefetch&&this.abortPrefetch.abort(),t.unobserve(e),t.disconnect()}handleRef(t){this.props.innerRef&&Object.prototype.hasOwnProperty.call(this.props.innerRef,"current")?this.props.innerRef.current=t:this.props.innerRef&&this.props.innerRef(t),this.state.IOSupported&&t&&(this.io=((t,e)=>{const n=new window.IntersectionObserver(n=>{n.forEach(n=>{t===n.target&&e(n.isIntersecting||n.intersectionRatio>0)})});return n.observe(t),{instance:n,el:t}})(t,t=>{t?this.abortPrefetch=this._prefetch():this.abortPrefetch&&this.abortPrefetch.abort()}))}render(){const t=this.props,{to:n,getProps:r=this.defaultGetProps,onClick:s,onMouseEnter:c,state:p,replace:h,_location:f}=t,u=function(t,e){if(null==t)return{};var n,r,o={},s=Object.keys(t);for(r=0;r<s.length;r++)e.indexOf(n=s[r])>=0||(o[n]=t[n]);return o}(t,y); false||l(n)||console.warn(`External link ${n} was detected in a Link component. Use the Link component only for internal links. See: https://gatsby.dev/internal-links`);const _=m(n,f.pathname);return l(_)?/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_gatsbyjs_reach_router__WEBPACK_IMPORTED_MODULE_1__.Link,i({to:_,state:p,getProps:r,innerRef:this.handleRef,onMouseEnter:t=>{c&&c(t);const e=a(_);___loader.hovering(e.pathname+e.search)},onClick:t=>{if(s&&s(t),!(0!==t.button||this.props.target||t.defaultPrevented||t.metaKey||t.altKey||t.ctrlKey||t.shiftKey)){t.preventDefault();let e=h;const n=encodeURI(_)===f.pathname;"boolean"!=typeof h&&n&&(e=!0),window.___navigate(_,{state:p,replace:e})}return!0}},u)):/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a",i({href:_},u))}}P.propTypes=i({},b,{onClick:prop_types__WEBPACK_IMPORTED_MODULE_3__.func,to:prop_types__WEBPACK_IMPORTED_MODULE_3__.string.isRequired,replace:prop_types__WEBPACK_IMPORTED_MODULE_3__.bool,state:prop_types__WEBPACK_IMPORTED_MODULE_3__.object});const E=react__WEBPACK_IMPORTED_MODULE_0__.forwardRef((t,n)=>/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(w,i({innerRef:n},t))),g=(t,e)=>{window.___navigate(m(t,window.location.pathname),e)};
+//# sourceMappingURL=index.modern.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/gatsby-page-utils/dist/apply-trailing-slash-option.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/gatsby-page-utils/dist/apply-trailing-slash-option.js ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.applyTrailingSlashOption = void 0;
+const endsWithSuffixes = (suffixes, input) => {
+  for (const suffix of suffixes) {
+    if (input.endsWith(suffix)) return true;
+  }
+  return false;
+};
+const suffixes = [`.html`, `.json`, `.js`, `.map`, `.txt`, `.xml`, `.pdf`];
+const applyTrailingSlashOption = (input, option = `always`) => {
+  if (input === `/`) return input;
+  const hasTrailingSlash = input.endsWith(`/`);
+  if (endsWithSuffixes(suffixes, input)) {
+    return input;
+  }
+  if (option === `always`) {
+    return hasTrailingSlash ? input : `${input}/`;
+  }
+  if (option === `never`) {
+    return hasTrailingSlash ? input.slice(0, -1) : input;
+  }
+  return input;
+};
+exports.applyTrailingSlashOption = applyTrailingSlashOption;
 
 /***/ }),
 
@@ -2586,7 +2528,7 @@ exports.onRenderBody = ({
   if (srcIconExists) {
     if (insertFaviconLinkTag) {
       _common.favicons.forEach(favicon => {
-        headComponents.push( /*#__PURE__*/React.createElement("link", {
+        headComponents.push(/*#__PURE__*/React.createElement("link", {
           key: `gatsby-plugin-manifest-icon-link-png`,
           rel: "icon",
           href: withPrefix((0, _common.addDigestToPath)(favicon.src, cacheDigest, cacheBusting)),
@@ -2594,7 +2536,7 @@ exports.onRenderBody = ({
         }));
       });
       if (icon !== null && icon !== void 0 && icon.endsWith(`.svg`)) {
-        headComponents.push( /*#__PURE__*/React.createElement("link", {
+        headComponents.push(/*#__PURE__*/React.createElement("link", {
           key: `gatsby-plugin-manifest-icon-link-svg`,
           rel: "icon",
           href: withPrefix((0, _common.addDigestToPath)(`favicon.svg`, cacheDigest, cacheBusting)),
@@ -2605,7 +2547,7 @@ exports.onRenderBody = ({
   }
 
   // Add manifest link tag.
-  headComponents.push( /*#__PURE__*/React.createElement("link", {
+  headComponents.push(/*#__PURE__*/React.createElement("link", {
     key: `gatsby-plugin-manifest-link`,
     rel: "manifest",
     href: (0, _gatsby.withPrefix)(`/${manifestFileName}`),
@@ -2614,7 +2556,7 @@ exports.onRenderBody = ({
 
   // The user has an option to opt out of the theme_color meta tag being inserted into the head.
   if (themeColor && insertMetaTag) {
-    headComponents.push( /*#__PURE__*/React.createElement("meta", {
+    headComponents.push(/*#__PURE__*/React.createElement("meta", {
       key: `gatsby-plugin-manifest-meta`,
       name: "theme-color",
       content: themeColor
@@ -2622,7 +2564,7 @@ exports.onRenderBody = ({
   }
   if (legacy) {
     icons.forEach(icon => {
-      headComponents.push( /*#__PURE__*/React.createElement("link", {
+      headComponents.push(/*#__PURE__*/React.createElement("link", {
         key: `gatsby-plugin-manifest-apple-touch-icon-${icon.sizes}`,
         rel: "apple-touch-icon",
         sizes: icon.sizes,
@@ -2707,6 +2649,355 @@ var onRenderBody = function onRenderBody(_ref) {
   setHeadComponents(titleComponent !== null && titleComponent !== void 0 && (_titleComponent$ = titleComponent[0]) !== null && _titleComponent$ !== void 0 && (_titleComponent$$prop = _titleComponent$.props) !== null && _titleComponent$$prop !== void 0 && _titleComponent$$prop.children ? [titleComponent].concat(components) : components);
 };
 exports.onRenderBody = onRenderBody;
+
+/***/ }),
+
+/***/ "./node_modules/gatsby-react-router-scroll/index.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/gatsby-react-router-scroll/index.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.useScrollRestoration = exports.ScrollContext = void 0;
+var _scrollHandler = __webpack_require__(/*! ./scroll-handler */ "./node_modules/gatsby-react-router-scroll/scroll-handler.js");
+exports.ScrollContext = _scrollHandler.ScrollHandler;
+var _useScrollRestoration = __webpack_require__(/*! ./use-scroll-restoration */ "./node_modules/gatsby-react-router-scroll/use-scroll-restoration.js");
+exports.useScrollRestoration = _useScrollRestoration.useScrollRestoration;
+
+/***/ }),
+
+/***/ "./node_modules/gatsby-react-router-scroll/scroll-handler.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/gatsby-react-router-scroll/scroll-handler.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+exports.__esModule = true;
+exports.ScrollHandler = exports.ScrollContext = void 0;
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "./node_modules/@babel/runtime/helpers/assertThisInitialized.js"));
+var _inheritsLoose2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inheritsLoose */ "./node_modules/@babel/runtime/helpers/inheritsLoose.js"));
+var React = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
+var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
+var _sessionStorage = __webpack_require__(/*! ./session-storage */ "./node_modules/gatsby-react-router-scroll/session-storage.js");
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var ScrollContext = /*#__PURE__*/React.createContext(new _sessionStorage.SessionStorage());
+exports.ScrollContext = ScrollContext;
+ScrollContext.displayName = "GatsbyScrollContext";
+var ScrollHandler = /*#__PURE__*/function (_React$Component) {
+  (0, _inheritsLoose2.default)(ScrollHandler, _React$Component);
+  function ScrollHandler() {
+    var _this;
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+    _this = _React$Component.call.apply(_React$Component, [this].concat(args)) || this;
+    _this._stateStorage = new _sessionStorage.SessionStorage();
+    _this._isTicking = false;
+    _this._latestKnownScrollY = 0;
+    _this.scrollListener = function () {
+      _this._latestKnownScrollY = window.scrollY;
+      if (!_this._isTicking) {
+        _this._isTicking = true;
+        requestAnimationFrame(_this._saveScroll.bind((0, _assertThisInitialized2.default)(_this)));
+      }
+    };
+    _this.windowScroll = function (position, prevProps) {
+      if (_this.shouldUpdateScroll(prevProps, _this.props)) {
+        window.scrollTo(0, position);
+      }
+    };
+    _this.scrollToHash = function (hash, prevProps) {
+      var node = document.getElementById(hash.substring(1));
+      if (node && _this.shouldUpdateScroll(prevProps, _this.props)) {
+        node.scrollIntoView();
+      }
+    };
+    _this.shouldUpdateScroll = function (prevRouterProps, routerProps) {
+      var shouldUpdateScroll = _this.props.shouldUpdateScroll;
+      if (!shouldUpdateScroll) {
+        return true;
+      }
+
+      // Hack to allow accessing this._stateStorage.
+      return shouldUpdateScroll.call((0, _assertThisInitialized2.default)(_this), prevRouterProps, routerProps);
+    };
+    return _this;
+  }
+  var _proto = ScrollHandler.prototype;
+  _proto._saveScroll = function _saveScroll() {
+    var key = this.props.location.key || null;
+    if (key) {
+      this._stateStorage.save(this.props.location, key, this._latestKnownScrollY);
+    }
+    this._isTicking = false;
+  };
+  _proto.componentDidMount = function componentDidMount() {
+    window.addEventListener("scroll", this.scrollListener);
+    var scrollPosition;
+    var _this$props$location = this.props.location,
+      key = _this$props$location.key,
+      hash = _this$props$location.hash;
+    if (key) {
+      scrollPosition = this._stateStorage.read(this.props.location, key);
+    }
+
+    /** If a hash is present in the browser url as the component mounts (i.e. the user is navigating
+     * from an external website) then scroll to the hash instead of any previously stored scroll
+     * position. */
+    if (hash) {
+      this.scrollToHash(decodeURI(hash), undefined);
+    } else if (scrollPosition) {
+      this.windowScroll(scrollPosition, undefined);
+    }
+  };
+  _proto.componentWillUnmount = function componentWillUnmount() {
+    window.removeEventListener("scroll", this.scrollListener);
+  };
+  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+    var _this$props$location2 = this.props.location,
+      hash = _this$props$location2.hash,
+      key = _this$props$location2.key;
+    var scrollPosition;
+    if (key) {
+      scrollPosition = this._stateStorage.read(this.props.location, key);
+    }
+
+    /**  There are two pieces of state: the browser url and
+     * history state which keeps track of scroll position
+     * Native behaviour prescribes that we ought to restore scroll position
+     * when a user navigates back in their browser (this is the `POP` action)
+     * Currently, reach router has a bug that prevents this at https://github.com/reach/router/issues/228
+     * So we _always_ stick to the url as a source of truth — if the url
+     * contains a hash, we scroll to it
+     */
+
+    if (hash) {
+      this.scrollToHash(decodeURI(hash), prevProps);
+    } else {
+      this.windowScroll(scrollPosition, prevProps);
+    }
+  };
+  _proto.render = function render() {
+    return /*#__PURE__*/React.createElement(ScrollContext.Provider, {
+      value: this._stateStorage
+    }, this.props.children);
+  };
+  return ScrollHandler;
+}(React.Component);
+exports.ScrollHandler = ScrollHandler;
+ScrollHandler.propTypes = {
+  shouldUpdateScroll: _propTypes.default.func,
+  children: _propTypes.default.element.isRequired,
+  location: _propTypes.default.object.isRequired
+};
+
+/***/ }),
+
+/***/ "./node_modules/gatsby-react-router-scroll/session-storage.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/gatsby-react-router-scroll/session-storage.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.SessionStorage = void 0;
+var STATE_KEY_PREFIX = "@@scroll|";
+var GATSBY_ROUTER_SCROLL_STATE = "___GATSBY_REACT_ROUTER_SCROLL";
+var SessionStorage = /*#__PURE__*/function () {
+  function SessionStorage() {}
+  var _proto = SessionStorage.prototype;
+  _proto.read = function read(location, key) {
+    var stateKey = this.getStateKey(location, key);
+    try {
+      var value = window.sessionStorage.getItem(stateKey);
+      return value ? JSON.parse(value) : 0;
+    } catch (e) {
+      if (true) {
+        console.warn("[gatsby-react-router-scroll] Unable to access sessionStorage; sessionStorage is not available.");
+      }
+      if (window && window[GATSBY_ROUTER_SCROLL_STATE] && window[GATSBY_ROUTER_SCROLL_STATE][stateKey]) {
+        return window[GATSBY_ROUTER_SCROLL_STATE][stateKey];
+      }
+      return 0;
+    }
+  };
+  _proto.save = function save(location, key, value) {
+    var stateKey = this.getStateKey(location, key);
+    var storedValue = JSON.stringify(value);
+    try {
+      window.sessionStorage.setItem(stateKey, storedValue);
+    } catch (e) {
+      if (window && window[GATSBY_ROUTER_SCROLL_STATE]) {
+        window[GATSBY_ROUTER_SCROLL_STATE][stateKey] = JSON.parse(storedValue);
+      } else {
+        window[GATSBY_ROUTER_SCROLL_STATE] = {};
+        window[GATSBY_ROUTER_SCROLL_STATE][stateKey] = JSON.parse(storedValue);
+      }
+      if (true) {
+        console.warn("[gatsby-react-router-scroll] Unable to save state in sessionStorage; sessionStorage is not available.");
+      }
+    }
+  };
+  _proto.getStateKey = function getStateKey(location, key) {
+    var stateKeyBase = "" + STATE_KEY_PREFIX + location.pathname;
+    return key === null || typeof key === "undefined" ? stateKeyBase : stateKeyBase + "|" + key;
+  };
+  return SessionStorage;
+}();
+exports.SessionStorage = SessionStorage;
+
+/***/ }),
+
+/***/ "./node_modules/gatsby-react-router-scroll/use-scroll-restoration.js":
+/*!***************************************************************************!*\
+  !*** ./node_modules/gatsby-react-router-scroll/use-scroll-restoration.js ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.useScrollRestoration = useScrollRestoration;
+var _scrollHandler = __webpack_require__(/*! ./scroll-handler */ "./node_modules/gatsby-react-router-scroll/scroll-handler.js");
+var _react = __webpack_require__(/*! react */ "react");
+var _reachRouter = __webpack_require__(/*! @gatsbyjs/reach-router */ "./node_modules/@gatsbyjs/reach-router/dist/index.modern.mjs");
+function useScrollRestoration(identifier) {
+  var location = (0, _reachRouter.useLocation)();
+  var state = (0, _react.useContext)(_scrollHandler.ScrollContext);
+  var ref = (0, _react.useRef)(null);
+  (0, _react.useLayoutEffect)(function () {
+    if (ref.current) {
+      var position = state.read(location, identifier);
+      ref.current.scrollTo(0, position || 0);
+    }
+  }, [location.key]);
+  return {
+    ref: ref,
+    onScroll: function onScroll() {
+      if (ref.current) {
+        state.save(location, identifier, ref.current.scrollTop);
+      }
+    }
+  };
+}
+
+/***/ }),
+
+/***/ "./node_modules/gatsby-script/dist/index.modern.mjs":
+/*!**********************************************************!*\
+  !*** ./node_modules/gatsby-script/dist/index.modern.mjs ***!
+  \**********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Script: () => (/* binding */ f),
+/* harmony export */   ScriptStrategy: () => (/* binding */ c),
+/* harmony export */   collectedScriptsByPage: () => (/* binding */ l),
+/* harmony export */   scriptCache: () => (/* binding */ u),
+/* harmony export */   scriptCallbackCache: () => (/* binding */ d)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var _gatsbyjs_reach_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @gatsbyjs/reach-router */ "./node_modules/@gatsbyjs/reach-router/dist/index.modern.mjs");
+"use client"
+;function o(){return o=Object.assign?Object.assign.bind():function(t){for(var e=1;e<arguments.length;e++){var n=arguments[e];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(t[r]=n[r])}return t},o.apply(this,arguments)}const a=new Map,l={get:t=>a.get(t)||[],set(t,e){const n=a.get(t)||[];n.push(e),a.set(t,n)},delete(t){a.delete(t)}},s="undefined"!=typeof self&&self.requestIdleCallback&&self.requestIdleCallback.bind(window)||function(t){const e=Date.now();return setTimeout(function(){t({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-e))}})},1)};var c;!function(t){t.postHydrate="post-hydrate",t.idle="idle",t.offMainThread="off-main-thread"}(c||(c={}));const i=new Set(["src","strategy","dangerouslySetInnerHTML","children","onLoad","onError"]),u=new Set,d=new Map;function f(e){/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement(_gatsbyjs_reach_router__WEBPACK_IMPORTED_MODULE_1__.Location,null,()=>/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(p,e))}function p(n){const{src:a,strategy:i=c.postHydrate}=n||{},{pathname:u}=(0,_gatsbyjs_reach_router__WEBPACK_IMPORTED_MODULE_1__.useLocation)();if((0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(()=>{let t;switch(i){case c.postHydrate:t=y(n);break;case c.idle:s(()=>{t=y(n)});break;case c.offMainThread:{const t=b(n);l.set(u,t)}}return()=>{const{script:e,loadCallback:n,errorCallback:r}=t||{};n&&(null==e||e.removeEventListener("load",n)),r&&(null==e||e.removeEventListener("error",r)),null==e||e.remove()}},[]),i===c.offMainThread){const e=m(n),r=b(n);return"undefined"==typeof window&&l.set(u,r),/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("script",e?o({type:"text/partytown","data-strategy":i,crossOrigin:"anonymous"},r,{dangerouslySetInnerHTML:{__html:m(n)}}):o({type:"text/partytown",src:h(a),"data-strategy":i,crossOrigin:"anonymous"},r))}return null}function y(t){const{id:e,src:n,strategy:r=c.postHydrate,onLoad:a,onError:l}=t||{},s=e||n,i=["load","error"],f={load:a,error:l};if(s){for(const t of i)if(null!=f&&f[t]){var p;const e=d.get(s)||{},{callbacks:n=[]}=(null==e?void 0:e[t])||{};var y,h;n.push(null==f?void 0:f[t]),null!=e&&null!=(p=e[t])&&p.event?null==f||null==(y=f[t])||y.call(f,null==e||null==(h=e[t])?void 0:h.event):d.set(s,o({},e,{[t]:{callbacks:n}}))}if(u.has(s))return null}const v=m(t),k=b(t),w=document.createElement("script");e&&(w.id=e),w.dataset.strategy=r;for(const[t,e]of Object.entries(k))w.setAttribute(t,e);v&&(w.textContent=v),n&&(w.src=n);const C={};if(s){for(const t of i){const e=e=>g(e,s,t);w.addEventListener(t,e),C[`${t}Callback`]=e}u.add(s)}return document.body.appendChild(w),{script:w,loadCallback:C.loadCallback,errorCallback:C.errorCallback}}function m(t){const{dangerouslySetInnerHTML:e,children:n=""}=t||{},{__html:r=""}=e||{};return r||n}function b(t){const e={};for(const[n,r]of Object.entries(t))i.has(n)||(e[n]=r);return e}function h(t){if(t)return`/__third-party-proxy?url=${encodeURIComponent(t)}`}function g(t,e,n){const r=d.get(e)||{};for(const e of(null==r||null==(o=r[n])?void 0:o.callbacks)||[]){var o;e(t)}d.set(e,{[n]:{event:t}})}
+//# sourceMappingURL=index.modern.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/gatsby/dist/internal-plugins/bundle-optimisations/polyfills/object-assign.js":
+/*!***************************************************************************************************!*\
+  !*** ./node_modules/gatsby/dist/internal-plugins/bundle-optimisations/polyfills/object-assign.js ***!
+  \***************************************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+module.exports = Object.assign;
+//# sourceMappingURL=object-assign.js.map
+
+/***/ }),
+
+/***/ "./node_modules/gatsby/dist/internal-plugins/partytown/gatsby-ssr.js":
+/*!***************************************************************************!*\
+  !*** ./node_modules/gatsby/dist/internal-plugins/partytown/gatsby-ssr.js ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+exports.__esModule = true;
+exports.onRenderBody = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _gatsbyScript = __webpack_require__(/*! gatsby-script */ "./node_modules/gatsby-script/dist/index.modern.mjs");
+var _getForwards = __webpack_require__(/*! ./utils/get-forwards */ "./node_modules/gatsby/dist/internal-plugins/partytown/utils/get-forwards.js");
+var _integration = __webpack_require__(/*! @builder.io/partytown/integration */ "./node_modules/@builder.io/partytown/integration/index.cjs");
+const onRenderBody = ({
+  pathname,
+  setHeadComponents
+}) => {
+  const collectedScripts = _gatsbyScript.collectedScriptsByPage.get(pathname);
+  if (!(collectedScripts !== null && collectedScripts !== void 0 && collectedScripts.length)) {
+    return;
+  }
+  const forwards = (0, _getForwards.getForwards)(collectedScripts);
+
+  // Adapted from https://github.com/BuilderIO/partytown/blob/main/src/react/snippet.tsx to only include SSR logic
+  setHeadComponents([/*#__PURE__*/_react.default.createElement("script", {
+    key: "partytown",
+    "data-partytown": "",
+    suppressHydrationWarning: true,
+    dangerouslySetInnerHTML: {
+      __html: `
+          ${(0, _integration.partytownSnippet)({
+        forward: forwards
+      })}
+          document.currentScript.dataset.partytown=""
+        `
+    }
+  })]);
+
+  // Clear scripts after we've used them to avoid leaky behavior
+  _gatsbyScript.collectedScriptsByPage.delete(pathname);
+};
+exports.onRenderBody = onRenderBody;
+//# sourceMappingURL=gatsby-ssr.js.map
+
+/***/ }),
+
+/***/ "./node_modules/gatsby/dist/internal-plugins/partytown/utils/get-forwards.js":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/gatsby/dist/internal-plugins/partytown/utils/get-forwards.js ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.getForwards = getForwards;
+function getForwards(collectedScripts) {
+  return collectedScripts === null || collectedScripts === void 0 ? void 0 : collectedScripts.flatMap(script => (script === null || script === void 0 ? void 0 : script.forward) || []);
+}
+//# sourceMappingURL=get-forwards.js.map
 
 /***/ }),
 
@@ -7799,7 +8090,7 @@ var hasArrayBuffer = typeof ArrayBuffer === 'function' && !!ArrayBuffer.isView;
 // Note: We **don't** need `envHasBigInt64Array` in fde es6/index.js
 
 function equal(a, b) {
-  // START: fast-deep-equal es6/index.js 3.1.1
+  // START: fast-deep-equal es6/index.js 3.1.3
   if (a === b) return true;
 
   if (a && b && typeof a == 'object' && typeof b == 'object') {
@@ -7864,8 +8155,13 @@ function equal(a, b) {
     }
 
     if (a.constructor === RegExp) return a.source === b.source && a.flags === b.flags;
-    if (a.valueOf !== Object.prototype.valueOf) return a.valueOf() === b.valueOf();
-    if (a.toString !== Object.prototype.toString) return a.toString() === b.toString();
+    // START: Modifications:
+    // Apply guards for `Object.create(null)` handling. See:
+    // - https://github.com/FormidableLabs/react-fast-compare/issues/64
+    // - https://github.com/epoberezkin/fast-deep-equal/issues/49
+    if (a.valueOf !== Object.prototype.valueOf && typeof a.valueOf === 'function' && typeof b.valueOf === 'function') return a.valueOf() === b.valueOf();
+    if (a.toString !== Object.prototype.toString && typeof a.toString === 'function' && typeof b.toString === 'function') return a.toString() === b.toString();
+    // END: Modifications
 
     keys = Object.keys(a);
     length = keys.length;
@@ -7936,7 +8232,7 @@ module.exports = function isEqual(a, b) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Helmet": () => (/* binding */ HelmetExport),
+/* harmony export */   Helmet: () => (/* binding */ HelmetExport),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
@@ -9076,655 +9372,6 @@ if (false) {} else {
 
 /***/ }),
 
-/***/ "./node_modules/react-server-dom-webpack/cjs/react-server-dom-webpack.development.js":
-/*!*******************************************************************************************!*\
-  !*** ./node_modules/react-server-dom-webpack/cjs/react-server-dom-webpack.development.js ***!
-  \*******************************************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-/**
- * @license React
- * react-server-dom-webpack.development.js
- *
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-if (true) {
-  (function() {
-'use strict';
-
-var React = __webpack_require__(/*! react */ "react");
-
-function createStringDecoder() {
-  return new TextDecoder();
-}
-var decoderOptions = {
-  stream: true
-};
-function readPartialStringChunk(decoder, buffer) {
-  return decoder.decode(buffer, decoderOptions);
-}
-function readFinalStringChunk(decoder, buffer) {
-  return decoder.decode(buffer);
-}
-
-function parseModel(response, json) {
-  return JSON.parse(json, response._fromJSON);
-}
-
-// eslint-disable-next-line no-unused-vars
-function resolveModuleReference(bundlerConfig, moduleData) {
-  if (bundlerConfig) {
-    return bundlerConfig[moduleData.id][moduleData.name];
-  }
-
-  return moduleData;
-} // The chunk cache contains all the chunks we've preloaded so far.
-// If they're still pending they're a thenable. This map also exists
-// in Webpack but unfortunately it's not exposed so we have to
-// replicate it in user space. null means that it has already loaded.
-
-var chunkCache = new Map(); // Start preloading the modules since we might need them soon.
-// This function doesn't suspend.
-
-function preloadModule(moduleData) {
-  var chunks = moduleData.chunks;
-
-  for (var i = 0; i < chunks.length; i++) {
-    var chunkId = chunks[i];
-    var entry = chunkCache.get(chunkId);
-
-    if (entry === undefined) {
-      var thenable = __webpack_require__.e(chunkId);
-
-      var resolve = chunkCache.set.bind(chunkCache, chunkId, null);
-      var reject = chunkCache.set.bind(chunkCache, chunkId);
-      thenable.then(resolve, reject);
-      chunkCache.set(chunkId, thenable);
-    }
-  }
-} // Actually require the module or suspend if it's not yet ready.
-// Increase priority if necessary.
-
-function requireModule(moduleData) {
-  var chunks = moduleData.chunks;
-
-  for (var i = 0; i < chunks.length; i++) {
-    var chunkId = chunks[i];
-    var entry = chunkCache.get(chunkId);
-
-    if (entry !== null) {
-      // We assume that preloadModule has been called before.
-      // So we don't expect to see entry being undefined here, that's an error.
-      // Let's throw either an error or the Promise.
-      throw entry;
-    }
-  }
-
-  var moduleExports = __webpack_require__(moduleData.id);
-
-  if (moduleData.name === '*') {
-    // This is a placeholder value that represents that the caller imported this
-    // as a CommonJS module as is.
-    return moduleExports;
-  }
-
-  if (moduleData.name === '') {
-    // This is a placeholder value that represents that the caller accessed the
-    // default property of this if it was an ESM interop module.
-    return moduleExports.__esModule ? moduleExports.default : moduleExports;
-  }
-
-  return moduleExports[moduleData.name];
-}
-
-// ATTENTION
-// When adding new symbols to this file,
-// Please consider also adding to 'react-devtools-shared/src/backend/ReactSymbols'
-// The Symbol used to tag the ReactElement-like types.
-var REACT_ELEMENT_TYPE = Symbol.for('react.element');
-var REACT_LAZY_TYPE = Symbol.for('react.lazy');
-var REACT_SERVER_CONTEXT_DEFAULT_VALUE_NOT_LOADED = Symbol.for('react.default_value');
-
-var ReactSharedInternals = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
-
-var ContextRegistry = ReactSharedInternals.ContextRegistry;
-function getOrCreateServerContext(globalName) {
-  if (!ContextRegistry[globalName]) {
-    ContextRegistry[globalName] = React.createServerContext(globalName, REACT_SERVER_CONTEXT_DEFAULT_VALUE_NOT_LOADED);
-  }
-
-  return ContextRegistry[globalName];
-}
-
-var PENDING = 0;
-var RESOLVED_MODEL = 1;
-var RESOLVED_MODULE = 2;
-var INITIALIZED = 3;
-var ERRORED = 4;
-
-function Chunk(status, value, response) {
-  this._status = status;
-  this._value = value;
-  this._response = response;
-}
-
-Chunk.prototype.then = function (resolve) {
-  var chunk = this;
-
-  if (chunk._status === PENDING) {
-    if (chunk._value === null) {
-      chunk._value = [];
-    }
-
-    chunk._value.push(resolve);
-  } else {
-    resolve();
-  }
-};
-
-function readChunk(chunk) {
-  switch (chunk._status) {
-    case INITIALIZED:
-      return chunk._value;
-
-    case RESOLVED_MODEL:
-      return initializeModelChunk(chunk);
-
-    case RESOLVED_MODULE:
-      return initializeModuleChunk(chunk);
-
-    case PENDING:
-      // eslint-disable-next-line no-throw-literal
-      throw chunk;
-
-    default:
-      throw chunk._value;
-  }
-}
-
-function readRoot() {
-  var response = this;
-  var chunk = getChunk(response, 0);
-  return readChunk(chunk);
-}
-
-function createPendingChunk(response) {
-  return new Chunk(PENDING, null, response);
-}
-
-function createErrorChunk(response, error) {
-  return new Chunk(ERRORED, error, response);
-}
-
-function createInitializedChunk(response, value) {
-  return new Chunk(INITIALIZED, value, response);
-}
-
-function wakeChunk(listeners) {
-  if (listeners !== null) {
-    for (var i = 0; i < listeners.length; i++) {
-      var listener = listeners[i];
-      listener();
-    }
-  }
-}
-
-function triggerErrorOnChunk(chunk, error) {
-  if (chunk._status !== PENDING) {
-    // We already resolved. We didn't expect to see this.
-    return;
-  }
-
-  var listeners = chunk._value;
-  var erroredChunk = chunk;
-  erroredChunk._status = ERRORED;
-  erroredChunk._value = error;
-  wakeChunk(listeners);
-}
-
-function createResolvedModelChunk(response, value) {
-  return new Chunk(RESOLVED_MODEL, value, response);
-}
-
-function createResolvedModuleChunk(response, value) {
-  return new Chunk(RESOLVED_MODULE, value, response);
-}
-
-function resolveModelChunk(chunk, value) {
-  if (chunk._status !== PENDING) {
-    // We already resolved. We didn't expect to see this.
-    return;
-  }
-
-  var listeners = chunk._value;
-  var resolvedChunk = chunk;
-  resolvedChunk._status = RESOLVED_MODEL;
-  resolvedChunk._value = value;
-  wakeChunk(listeners);
-}
-
-function resolveModuleChunk(chunk, value) {
-  if (chunk._status !== PENDING) {
-    // We already resolved. We didn't expect to see this.
-    return;
-  }
-
-  var listeners = chunk._value;
-  var resolvedChunk = chunk;
-  resolvedChunk._status = RESOLVED_MODULE;
-  resolvedChunk._value = value;
-  wakeChunk(listeners);
-}
-
-function initializeModelChunk(chunk) {
-  var value = parseModel(chunk._response, chunk._value);
-  var initializedChunk = chunk;
-  initializedChunk._status = INITIALIZED;
-  initializedChunk._value = value;
-  return value;
-}
-
-function initializeModuleChunk(chunk) {
-  var value = requireModule(chunk._value);
-  var initializedChunk = chunk;
-  initializedChunk._status = INITIALIZED;
-  initializedChunk._value = value;
-  return value;
-} // Report that any missing chunks in the model is now going to throw this
-// error upon read. Also notify any pending promises.
-
-
-function reportGlobalError(response, error) {
-  response._chunks.forEach(function (chunk) {
-    // If this chunk was already resolved or errored, it won't
-    // trigger an error but if it wasn't then we need to
-    // because we won't be getting any new data to resolve it.
-    triggerErrorOnChunk(chunk, error);
-  });
-}
-
-function createElement(type, key, props) {
-  var element = {
-    // This tag allows us to uniquely identify this as a React Element
-    $$typeof: REACT_ELEMENT_TYPE,
-    // Built-in properties that belong on the element
-    type: type,
-    key: key,
-    ref: null,
-    props: props,
-    // Record the component responsible for creating this element.
-    _owner: null
-  };
-
-  {
-    // We don't really need to add any of these but keeping them for good measure.
-    // Unfortunately, _store is enumerable in jest matchers so for equality to
-    // work, I need to keep it or make _store non-enumerable in the other file.
-    element._store = {};
-    Object.defineProperty(element._store, 'validated', {
-      configurable: false,
-      enumerable: false,
-      writable: true,
-      value: true // This element has already been validated on the server.
-
-    });
-    Object.defineProperty(element, '_self', {
-      configurable: false,
-      enumerable: false,
-      writable: false,
-      value: null
-    });
-    Object.defineProperty(element, '_source', {
-      configurable: false,
-      enumerable: false,
-      writable: false,
-      value: null
-    });
-  }
-
-  return element;
-}
-
-function createLazyChunkWrapper(chunk) {
-  var lazyType = {
-    $$typeof: REACT_LAZY_TYPE,
-    _payload: chunk,
-    _init: readChunk
-  };
-  return lazyType;
-}
-
-function getChunk(response, id) {
-  var chunks = response._chunks;
-  var chunk = chunks.get(id);
-
-  if (!chunk) {
-    chunk = createPendingChunk(response);
-    chunks.set(id, chunk);
-  }
-
-  return chunk;
-}
-
-function parseModelString(response, parentObject, value) {
-  switch (value[0]) {
-    case '$':
-      {
-        if (value === '$') {
-          return REACT_ELEMENT_TYPE;
-        } else if (value[1] === '$' || value[1] === '@') {
-          // This was an escaped string value.
-          return value.substring(1);
-        } else {
-          var id = parseInt(value.substring(1), 16);
-          var chunk = getChunk(response, id);
-          return readChunk(chunk);
-        }
-      }
-
-    case '@':
-      {
-        var _id = parseInt(value.substring(1), 16);
-
-        var _chunk = getChunk(response, _id); // We create a React.lazy wrapper around any lazy values.
-        // When passed into React, we'll know how to suspend on this.
-
-
-        return createLazyChunkWrapper(_chunk);
-      }
-  }
-
-  return value;
-}
-function parseModelTuple(response, value) {
-  var tuple = value;
-
-  if (tuple[0] === REACT_ELEMENT_TYPE) {
-    // TODO: Consider having React just directly accept these arrays as elements.
-    // Or even change the ReactElement type to be an array.
-    return createElement(tuple[1], tuple[2], tuple[3]);
-  }
-
-  return value;
-}
-function createResponse(bundlerConfig) {
-  var chunks = new Map();
-  var response = {
-    _bundlerConfig: bundlerConfig,
-    _chunks: chunks,
-    readRoot: readRoot
-  };
-  return response;
-}
-function resolveModel(response, id, model) {
-  var chunks = response._chunks;
-  var chunk = chunks.get(id);
-
-  if (!chunk) {
-    chunks.set(id, createResolvedModelChunk(response, model));
-  } else {
-    resolveModelChunk(chunk, model);
-  }
-}
-function resolveProvider(response, id, contextName) {
-  var chunks = response._chunks;
-  chunks.set(id, createInitializedChunk(response, getOrCreateServerContext(contextName).Provider));
-}
-function resolveModule(response, id, model) {
-  var chunks = response._chunks;
-  var chunk = chunks.get(id);
-  var moduleMetaData = parseModel(response, model);
-  var moduleReference = resolveModuleReference(response._bundlerConfig, moduleMetaData); // TODO: Add an option to encode modules that are lazy loaded.
-  // For now we preload all modules as early as possible since it's likely
-  // that we'll need them.
-
-  preloadModule(moduleReference);
-
-  if (!chunk) {
-    chunks.set(id, createResolvedModuleChunk(response, moduleReference));
-  } else {
-    resolveModuleChunk(chunk, moduleReference);
-  }
-}
-function resolveSymbol(response, id, name) {
-  var chunks = response._chunks; // We assume that we'll always emit the symbol before anything references it
-  // to save a few bytes.
-
-  chunks.set(id, createInitializedChunk(response, Symbol.for(name)));
-}
-function resolveError(response, id, message, stack) {
-  // eslint-disable-next-line react-internal/prod-error-codes
-  var error = new Error(message);
-  error.stack = stack;
-  var chunks = response._chunks;
-  var chunk = chunks.get(id);
-
-  if (!chunk) {
-    chunks.set(id, createErrorChunk(response, error));
-  } else {
-    triggerErrorOnChunk(chunk, error);
-  }
-}
-function close(response) {
-  // In case there are any remaining unresolved chunks, they won't
-  // be resolved now. So we need to issue an error to those.
-  // Ideally we should be able to early bail out if we kept a
-  // ref count of pending chunks.
-  reportGlobalError(response, new Error('Connection closed.'));
-}
-
-function processFullRow(response, row) {
-  if (row === '') {
-    return;
-  }
-
-  var tag = row[0]; // When tags that are not text are added, check them here before
-  // parsing the row as text.
-  // switch (tag) {
-  // }
-
-  var colon = row.indexOf(':', 1);
-  var id = parseInt(row.substring(1, colon), 16);
-  var text = row.substring(colon + 1);
-
-  switch (tag) {
-    case 'J':
-      {
-        resolveModel(response, id, text);
-        return;
-      }
-
-    case 'M':
-      {
-        resolveModule(response, id, text);
-        return;
-      }
-
-    case 'P':
-      {
-        resolveProvider(response, id, text);
-        return;
-      }
-
-    case 'S':
-      {
-        resolveSymbol(response, id, JSON.parse(text));
-        return;
-      }
-
-    case 'E':
-      {
-        var errorInfo = JSON.parse(text);
-        resolveError(response, id, errorInfo.message, errorInfo.stack);
-        return;
-      }
-
-    default:
-      {
-        throw new Error("Error parsing the data. It's probably an error code or network corruption.");
-      }
-  }
-}
-
-function processStringChunk(response, chunk, offset) {
-  var linebreak = chunk.indexOf('\n', offset);
-
-  while (linebreak > -1) {
-    var fullrow = response._partialRow + chunk.substring(offset, linebreak);
-    processFullRow(response, fullrow);
-    response._partialRow = '';
-    offset = linebreak + 1;
-    linebreak = chunk.indexOf('\n', offset);
-  }
-
-  response._partialRow += chunk.substring(offset);
-}
-function processBinaryChunk(response, chunk) {
-
-  var stringDecoder = response._stringDecoder;
-  var linebreak = chunk.indexOf(10); // newline
-
-  while (linebreak > -1) {
-    var fullrow = response._partialRow + readFinalStringChunk(stringDecoder, chunk.subarray(0, linebreak));
-    processFullRow(response, fullrow);
-    response._partialRow = '';
-    chunk = chunk.subarray(linebreak + 1);
-    linebreak = chunk.indexOf(10); // newline
-  }
-
-  response._partialRow += readPartialStringChunk(stringDecoder, chunk);
-}
-
-function createFromJSONCallback(response) {
-  return function (key, value) {
-    if (typeof value === 'string') {
-      // We can't use .bind here because we need the "this" value.
-      return parseModelString(response, this, value);
-    }
-
-    if (typeof value === 'object' && value !== null) {
-      return parseModelTuple(response, value);
-    }
-
-    return value;
-  };
-}
-
-function createResponse$1(bundlerConfig) {
-  // NOTE: CHECK THE COMPILER OUTPUT EACH TIME YOU CHANGE THIS.
-  // It should be inlined to one object literal but minor changes can break it.
-  var stringDecoder =  createStringDecoder() ;
-  var response = createResponse(bundlerConfig);
-  response._partialRow = '';
-
-  {
-    response._stringDecoder = stringDecoder;
-  } // Don't inline this call because it causes closure to outline the call above.
-
-
-  response._fromJSON = createFromJSONCallback(response);
-  return response;
-}
-
-function startReadingFromStream(response, stream) {
-  var reader = stream.getReader();
-
-  function progress(_ref) {
-    var done = _ref.done,
-        value = _ref.value;
-
-    if (done) {
-      close(response);
-      return;
-    }
-
-    var buffer = value;
-    processBinaryChunk(response, buffer);
-    return reader.read().then(progress, error);
-  }
-
-  function error(e) {
-    reportGlobalError(response, e);
-  }
-
-  reader.read().then(progress, error);
-}
-
-function createFromReadableStream(stream, options) {
-  var response = createResponse$1(options && options.moduleMap ? options.moduleMap : null);
-  startReadingFromStream(response, stream);
-  return response;
-}
-
-function createFromFetch(promiseForResponse, options) {
-  var response = createResponse$1(options && options.moduleMap ? options.moduleMap : null);
-  promiseForResponse.then(function (r) {
-    startReadingFromStream(response, r.body);
-  }, function (e) {
-    reportGlobalError(response, e);
-  });
-  return response;
-}
-
-function createFromXHR(request, options) {
-  var response = createResponse$1(options && options.moduleMap ? options.moduleMap : null);
-  var processedLength = 0;
-
-  function progress(e) {
-    var chunk = request.responseText;
-    processStringChunk(response, chunk, processedLength);
-    processedLength = chunk.length;
-  }
-
-  function load(e) {
-    progress();
-    close(response);
-  }
-
-  function error(e) {
-    reportGlobalError(response, new TypeError('Network error'));
-  }
-
-  request.addEventListener('progress', progress);
-  request.addEventListener('load', load);
-  request.addEventListener('error', error);
-  request.addEventListener('abort', error);
-  request.addEventListener('timeout', error);
-  return response;
-}
-
-exports.createFromFetch = createFromFetch;
-exports.createFromReadableStream = createFromReadableStream;
-exports.createFromXHR = createFromXHR;
-  })();
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/react-server-dom-webpack/index.js":
-/*!********************************************************!*\
-  !*** ./node_modules/react-server-dom-webpack/index.js ***!
-  \********************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-
-if (false) {} else {
-  module.exports = __webpack_require__(/*! ./cjs/react-server-dom-webpack.development.js */ "./node_modules/react-server-dom-webpack/cjs/react-server-dom-webpack.development.js");
-}
-
-
-/***/ }),
-
 /***/ "./node_modules/react-side-effect/lib/index.js":
 /*!*****************************************************!*\
   !*** ./node_modules/react-side-effect/lib/index.js ***!
@@ -9798,7 +9445,9 @@ function withSideEffect(reducePropsToState, handleStateChangeOnClient, mapStateO
       }
     }
 
-    var SideEffect = /*#__PURE__*/function (_PureComponent) {
+    var SideEffect =
+    /*#__PURE__*/
+    function (_PureComponent) {
       _inheritsLoose(SideEffect, _PureComponent);
 
       function SideEffect() {
@@ -9840,7 +9489,7 @@ function withSideEffect(reducePropsToState, handleStateChangeOnClient, mapStateO
       };
 
       _proto.render = function render() {
-        return /*#__PURE__*/React__default.createElement(WrappedComponent, this.props);
+        return React__default.createElement(WrappedComponent, this.props);
       };
 
       return SideEffect;
@@ -9856,28 +9505,6 @@ function withSideEffect(reducePropsToState, handleStateChangeOnClient, mapStateO
 
 module.exports = withSideEffect;
 
-
-/***/ }),
-
-/***/ "react-dom/server":
-/*!***********************************************************************************************************!*\
-  !*** external "/Users/administrator/Fadhil/Project/alfatayah.github.io/node_modules/react-dom/server.js" ***!
-  \***********************************************************************************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("/Users/administrator/Fadhil/Project/alfatayah.github.io/node_modules/react-dom/server.js");
-
-/***/ }),
-
-/***/ "react":
-/*!******************************************************************************************************!*\
-  !*** external "/Users/administrator/Fadhil/Project/alfatayah.github.io/node_modules/react/index.js" ***!
-  \******************************************************************************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("/Users/administrator/Fadhil/Project/alfatayah.github.io/node_modules/react/index.js");
 
 /***/ }),
 
@@ -9903,280 +9530,25 @@ module.exports = require("path");
 
 /***/ }),
 
-/***/ "./node_modules/@babel/runtime/helpers/assertThisInitialized.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/assertThisInitialized.js ***!
-  \**********************************************************************/
-/***/ ((module) => {
-
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-  return self;
-}
-module.exports = _assertThisInitialized, module.exports.__esModule = true, module.exports["default"] = module.exports;
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/inheritsLoose.js":
-/*!**************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/inheritsLoose.js ***!
-  \**************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var setPrototypeOf = __webpack_require__(/*! ./setPrototypeOf.js */ "./node_modules/@babel/runtime/helpers/setPrototypeOf.js");
-function _inheritsLoose(subClass, superClass) {
-  subClass.prototype = Object.create(superClass.prototype);
-  subClass.prototype.constructor = subClass;
-  setPrototypeOf(subClass, superClass);
-}
-module.exports = _inheritsLoose, module.exports.__esModule = true, module.exports["default"] = module.exports;
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/interopRequireDefault.js ***!
-  \**********************************************************************/
-/***/ ((module) => {
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    "default": obj
-  };
-}
-module.exports = _interopRequireDefault, module.exports.__esModule = true, module.exports["default"] = module.exports;
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/setPrototypeOf.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/setPrototypeOf.js ***!
-  \***************************************************************/
-/***/ ((module) => {
-
-function _setPrototypeOf(o, p) {
-  module.exports = _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
-    o.__proto__ = p;
-    return o;
-  }, module.exports.__esModule = true, module.exports["default"] = module.exports;
-  return _setPrototypeOf(o, p);
-}
-module.exports = _setPrototypeOf, module.exports.__esModule = true, module.exports["default"] = module.exports;
-
-/***/ }),
-
-/***/ "./node_modules/@builder.io/partytown/integration/index.cjs":
-/*!******************************************************************!*\
-  !*** ./node_modules/@builder.io/partytown/integration/index.cjs ***!
-  \******************************************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-
-const PartytownSnippet = "/* Partytown 0.7.5 - MIT builder.io */\n!function(t,e,n,i,r,o,a,d,s,c,p,l){function u(){l||(l=1,\"/\"==(a=(o.lib||\"/~partytown/\")+(o.debug?\"debug/\":\"\"))[0]&&(s=e.querySelectorAll('script[type=\"text/partytown\"]'),i!=t?i.dispatchEvent(new CustomEvent(\"pt1\",{detail:t})):(d=setTimeout(f,1e4),e.addEventListener(\"pt0\",w),r?h(1):n.serviceWorker?n.serviceWorker.register(a+(o.swPath||\"partytown-sw.js\"),{scope:a}).then((function(t){t.active?h():t.installing&&t.installing.addEventListener(\"statechange\",(function(t){\"activated\"==t.target.state&&h()}))}),console.error):f())))}function h(t){c=e.createElement(t?\"script\":\"iframe\"),t||(c.setAttribute(\"style\",\"display:block;width:0;height:0;border:0;visibility:hidden\"),c.setAttribute(\"aria-hidden\",!0)),c.src=a+\"partytown-\"+(t?\"atomics.js?v=0.7.5\":\"sandbox-sw.html?\"+Date.now()),e.body.appendChild(c)}function f(n,r){for(w(),i==t&&(o.forward||[]).map((function(e){delete t[e.split(\".\")[0]]})),n=0;n<s.length;n++)(r=e.createElement(\"script\")).innerHTML=s[n].innerHTML,e.head.appendChild(r);c&&c.parentNode.removeChild(c)}function w(){clearTimeout(d)}o=t.partytown||{},i==t&&(o.forward||[]).map((function(e){p=t,e.split(\".\").map((function(e,n,i){p=p[i[n]]=n+1<i.length?\"push\"==i[n+1]?[]:p[i[n]]||{}:function(){(t._ptf=t._ptf||[]).push(i,arguments)}}))})),\"complete\"==e.readyState?u():(t.addEventListener(\"DOMContentLoaded\",u),t.addEventListener(\"load\",u))}(window,document,navigator,top,window.crossOriginIsolated);";
-
-const createSnippet = (config, snippetCode) => {
-    const { forward = [], ...filteredConfig } = config || {};
-    const configStr = JSON.stringify(filteredConfig, (k, v) => {
-        if (typeof v === 'function') {
-            v = String(v);
-            if (v.startsWith(k + '(')) {
-                v = 'function ' + v;
-            }
-        }
-        return v;
-    });
-    return [
-        `!(function(w,p,f,c){`,
-        Object.keys(filteredConfig).length > 0
-            ? `c=w[p]=Object.assign(w[p]||{},${configStr});`
-            : `c=w[p]=w[p]||{};`,
-        `c[f]=(c[f]||[])`,
-        forward.length > 0 ? `.concat(${JSON.stringify(forward)})` : ``,
-        `})(window,'partytown','forward');`,
-        snippetCode,
-    ].join('');
-};
-
-/**
- * The `type` attribute for Partytown scripts, which does two things:
- *
- * 1. Prevents the `<script>` from executing on the main thread.
- * 2. Is used as a selector so the Partytown library can find all scripts to execute in a web worker.
- *
- * @public
- */
-const SCRIPT_TYPE = `text/partytown`;
-
-/**
- * Function that returns the Partytown snippet as a string, which can be
- * used as the innerHTML of the inlined Partytown script in the head.
- *
- * @public
- */
-const partytownSnippet = (config) => createSnippet(config, PartytownSnippet);
-
-exports.SCRIPT_TYPE = SCRIPT_TYPE;
-exports.partytownSnippet = partytownSnippet;
-
-
-/***/ }),
-
-/***/ "./node_modules/@gatsbyjs/reach-router/dist/index.modern.mjs":
-/*!*******************************************************************!*\
-  !*** ./node_modules/@gatsbyjs/reach-router/dist/index.modern.mjs ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-var react__WEBPACK_IMPORTED_MODULE_0___namespace_cache;
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "BaseContext": () => (/* binding */ m),
-/* harmony export */   "Link": () => (/* binding */ A),
-/* harmony export */   "Location": () => (/* binding */ G),
-/* harmony export */   "LocationContext": () => (/* binding */ d),
-/* harmony export */   "LocationProvider": () => (/* binding */ z),
-/* harmony export */   "Match": () => (/* binding */ Q),
-/* harmony export */   "Redirect": () => (/* binding */ R),
-/* harmony export */   "Router": () => (/* binding */ oe),
-/* harmony export */   "ServerLocation": () => (/* binding */ J),
-/* harmony export */   "createHistory": () => (/* binding */ i),
-/* harmony export */   "createMemorySource": () => (/* binding */ c),
-/* harmony export */   "globalHistory": () => (/* binding */ l),
-/* harmony export */   "insertParams": () => (/* binding */ P),
-/* harmony export */   "isRedirect": () => (/* binding */ g),
-/* harmony export */   "match": () => (/* binding */ x),
-/* harmony export */   "navigate": () => (/* binding */ p),
-/* harmony export */   "pick": () => (/* binding */ w),
-/* harmony export */   "redirectTo": () => (/* binding */ v),
-/* harmony export */   "resolve": () => (/* binding */ k),
-/* harmony export */   "shallowCompare": () => (/* binding */ D),
-/* harmony export */   "startsWith": () => (/* binding */ C),
-/* harmony export */   "useBaseContext": () => (/* binding */ f),
-/* harmony export */   "useLocation": () => (/* binding */ se),
-/* harmony export */   "useLocationContext": () => (/* binding */ y),
-/* harmony export */   "useMatch": () => (/* binding */ ue),
-/* harmony export */   "useNavigate": () => (/* binding */ ie),
-/* harmony export */   "useParams": () => (/* binding */ ce),
-/* harmony export */   "validateRedirect": () => (/* binding */ T)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var invariant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! invariant */ "./node_modules/invariant/invariant.js");
-function o(){return o=Object.assign?Object.assign.bind():function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(e[n]=r[n])}return e},o.apply(this,arguments)}function a(e,t){if(null==e)return{};var r,n,o={},a=Object.keys(e);for(n=0;n<a.length;n++)t.indexOf(r=a[n])>=0||(o[r]=e[r]);return o}const s=e=>{const{search:t,hash:r,href:n,origin:o,protocol:a,host:s,hostname:i,port:c}=e.location;let{pathname:l}=e.location;return!l&&n&&u&&(l=new URL(n).pathname),{pathname:encodeURI(decodeURI(l)),search:t,hash:r,href:n,origin:o,protocol:a,host:s,hostname:i,port:c,state:e.history.state,key:e.history.state&&e.history.state.key||"initial"}},i=(e,t)=>{let r=[],n=s(e),a=!1,i=()=>{};return{get location(){return n},get transitioning(){return a},_onTransitionComplete(){a=!1,i()},listen(t){r.push(t);const o=()=>{n=s(e),t({location:n,action:"POP"})};return e.addEventListener("popstate",o),()=>{e.removeEventListener("popstate",o),r=r.filter(e=>e!==t)}},navigate(t,{state:c,replace:u=!1}={}){if("number"==typeof t)e.history.go(t);else{c=o({},c,{key:Date.now()+""});try{a||u?e.history.replaceState(c,null,t):e.history.pushState(c,null,t)}catch(r){e.location[u?"replace":"assign"](t)}}n=s(e),a=!0;const l=new Promise(e=>i=e);return r.forEach(e=>e({location:n,action:"PUSH"})),l}}},c=(e="/")=>{const t=e.indexOf("?"),r={pathname:t>-1?e.substr(0,t):e,search:t>-1?e.substr(t):""};let n=0;const o=[r],a=[null];return{get location(){return o[n]},addEventListener(e,t){},removeEventListener(e,t){},history:{get entries(){return o},get index(){return n},get state(){return a[n]},pushState(e,t,r){const[s,i=""]=r.split("?");n++,o.push({pathname:s,search:i.length?`?${i}`:i}),a.push(e)},replaceState(e,t,r){const[s,i=""]=r.split("?");o[n]={pathname:s,search:i},a[n]=e},go(e){const t=n+e;t<0||t>a.length-1||(n=t)}}}},u=!("undefined"==typeof window||!window.document||!window.document.createElement),l=i(u?window:c()),{navigate:p}=l;function h(e,r){return react__WEBPACK_IMPORTED_MODULE_0__.createServerContext?((e,r=null)=>(globalThis.__SERVER_CONTEXT||(globalThis.__SERVER_CONTEXT={}),globalThis.__SERVER_CONTEXT[e]||(globalThis.__SERVER_CONTEXT[e]=react__WEBPACK_IMPORTED_MODULE_0__.createServerContext(e,r)),globalThis.__SERVER_CONTEXT[e]))(e,r):react__WEBPACK_IMPORTED_MODULE_0__.createContext(r)}const m=h("Base",{baseuri:"/",basepath:"/"}),d=h("Location"),f=()=>react__WEBPACK_IMPORTED_MODULE_0__.useContext(m),y=()=>react__WEBPACK_IMPORTED_MODULE_0__.useContext(d);function E(e){this.uri=e}const g=e=>e instanceof E,v=e=>{throw new E(e)};function b(t){const{to:r,replace:n=!0,state:o,noThrow:a,baseuri:s}=t;react__WEBPACK_IMPORTED_MODULE_0__.useEffect(()=>{Promise.resolve().then(()=>{const e=k(r,s);p(P(e,t),{replace:n,state:o})})},[]);const i=k(r,s);return a||v(P(i,t)),null}const R=t=>{const r=y(),{baseuri:n}=f();/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement(b,o({},r,{baseuri:n},t))};R.propTypes={from:prop_types__WEBPACK_IMPORTED_MODULE_2__.string,to:prop_types__WEBPACK_IMPORTED_MODULE_2__.string.isRequired};const C=(e,t)=>e.substr(0,t.length)===t,w=(e,t)=>{let r,o;const[a]=t.split("?"),s=N(a),i=""===s[0],c=j(e);for(let e=0,a=c.length;e<a;e++){let a=!1;const u=c[e].route;if(u.default){o={route:u,params:{},uri:t};continue}const l=N(u.path),p={},h=Math.max(s.length,l.length);let m=0;for(;m<h;m++){const e=l[m],t=s[m];if($(e)){p[e.slice(1)||"*"]=s.slice(m).map(decodeURIComponent).join("/");break}if(void 0===t){a=!0;break}const r=O.exec(e);if(r&&!i){const e=-1===U.indexOf(r[1]);invariant__WEBPACK_IMPORTED_MODULE_1__(e,`<Router> dynamic segment "${r[1]}" is a reserved name. Please use a different name in path "${u.path}".`);const o=decodeURIComponent(t);p[r[1]]=o}else if(e!==t){a=!0;break}}if(!a){r={route:u,params:p,uri:"/"+s.slice(0,m).join("/")};break}}return r||o||null},x=(e,t)=>w([{path:e}],t),k=(e,t)=>{if(C(e,"/"))return e;const[r,n]=e.split("?"),[o]=t.split("?"),a=N(r),s=N(o);if(""===a[0])return L(o,n);if(!C(a[0],".")){const e=s.concat(a).join("/");return L(("/"===o?"":"/")+e,n)}const i=s.concat(a),c=[];for(let e=0,t=i.length;e<t;e++){const t=i[e];".."===t?c.pop():"."!==t&&c.push(t)}return L("/"+c.join("/"),n)},P=(e,t)=>{const[r,n=""]=e.split("?");let o="/"+N(r).map(e=>{const r=O.exec(e);return r?t[r[1]]:e}).join("/");const{location:{search:a=""}={}}=t,s=a.split("?")[1]||"";return o=L(o,n,s),o},T=(e,t)=>{const r=e=>_(e);return N(e).filter(r).sort().join("/")===N(t).filter(r).sort().join("/")},O=/^:(.+)/,_=e=>O.test(e),$=e=>e&&"*"===e[0],S=(e,t)=>({route:e,score:e.default?0:N(e.path).reduce((e,t)=>(e+=4,(e=>""===e)(t)?e+=1:_(t)?e+=2:$(t)?e-=5:e+=3,e),0),index:t}),j=e=>e.map(S).sort((e,t)=>e.score<t.score?1:e.score>t.score?-1:e.index-t.index),N=e=>e.replace(/(^\/+|\/+$)/g,"").split("/"),L=(e,...t)=>e+((t=t.filter(e=>e&&e.length>0))&&t.length>0?`?${t.join("&")}`:""),U=["uri","path"],D=(e,t)=>{const r=Object.keys(e);return r.length===Object.keys(t).length&&r.every(r=>t.hasOwnProperty(r)&&e[r]===t[r])},M=e=>e.replace(/(^\/+|\/+$)/g,""),I=t=>r=>{if(!r)return null;if(r.type===react__WEBPACK_IMPORTED_MODULE_0__.Fragment&&r.props.children)return react__WEBPACK_IMPORTED_MODULE_0__.Children.map(r.props.children,I(t));if(invariant__WEBPACK_IMPORTED_MODULE_1__(r.props.path||r.props.default||r.type===R,`<Router>: Children of <Router> must have a \`path\` or \`default\` prop, or be a \`<Redirect>\`. None found on element type \`${r.type}\``),invariant__WEBPACK_IMPORTED_MODULE_1__(!!(r.type!==R||r.props.from&&r.props.to),`<Redirect from="${r.props.from}" to="${r.props.to}"/> requires both "from" and "to" props when inside a <Router>.`),invariant__WEBPACK_IMPORTED_MODULE_1__(!(r.type===R&&!T(r.props.from,r.props.to)),`<Redirect from="${r.props.from} to="${r.props.to}"/> has mismatched dynamic segments, ensure both paths have the exact same dynamic segments.`),r.props.default)return{value:r,default:!0};const o=r.type===R?r.props.from:r.props.path,a="/"===o?t:`${M(t)}/${M(o)}`;return{value:r,default:r.props.default,path:r.props.children?`${M(a)}/*`:a}},V=["innerRef"],q=["to","state","replace","getProps"],X=["key"];let{forwardRef:B}=/*#__PURE__*/ (react__WEBPACK_IMPORTED_MODULE_0___namespace_cache || (react__WEBPACK_IMPORTED_MODULE_0___namespace_cache = __webpack_require__.t(react__WEBPACK_IMPORTED_MODULE_0__, 2)));void 0===B&&(B=e=>e);const K=()=>{},A=B((t,r)=>{let{innerRef:n}=t,s=a(t,V);const{baseuri:i}=f(),{location:c}=y(),{to:u,state:l,replace:h,getProps:m=K}=s,d=a(s,q),E=k(u,i),g=encodeURI(E),v=c.pathname===g,b=C(c.pathname,g);/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement("a",o({ref:r||n,"aria-current":v?"page":void 0},d,m({isCurrent:v,isPartiallyCurrent:b,href:E,location:c}),{href:E,onClick:e=>{if(d.onClick&&d.onClick(e),(e=>!e.defaultPrevented&&0===e.button&&!(e.metaKey||e.altKey||e.ctrlKey||e.shiftKey))(e)){e.preventDefault();let t=h;if("boolean"!=typeof h&&v){const e=a(o({},c.state),X);t=D(o({},l),e)}p(E,{state:l,replace:t})}}}))});A.displayName="Link",A.propTypes={to:prop_types__WEBPACK_IMPORTED_MODULE_2__.string.isRequired};class F extends react__WEBPACK_IMPORTED_MODULE_0__.Component{constructor(...e){super(...e),this.displayName="ReactUseErrorBoundary"}componentDidCatch(...e){this.setState({}),this.props.onError(...e)}render(){return this.props.children}}const W=react__WEBPACK_IMPORTED_MODULE_0__.createContext({componentDidCatch:{current:void 0},error:void 0,setError:()=>!1});function H({children:t}){const[r,n]=react__WEBPACK_IMPORTED_MODULE_0__.useState(),o=react__WEBPACK_IMPORTED_MODULE_0__.useRef(),a=react__WEBPACK_IMPORTED_MODULE_0__.useMemo(()=>({componentDidCatch:o,error:r,setError:n}),[r]);/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement(W.Provider,{value:a},/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(F,{error:r,onError:(e,t)=>{n(e),null==o.current||o.current(e,t)}},t))}H.displayName="ReactUseErrorBoundaryContext";const z=function(t){var r,n;function a(r){/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement(H,null,/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(t,o({key:"WrappedComponent"},r)))}return a.displayName=`WithErrorBoundary(${null!=(r=null!=(n=t.displayName)?n:t.name)?r:"Component"})`,a}(({history:t=l,children:r})=>{const{location:n}=t,[o,a]=react__WEBPACK_IMPORTED_MODULE_0__.useState({location:n}),[s]=function(t){const r=react__WEBPACK_IMPORTED_MODULE_0__.useContext(W);r.componentDidCatch.current=void 0;const n=react__WEBPACK_IMPORTED_MODULE_0__.useCallback(()=>{r.setError(void 0)},[]);return[r.error,n]}();if(react__WEBPACK_IMPORTED_MODULE_0__.useEffect(()=>{t._onTransitionComplete()},[o.location]),react__WEBPACK_IMPORTED_MODULE_0__.useEffect(()=>{let e=!1;const r=t.listen(({location:t})=>{Promise.resolve().then(()=>{requestAnimationFrame(()=>{e||a({location:t})})})});return()=>{e=!0,r()}},[]),s){if(!g(s))throw s;p(s.uri,{replace:!0})}/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement(d.Provider,{value:o},"function"==typeof r?r(o):r||null)}),G=({children:t})=>{const r=y();return r?t(r):/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(z,null,t)},J=({url:t,children:r})=>{const n=t.indexOf("?");let o,a="";return n>-1?(o=t.substring(0,n),a=t.substring(n)):o=t,/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(d.Provider,{value:{location:{pathname:o,search:a,hash:""}}},r)},Q=({path:e,children:t})=>{const{baseuri:r}=f(),{location:n}=y(),a=k(e,r),s=x(a,n.pathname);return t({location:n,match:s?o({},s.params,{uri:s.uri,path:e}):null})},Y=["uri","location","component"],Z=["children","style","component","uri","location"],ee=t=>{let{uri:r,location:n,component:s}=t,i=a(t,Y);/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement(re,o({},i,{component:s,uri:r,location:n}))};let te=0;const re=t=>{let{children:r,style:n,component:s="div",uri:i,location:c}=t,u=a(t,Z);const l=react__WEBPACK_IMPORTED_MODULE_0__.useRef(),p=react__WEBPACK_IMPORTED_MODULE_0__.useRef(!0),h=react__WEBPACK_IMPORTED_MODULE_0__.useRef(i),m=react__WEBPACK_IMPORTED_MODULE_0__.useRef(c.pathname),d=react__WEBPACK_IMPORTED_MODULE_0__.useRef(!1);react__WEBPACK_IMPORTED_MODULE_0__.useEffect(()=>(te++,f(),()=>{te--,0===te&&(p.current=!0)}),[]),react__WEBPACK_IMPORTED_MODULE_0__.useEffect(()=>{let e=!1,t=!1;i!==h.current&&(h.current=i,e=!0),c.pathname!==m.current&&(m.current=c.pathname,t=!0),d.current=e||t&&c.pathname===i,d.current&&f()},[i,c]);const f=react__WEBPACK_IMPORTED_MODULE_0__.useCallback(()=>{var e; true&&(p.current?p.current=!1:(e=l.current,d.current&&e&&e.focus()))},[]);/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement(s,o({style:o({outline:"none"},n),tabIndex:"-1",ref:l},u),r)},ne=["location","primary","children","basepath","baseuri","component"],oe=t=>{const r=f(),n=y();/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement(ae,o({},r,n,t))};function ae(t){const{location:r,primary:n=!0,children:s,basepath:i,component:c="div"}=t,u=a(t,ne),l=react__WEBPACK_IMPORTED_MODULE_0__.Children.toArray(s).reduce((e,t)=>{const r=I(i)(t);return e.concat(r)},[]),{pathname:p}=r,h=w(l,p);if(h){const{params:t,uri:a,route:s,route:{value:l}}=h,p=s.default?i:s.path.replace(/\*$/,""),d=o({},t,{uri:a,location:r}),f=react__WEBPACK_IMPORTED_MODULE_0__.cloneElement(l,d,l.props.children?/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(oe,{location:r,primary:n},l.props.children):void 0),y=n?ee:c,E=n?o({uri:a,location:r,component:c},u):u;/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement(m.Provider,{value:{baseuri:a,basepath:p}},/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(y,E,f))}return null}const se=()=>{const e=y();if(!e)throw new Error("useLocation hook was used but a LocationContext.Provider was not found in the parent tree. Make sure this is used in a component that is a child of Router");return e.location},ie=()=>{throw new Error("useNavigate is removed. Use import { navigate } from 'gatsby' instead")},ce=()=>{const e=f();if(!e)throw new Error("useParams hook was used but a LocationContext.Provider was not found in the parent tree. Make sure this is used in a component that is a child of Router");const t=se(),r=x(e.basepath,t.pathname);return r?r.params:null},ue=e=>{if(!e)throw new Error("useMatch(path: string) requires an argument of a string to match against");const t=f();if(!t)throw new Error("useMatch hook was used but a LocationContext.Provider was not found in the parent tree. Make sure this is used in a component that is a child of Router");const r=se(),n=k(e,t.baseuri),a=x(n,r.pathname);return a?o({},a.params,{uri:a.uri,path:e}):null};
-//# sourceMappingURL=index.modern.mjs.map
-
-
-/***/ }),
-
-/***/ "./node_modules/gatsby-core-utils/dist/create-content-digest.mjs":
-/*!***********************************************************************!*\
-  !*** ./node_modules/gatsby-core-utils/dist/create-content-digest.mjs ***!
-  \***********************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "createContentDigest": () => (/* binding */ createContentDigest)
-/* harmony export */ });
-/* harmony import */ var crypto__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! crypto */ "crypto");
-/* harmony import */ var node_object_hash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! node-object-hash */ "./node_modules/node-object-hash/dist/hasher.js");
-
-
-const hasher = node_object_hash__WEBPACK_IMPORTED_MODULE_1__({
-  coerce: false,
-  alg: `md5`,
-  enc: `hex`,
-  sort: {
-    map: true,
-    object: true,
-    array: false,
-    set: false
-  }
-});
-const hashPrimitive = input => crypto__WEBPACK_IMPORTED_MODULE_0__.createHash(`md5`).update(input).digest(`hex`);
-
-/**
- * Hashes an input using md5 hash of hexadecimal digest.
- *
- * @param input The input to encrypt
- * @return The content digest
- */
-
-const createContentDigest = input => {
-  if (typeof input === `object` && !Buffer.isBuffer(input)) {
-    return hasher.hash(input);
-  }
-  return hashPrimitive(input);
-};
-
-/***/ }),
-
-/***/ "./node_modules/gatsby-link/dist/index.modern.mjs":
-/*!********************************************************!*\
-  !*** ./node_modules/gatsby-link/dist/index.modern.mjs ***!
-  \********************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Link": () => (/* binding */ P),
-/* harmony export */   "navigate": () => (/* binding */ E),
-/* harmony export */   "parsePath": () => (/* binding */ a),
-/* harmony export */   "withAssetPrefix": () => (/* binding */ y),
-/* harmony export */   "withPrefix": () => (/* binding */ h)
-/* harmony export */ });
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var _gatsbyjs_reach_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @gatsbyjs/reach-router */ "./node_modules/@gatsbyjs/reach-router/dist/index.modern.mjs");
-/* harmony import */ var gatsby_page_utils_apply_trailing_slash_option__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! gatsby-page-utils/apply-trailing-slash-option */ "./node_modules/gatsby-page-utils/dist/apply-trailing-slash-option.js");
-"use client"
-;function i(){return i=Object.assign?Object.assign.bind():function(t){for(var e=1;e<arguments.length;e++){var n=arguments[e];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(t[r]=n[r])}return t},i.apply(this,arguments)}function a(t){let e=t||"/",n="",r="";const o=e.indexOf("#");-1!==o&&(r=e.slice(o),e=e.slice(0,o));const s=e.indexOf("?");return-1!==s&&(n=e.slice(s),e=e.slice(0,s)),{pathname:e,search:"?"===n?"":n,hash:"#"===r?"":r}}const c=/^[a-zA-Z][a-zA-Z\d+\-.]*?:/,l=t=>{if("string"==typeof t)return!(t=>c.test(t))(t)},p=()=> true? true?"":0:0;function h(t,e=(()=> true? true?"":0:0)()){var n;if(!l(t))return t;if(t.startsWith("./")||t.startsWith("../"))return t;const r=null!=(n=null!=e?e:p())?n:"/";return`${null!=r&&r.endsWith("/")?r.slice(0,-1):r}${t.startsWith("/")?t:`/${t}`}`}const f=t=>null==t?void 0:t.startsWith("/"),u=()=> true?"always":0;function _(t,e){const{pathname:n,search:r,hash:o}=a(t);return`${(0,gatsby_page_utils_apply_trailing_slash_option__WEBPACK_IMPORTED_MODULE_2__.applyTrailingSlashOption)(n,e)}${r}${o}`}const d=(t,e)=>"number"==typeof t?t:l(t)?f(t)?function(t){const e=h(t),n=u();return"always"===n||"never"===n?_(e,n):e}(t):function(t,e){if(f(t))return t;const r=u(),o=(0,_gatsbyjs_reach_router__WEBPACK_IMPORTED_MODULE_1__.resolve)(t,e);return"always"===r||"never"===r?_(o,r):o}(t,e):t,m=["to","getProps","onClick","onMouseEnter","activeClassName","activeStyle","innerRef","partiallyActive","state","replace","_location"];function y(t){return h(t,p())}const v={activeClassName:prop_types__WEBPACK_IMPORTED_MODULE_3__.string,activeStyle:prop_types__WEBPACK_IMPORTED_MODULE_3__.object,partiallyActive:prop_types__WEBPACK_IMPORTED_MODULE_3__.bool};function b(t){/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement(_gatsbyjs_reach_router__WEBPACK_IMPORTED_MODULE_1__.Location,null,({location:n})=>/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(w,i({},t,{_location:n})))}class w extends react__WEBPACK_IMPORTED_MODULE_0__.Component{constructor(t){super(t),this.defaultGetProps=({isPartiallyCurrent:t,isCurrent:e})=>(this.props.partiallyActive?t:e)?{className:[this.props.className,this.props.activeClassName].filter(Boolean).join(" "),style:i({},this.props.style,this.props.activeStyle)}:null;let e=!1;"undefined"!=typeof window&&window.IntersectionObserver&&(e=!0),this.state={IOSupported:e},this.abortPrefetch=null,this.handleRef=this.handleRef.bind(this)}_prefetch(){let t=window.location.pathname+window.location.search;this.props._location&&this.props._location.pathname&&(t=this.props._location.pathname+this.props._location.search);const e=a(d(this.props.to,t)),n=e.pathname+e.search;if(t!==n)return ___loader.enqueue(n)}componentWillUnmount(){if(!this.io)return;const{instance:t,el:e}=this.io;this.abortPrefetch&&this.abortPrefetch.abort(),t.unobserve(e),t.disconnect()}handleRef(t){this.props.innerRef&&Object.prototype.hasOwnProperty.call(this.props.innerRef,"current")?this.props.innerRef.current=t:this.props.innerRef&&this.props.innerRef(t),this.state.IOSupported&&t&&(this.io=((t,e)=>{const n=new window.IntersectionObserver(n=>{n.forEach(n=>{t===n.target&&e(n.isIntersecting||n.intersectionRatio>0)})});return n.observe(t),{instance:n,el:t}})(t,t=>{t?this.abortPrefetch=this._prefetch():this.abortPrefetch&&this.abortPrefetch.abort()}))}render(){const t=this.props,{to:n,getProps:r=this.defaultGetProps,onClick:s,onMouseEnter:c,state:p,replace:h,_location:f}=t,u=function(t,e){if(null==t)return{};var n,r,o={},s=Object.keys(t);for(r=0;r<s.length;r++)e.indexOf(n=s[r])>=0||(o[n]=t[n]);return o}(t,m); false||l(n)||console.warn(`External link ${n} was detected in a Link component. Use the Link component only for internal links. See: https://gatsby.dev/internal-links`);const _=d(n,f.pathname);return l(_)?/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_gatsbyjs_reach_router__WEBPACK_IMPORTED_MODULE_1__.Link,i({to:_,state:p,getProps:r,innerRef:this.handleRef,onMouseEnter:t=>{c&&c(t);const e=a(_);___loader.hovering(e.pathname+e.search)},onClick:t=>{if(s&&s(t),!(0!==t.button||this.props.target||t.defaultPrevented||t.metaKey||t.altKey||t.ctrlKey||t.shiftKey)){t.preventDefault();let e=h;const n=encodeURI(_)===f.pathname;"boolean"!=typeof h&&n&&(e=!0),window.___navigate(_,{state:p,replace:e})}return!0}},u)):/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a",i({href:_},u))}}w.propTypes=i({},v,{onClick:prop_types__WEBPACK_IMPORTED_MODULE_3__.func,to:prop_types__WEBPACK_IMPORTED_MODULE_3__.string.isRequired,replace:prop_types__WEBPACK_IMPORTED_MODULE_3__.bool,state:prop_types__WEBPACK_IMPORTED_MODULE_3__.object});const P=react__WEBPACK_IMPORTED_MODULE_0__.forwardRef((t,n)=>/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(b,i({innerRef:n},t))),E=(t,e)=>{window.___navigate(d(t,window.location.pathname),e)};
-//# sourceMappingURL=index.modern.mjs.map
-
-
-/***/ }),
-
-/***/ "./node_modules/gatsby-script/dist/index.modern.mjs":
-/*!**********************************************************!*\
-  !*** ./node_modules/gatsby-script/dist/index.modern.mjs ***!
-  \**********************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Script": () => (/* binding */ f),
-/* harmony export */   "ScriptStrategy": () => (/* binding */ c),
-/* harmony export */   "collectedScriptsByPage": () => (/* binding */ l),
-/* harmony export */   "scriptCache": () => (/* binding */ u),
-/* harmony export */   "scriptCallbackCache": () => (/* binding */ d)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var _gatsbyjs_reach_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @gatsbyjs/reach-router */ "./node_modules/@gatsbyjs/reach-router/dist/index.modern.mjs");
-"use client"
-;function o(){return o=Object.assign?Object.assign.bind():function(t){for(var e=1;e<arguments.length;e++){var n=arguments[e];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(t[r]=n[r])}return t},o.apply(this,arguments)}const a=new Map,l={get:t=>a.get(t)||[],set(t,e){const n=a.get(t)||[];n.push(e),a.set(t,n)},delete(t){a.delete(t)}},s="undefined"!=typeof self&&self.requestIdleCallback&&self.requestIdleCallback.bind(window)||function(t){const e=Date.now();return setTimeout(function(){t({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-e))}})},1)};var c;!function(t){t.postHydrate="post-hydrate",t.idle="idle",t.offMainThread="off-main-thread"}(c||(c={}));const i=new Set(["src","strategy","dangerouslySetInnerHTML","children","onLoad","onError"]),u=new Set,d=new Map;function f(e){/*#__PURE__*/return react__WEBPACK_IMPORTED_MODULE_0__.createElement(_gatsbyjs_reach_router__WEBPACK_IMPORTED_MODULE_1__.Location,null,()=>/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(p,e))}function p(n){const{src:a,strategy:i=c.postHydrate}=n||{},{pathname:u}=(0,_gatsbyjs_reach_router__WEBPACK_IMPORTED_MODULE_1__.useLocation)();if((0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(()=>{let t;switch(i){case c.postHydrate:t=y(n);break;case c.idle:s(()=>{t=y(n)});break;case c.offMainThread:{const t=b(n);l.set(u,t)}}return()=>{const{script:e,loadCallback:n,errorCallback:r}=t||{};n&&(null==e||e.removeEventListener("load",n)),r&&(null==e||e.removeEventListener("error",r)),null==e||e.remove()}},[]),i===c.offMainThread){const e=m(n),r=b(n);return"undefined"==typeof window&&l.set(u,r),/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("script",e?o({type:"text/partytown","data-strategy":i,crossOrigin:"anonymous"},r,{dangerouslySetInnerHTML:{__html:m(n)}}):o({type:"text/partytown",src:h(a),"data-strategy":i,crossOrigin:"anonymous"},r))}return null}function y(t){const{id:e,src:n,strategy:r=c.postHydrate,onLoad:a,onError:l}=t||{},s=e||n,i=["load","error"],f={load:a,error:l};if(s){for(const t of i)if(null!=f&&f[t]){var p;const e=d.get(s)||{},{callbacks:n=[]}=(null==e?void 0:e[t])||{};var y,h;n.push(null==f?void 0:f[t]),null!=e&&null!=(p=e[t])&&p.event?null==f||null==(y=f[t])||y.call(f,null==e||null==(h=e[t])?void 0:h.event):d.set(s,o({},e,{[t]:{callbacks:n}}))}if(u.has(s))return null}const v=m(t),k=b(t),w=document.createElement("script");e&&(w.id=e),w.dataset.strategy=r;for(const[t,e]of Object.entries(k))w.setAttribute(t,e);v&&(w.textContent=v),n&&(w.src=n);const C={};if(s){for(const t of i){const e=e=>g(e,s,t);w.addEventListener(t,e),C[`${t}Callback`]=e}u.add(s)}return document.body.appendChild(w),{script:w,loadCallback:C.loadCallback,errorCallback:C.errorCallback}}function m(t){const{dangerouslySetInnerHTML:e,children:n=""}=t||{},{__html:r=""}=e||{};return r||n}function b(t){const e={};for(const[n,r]of Object.entries(t))i.has(n)||(e[n]=r);return e}function h(t){if(t)return`/__third-party-proxy?url=${encodeURIComponent(t)}`}function g(t,e,n){const r=d.get(e)||{};for(const e of(null==r||null==(o=r[n])?void 0:o.callbacks)||[]){var o;e(t)}d.set(e,{[n]:{event:t}})}
-//# sourceMappingURL=index.modern.mjs.map
-
-
-/***/ }),
-
-/***/ "./.cache/redirects.json":
-/*!*******************************!*\
-  !*** ./.cache/redirects.json ***!
-  \*******************************/
+/***/ "react":
+/*!*******************************************************************************!*\
+  !*** external "D:\\Repo\\alfatayah.github.io\\node_modules\\react\\index.js" ***!
+  \*******************************************************************************/
 /***/ ((module) => {
 
 "use strict";
-module.exports = [];
+module.exports = require("D:\\Repo\\alfatayah.github.io\\node_modules\\react\\index.js");
+
+/***/ }),
+
+/***/ "react-dom/server":
+/*!************************************************************************************!*\
+  !*** external "D:\\Repo\\alfatayah.github.io\\node_modules\\react-dom\\server.js" ***!
+  \************************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("D:\\Repo\\alfatayah.github.io\\node_modules\\react-dom\\server.js");
 
 /***/ })
 
@@ -10358,7 +9730,7 @@ module.exports = [];
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
 (() => {
 "use strict";
 /*!****************************************!*\
@@ -10367,7 +9739,7 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   "getPageChunk": () => (/* binding */ getPageChunk)
+/* harmony export */   getPageChunk: () => (/* binding */ getPageChunk)
 /* harmony export */ });
 /* harmony import */ var lodash_merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/merge */ "./node_modules/lodash/merge.js");
 /* harmony import */ var lodash_merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_merge__WEBPACK_IMPORTED_MODULE_0__);
@@ -10496,7 +9868,7 @@ function getPageChunk({
 })();
 
 var __webpack_export_target__ = exports;
-for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
+for(var __webpack_i__ in __webpack_exports__) __webpack_export_target__[__webpack_i__] = __webpack_exports__[__webpack_i__];
 if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ })()
 ;
