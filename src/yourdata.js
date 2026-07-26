@@ -44,7 +44,7 @@ export default {
   ],
   //   Header Paragraph
   headerParagraph:
-    "Im working with newest front-end framework like React Native and React. Love to lern React and Express. Cant wait to be a touch with you!",
+    "Let's connect!",
 
   //Contact Email
   contactEmail: "fadhil.alfatayah@gmail.com",
@@ -122,11 +122,11 @@ export default {
 
   // About Secton --------------
   aboutParaOne:
-    "Hi guys, nice to meet you! , Im software developer interested in Mobile Apps. Im currently work at PT Bussan Auto Finance. Im focused to build product with react native. Happy to lern the new thing about tech",
+    "Passionate about building quality products and exploring new technologies. Constantly expanding my skillset into AI automation and intelligent workflows",
   aboutParaTwo:
-    "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+    "I specialize in mobile and web development using modern frameworks such as React Native, React, Express, and Laravel to deliver seamless and scalable user experiences.",
   aboutParaThree:
-    "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    "Constantly expanding my skillset into AI automation and intelligent workflows, I enjoy solving real-world problems through clean code and modern tech stacks.",
   aboutImage:
     "https://images.unsplash.com/photo-1519713958759-6254243c4a53?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
 
