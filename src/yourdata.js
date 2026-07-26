@@ -1,10 +1,12 @@
 // Skills Icons
-import htmlIcon from "./images/html.svg"
-import cssIcon from "./images/css.svg"
 import reactIcon from "./images/react.svg"
-import jsIcon from "./images/javascript.svg"
 import express from "./images/express.svg"
 import mongodb from "./images/mongodb.svg"
+import n8nIcon from "./images/n8n.svg"
+import openclawIcon from "./images/openclaw.svg"
+import aiIcon from "./images/ai-automation.svg"
+import pgvectorIcon from "./images/pgvector.svg"
+import laravelIcon from "./images/laravel.svg"
 
 // Social Icon
 import githubIcon from "./images/github.svg"
@@ -137,33 +139,43 @@ export default {
   skills: [
     {
       id: 1,
-      img: htmlIcon,
-      para: "HTML",
-    },
-    {
-      id: 2,
-      img: cssIcon,
-      para: "CSS",
-    },
-    {
-      id: 3,
-      img: jsIcon,
-      para: "Javascript",
-    },
-    {
-      id: 4,
       img: reactIcon,
       para: "React Native",
     },
     {
-      id: 5,
+      id: 2,
+      img: laravelIcon,
+      para: "Laravel",
+    },
+    {
+      id: 3,
       img: express,
       para: "Express Js",
     },
     {
-      id: 6,
+      id: 4,
       img: mongodb,
       para: "Mongo DB",
+    },
+    {
+      id: 5,
+      img: pgvectorIcon,
+      para: "pgvector",
+    },
+    {
+      id: 6,
+      img: aiIcon,
+      para: "AI Agents & LLMs",
+    },
+    {
+      id: 7,
+      img: openclawIcon,
+      para: "OpenClaw",
+    },
+    {
+      id: 8,
+      img: n8nIcon,
+      para: "n8n Automation",
     },
   ],
 

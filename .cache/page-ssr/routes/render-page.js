@@ -5756,7 +5756,7 @@ exports.getElementsByTagType = getElementsByTagType;
 /***/ 6877:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-exports.components={"component---src-pages-404-js":()=>__webpack_require__.e(/* import() | component---src-pages-404-js */ 125).then(__webpack_require__.bind(__webpack_require__, 3331)),"component---src-pages-index-js":()=>Promise.all(/* import() | component---src-pages-index-js */[__webpack_require__.e(602), __webpack_require__.e(293)]).then(__webpack_require__.bind(__webpack_require__, 2125))};
+exports.components={"component---src-pages-404-js":()=>__webpack_require__.e(/* import() | component---src-pages-404-js */ 125).then(__webpack_require__.bind(__webpack_require__, 3331)),"component---src-pages-index-js":()=>Promise.all(/* import() | component---src-pages-index-js */[__webpack_require__.e(602), __webpack_require__.e(293)]).then(__webpack_require__.bind(__webpack_require__, 4403))};
 
 /***/ }),
 
