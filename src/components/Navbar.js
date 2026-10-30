@@ -20,6 +20,7 @@ const Navbar = () => {
         <div className={`links-wrapper${menuOpen ? " open" : ""}`}>
           <button onClick={() => { scrollTo("#work"); setMenuOpen(false) }}>Work</button>
           <button onClick={() => { scrollTo("#about"); setMenuOpen(false) }}>About</button>
+          <a href="/daily-log/" onClick={() => setMenuOpen(false)}>Daily Log</a>
           <button onClick={() => { scrollTo("#contact"); setMenuOpen(false) }} className="nav-cta">
             Contact
           </button>
