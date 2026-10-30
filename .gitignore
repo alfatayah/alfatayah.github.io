@@ -9,3 +9,6 @@ yarn-error.log*
 .env.*
 !.env.example
 .DS_Store
+
+# Daily Log data is written to gh-pages by Forme, never committed here
+static/daily-log/data/

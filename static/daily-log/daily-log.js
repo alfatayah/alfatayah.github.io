@@ -21,6 +21,8 @@
     invalidSlug: "This link is not valid. Please go back to the daily log and pick a post.",
   }
 
+  var UNTITLED = "Untitled"
+
   function isValidSlug(slug) {
     return typeof slug === "string" && SLUG_PATTERN.test(slug)
   }
@@ -42,6 +44,12 @@
     } catch (e) {
       return date
     }
+  }
+
+  // Title as plain text, with a fallback so a link is never empty.
+  function titleText(title) {
+    var value = title == null ? "" : String(title).trim()
+    return value === "" ? UNTITLED : value
   }
 
   function clear(el) {
@@ -87,7 +95,7 @@
       h2.className = "dl-item-title"
       var a = doc.createElement("a")
       a.setAttribute("href", "post.html?slug=" + encodeURIComponent(post.slug))
-      a.textContent = post.title == null ? "" : String(post.title)
+      a.textContent = titleText(post.title)
       h2.appendChild(a)
       item.appendChild(h2)
 
@@ -114,7 +122,7 @@
     var article = doc.createElement("article")
     article.className = "dl-post"
     article.appendChild(text(doc, "p", "dl-date", formatDate(post.date)))
-    article.appendChild(text(doc, "h1", "dl-post-title", post.title))
+    article.appendChild(text(doc, "h1", "dl-post-title", titleText(post.title)))
     var body = doc.createElement("div")
     body.className = "dl-body"
     body.innerHTML = post.html // already sanitized by Forme (allowlist)
@@ -122,22 +130,23 @@
     container.appendChild(article)
   }
 
+  // no-cache: revalidate with the server, since GitHub Pages caches files for 10 minutes.
   function fetchJson(fetchFn, url) {
-    return fetchFn(url).then(function (res) {
+    return fetchFn(url, { cache: "no-cache" }).then(function (res) {
       if (!res.ok) throw new Error("HTTP " + res.status)
       return res.json()
     })
   }
 
   function loadIndex(doc, container, fetchFn) {
-    return fetchJson(fetchFn, "data/index.json").then(
-      function (data) {
+    // catch() after then() so a render exception also shows the friendly message.
+    return fetchJson(fetchFn, "data/index.json")
+      .then(function (data) {
         renderIndex(doc, container, data)
-      },
-      function () {
+      })
+      .catch(function () {
         renderMessage(doc, container, "error", MESSAGES.loadError)
-      }
-    )
+      })
   }
 
   // Validates the slug BEFORE any fetch.
@@ -146,17 +155,16 @@
       renderMessage(doc, container, "error", MESSAGES.invalidSlug)
       return Promise.resolve()
     }
-    return fetchJson(fetchFn, "data/posts/" + encodeURIComponent(slug) + ".json").then(
-      function (post) {
+    return fetchJson(fetchFn, "data/posts/" + encodeURIComponent(slug) + ".json")
+      .then(function (post) {
         renderPost(doc, container, post)
         if (post && typeof post.title === "string" && post.title) {
           doc.title = post.title + " | Daily Log"
         }
-      },
-      function () {
+      })
+      .catch(function () {
         renderMessage(doc, container, "error", MESSAGES.postError)
-      }
-    )
+      })
   }
 
   var api = {

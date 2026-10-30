@@ -83,7 +83,7 @@
       .dl-post-title { font-size: 2rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.25; margin-bottom: 28px; }
       .dl-body { font-size: 1.0625rem; color: var(--color-gray); overflow-wrap: anywhere; }
       .dl-body > * + * { margin-top: 1em; }
-      .dl-body h1, .dl-body h2, .dl-body h3, .dl-body h4 { color: var(--color-black); line-height: 1.3; margin-top: 1.6em; }
+      .dl-body h1, .dl-body h2, .dl-body h3, .dl-body h4, .dl-body h5, .dl-body h6 { color: var(--color-black); line-height: 1.3; margin-top: 1.6em; }
       .dl-body ul, .dl-body ol { padding-left: 1.5em; }
       .dl-body li + li { margin-top: 0.35em; }
       .dl-body a { color: var(--color-black); text-underline-offset: 3px; }
@@ -91,6 +91,26 @@
       .dl-body blockquote { border-left: 3px solid var(--color-border); padding-left: 16px; }
       .dl-body pre { background: var(--color-bg-alt); border: 1px solid var(--color-border); border-radius: 6px; padding: 12px 16px; overflow-x: auto; }
       .dl-body code { font-size: 0.9em; }
+      /* Quill alignment and indent classes kept by Forme's sanitizer */
+      .dl-body .ql-align-center { text-align: center; }
+      .dl-body .ql-align-right { text-align: right; }
+      .dl-body .ql-align-justify { text-align: justify; }
+      .dl-body .ql-indent-1:not(li) { padding-left: 3em; }
+      .dl-body li.ql-indent-1 { margin-left: 3em; }
+      .dl-body .ql-indent-2:not(li) { padding-left: 6em; }
+      .dl-body li.ql-indent-2 { margin-left: 6em; }
+      .dl-body .ql-indent-3:not(li) { padding-left: 9em; }
+      .dl-body li.ql-indent-3 { margin-left: 9em; }
+      .dl-body .ql-indent-4:not(li) { padding-left: 12em; }
+      .dl-body li.ql-indent-4 { margin-left: 12em; }
+      .dl-body .ql-indent-5:not(li) { padding-left: 15em; }
+      .dl-body li.ql-indent-5 { margin-left: 15em; }
+      .dl-body .ql-indent-6:not(li) { padding-left: 18em; }
+      .dl-body li.ql-indent-6 { margin-left: 18em; }
+      .dl-body .ql-indent-7:not(li) { padding-left: 21em; }
+      .dl-body li.ql-indent-7 { margin-left: 21em; }
+      .dl-body .ql-indent-8:not(li) { padding-left: 24em; }
+      .dl-body li.ql-indent-8 { margin-left: 24em; }
 
       @media (max-width: 767px) {
         .navbar-wrapper { padding: 16px 20px; }
