@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "forme": {
+      "type": "http",
+      "url": "https://mvp.maell.my.id/mcp",
+      "headers": {
+        "Authorization": "Bearer ${FORME_MCP_TOKEN}",
+        "CF-Access-Client-Id": "${CF_ACCESS_CLIENT_ID}",
+        "CF-Access-Client-Secret": "${CF_ACCESS_CLIENT_SECRET}"
+      }
+    }
+  }
+}
