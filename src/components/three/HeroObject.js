@@ -13,24 +13,25 @@ const NARROW_OPACITY = 0.45
 const RADIUS = 1.15
 const POS_X = 2.0 // right of centre on desktop so the heading stays clear
 const POS_Y = 0.35
-const ENTER_DELAY = 0.2 // s, lines up with the Framer Motion text stagger
-const ENTER_DURATION = 0.9
+// The static fallback is already on screen and cross-fades into the canvas,
+// so the entrance is a gentle settle (0.92 → 1), not a grow-from-nothing.
+const ENTER_FROM = 0.92
+const ENTER_DURATION = 0.6
 
-// easeOutBack: overshoots slightly then settles
-const easeOutBack = x => 1 + 2.70158 * (x - 1) ** 3 + 1.70158 * (x - 1) ** 2
+const easeOutCubic = x => 1 - (1 - x) ** 3
 const clamp01 = v => Math.min(1, Math.max(0, v))
 
 /**
  * Monochrome, softly undulating icosahedron with a faint wireframe shell.
  * Idles with a slow spin and leans toward the cursor.
  */
-const HeroObject = ({ pointer, scroll }) => {
+const HeroObject = ({ pointer, scroll, onReady }) => {
   const group = useRef()
   const solidMat = useRef()
   const wireMat = useRef()
   // `elapsed` accumulates delta: R3F resets clock.elapsedTime when frameloop
   // flips, so the clock cannot time the entrance.
-  const anim = useRef({ spin: 0, tiltX: 0, tiltY: 0, elapsed: 0 })
+  const anim = useRef({ spin: 0, tiltX: 0, tiltY: 0, elapsed: 0, ready: false })
   const geometry = useMemo(() => new THREE.IcosahedronGeometry(RADIUS, 4), [])
 
   useFrame((state, delta) => {
@@ -41,9 +42,9 @@ const HeroObject = ({ pointer, scroll }) => {
     const progress = scroll.current.progress // 0 at top, 1 once hero is gone
 
     a.elapsed += delta
-    const enter = easeOutBack(
-      clamp01((a.elapsed - ENTER_DELAY) / ENTER_DURATION)
-    )
+    const enter =
+      ENTER_FROM +
+      (1 - ENTER_FROM) * easeOutCubic(clamp01(a.elapsed / ENTER_DURATION))
     const narrow = state.viewport.width < NARROW_VIEWPORT
     g.scale.setScalar(enter * (narrow ? NARROW_SCALE : 1))
 
@@ -60,6 +61,12 @@ const HeroObject = ({ pointer, scroll }) => {
     const opacityBase = (narrow ? NARROW_OPACITY : 1) * (1 - progress * 0.9)
     if (solidMat.current) solidMat.current.opacity = opacityBase
     if (wireMat.current) wireMat.current.opacity = opacityBase * 0.16
+
+    if (!a.ready) {
+      // first frame is on the canvas: tell the loader to cross-fade
+      a.ready = true
+      if (onReady) onReady()
+    }
 
     if (process.env.NODE_ENV !== "production") {
       window.__heroFrames = (window.__heroFrames || 0) + 1

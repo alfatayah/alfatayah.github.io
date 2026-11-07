@@ -4,7 +4,40 @@ import {
   shouldRenderScene,
   normalizePointer,
   scrollProgress,
+  detectWebGL,
 } from "../src/components/three/sceneSupport.mjs"
+
+// three@0.187 only creates WebGL2 contexts, so the probe must ask for webgl2
+// and must release the probe context afterwards.
+const fakeCanvas = ({ webgl2, throws } = {}) => {
+  const calls = []
+  let lost = false
+  return {
+    calls,
+    isLost: () => lost,
+    getContext(kind) {
+      calls.push(kind)
+      if (throws) throw new Error("no gl")
+      if (kind !== "webgl2" || !webgl2) return null
+      return {
+        getExtension: name =>
+          name === "WEBGL_lose_context" ? { loseContext: () => (lost = true) } : null,
+      }
+    },
+  }
+}
+
+test("detectWebGL asks for webgl2 only and releases the probe context", () => {
+  const c = fakeCanvas({ webgl2: true })
+  assert.equal(detectWebGL(() => c), true)
+  assert.deepEqual(c.calls, ["webgl2"])
+  assert.equal(c.isLost(), true)
+})
+
+test("detectWebGL is false without webgl2 or when the probe throws", () => {
+  assert.equal(detectWebGL(() => fakeCanvas({ webgl2: false })), false)
+  assert.equal(detectWebGL(() => fakeCanvas({ throws: true })), false)
+})
 
 test("renders when capable and deviceMemory is unknown", () => {
   assert.equal(shouldRenderScene({ reducedMotion: false, webgl: true }), true)

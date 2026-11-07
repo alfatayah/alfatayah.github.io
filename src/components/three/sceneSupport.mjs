@@ -25,6 +25,24 @@ export function shouldRenderScene({
   return true
 }
 
+/**
+ * three.js (r163+) only creates WebGL2 contexts, so probe for webgl2 — a
+ * WebGL1-only browser would otherwise pass the probe and crash the scene.
+ * The probe context is released so it does not count toward the browser's
+ * context limit. `createCanvas` is injected so this runs under node --test.
+ */
+export function detectWebGL(createCanvas) {
+  try {
+    const gl = createCanvas().getContext("webgl2")
+    if (!gl) return false
+    const ext = gl.getExtension && gl.getExtension("WEBGL_lose_context")
+    if (ext && ext.loseContext) ext.loseContext()
+    return true
+  } catch (e) {
+    return false
+  }
+}
+
 /** Map a viewport position to -1..1 on both axes, with +y pointing up. */
 export function normalizePointer(clientX, clientY, width, height) {
   const x = (clientX / width) * 2 - 1

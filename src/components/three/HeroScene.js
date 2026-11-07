@@ -15,11 +15,25 @@ const ResumeLoop = ({ active }) => {
 
 // The only module (with HeroObject) that imports three / R3F / drei.
 // Loaded client-side only via HeroSceneLoader.
-const HeroScene = ({ active = true, heroRef, onContextLost }) => {
+const HeroScene = ({
+  active = true,
+  visible = false,
+  heroRef,
+  onContextLost,
+  onReady,
+}) => {
   const { pointer, scroll } = useSceneInput(heroRef)
 
+  if (process.env.NODE_ENV !== "production" && window.__heroThrow) {
+    // dev-only: lets the error boundary be exercised from the browser
+    throw new Error("hero scene test error")
+  }
+
   return (
-    <div className="hero-scene" aria-hidden="true">
+    <div
+      className={`hero-scene hero-scene--canvas${visible ? " is-ready" : ""}`}
+      aria-hidden="true"
+    >
       <Canvas
         dpr={[1, 1.5]}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
@@ -35,7 +49,7 @@ const HeroScene = ({ active = true, heroRef, onContextLost }) => {
         <ResumeLoop active={active} />
         <ambientLight intensity={0.6} />
         <directionalLight position={[3, 4, 5]} intensity={1.2} />
-        <HeroObject pointer={pointer} scroll={scroll} />
+        <HeroObject pointer={pointer} scroll={scroll} onReady={onReady} />
       </Canvas>
     </div>
   )

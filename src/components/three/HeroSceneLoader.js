@@ -1,18 +1,39 @@
 import React, { useEffect, useState } from "react"
 import loadable from "@loadable/component"
 import HeroSceneFallback from "./HeroSceneFallback"
-import { shouldRenderScene } from "./sceneSupport.mjs"
+import { shouldRenderScene, detectWebGL } from "./sceneSupport.mjs"
 
 // The only place the scene chunk is referenced. `ssr: false` keeps three.js
-// out of Gatsby's static build; the fallback is what the HTML contains.
-const HeroScene = loadable(() => import("./HeroScene"), {
-  ssr: false,
-  fallback: <HeroSceneFallback />,
-})
+// out of Gatsby's static build. No loadable fallback: the static fallback
+// below stays mounted underneath the canvas until the first frame renders.
+const HeroScene = loadable(() => import("./HeroScene"), { ssr: false })
+
+// Anything thrown while loading or rendering the scene (chunk fetch failure,
+// WebGL context creation error) must cost the visitor the scene, never the
+// page: React 18 unmounts the whole root on an uncaught render error.
+class SceneErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { failed: false }
+  }
+
+  static getDerivedStateFromError() {
+    return { failed: true }
+  }
+
+  componentDidCatch(error) {
+    if (this.props.onError) this.props.onError(error)
+  }
+
+  render() {
+    return this.state.failed ? null : this.props.children
+  }
+}
 
 const HeroSceneLoader = ({ heroRef }) => {
   const [supported, setSupported] = useState(null)
   const [lost, setLost] = useState(false)
+  const [ready, setReady] = useState(false) // scene has drawn its first frame
   // Render loop runs only while the hero is on screen and the tab is visible.
   // Starts false so a page opened at /#work does not spin an unseen scene.
   const [active, setActive] = useState(false)
@@ -53,17 +74,11 @@ const HeroSceneLoader = ({ heroRef }) => {
     // Decide (and fetch the three.js chunk) only once the browser is idle, so
     // the hero copy and LCP are never behind ~190 KB of WebGL code.
     const decide = () => {
-      let webgl = false
-      try {
-        webgl = !!document.createElement("canvas").getContext("webgl")
-      } catch (e) {
-        webgl = false
-      }
       setSupported(
         shouldRenderScene({
           reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)")
             .matches,
-          webgl,
+          webgl: detectWebGL(() => document.createElement("canvas")),
           deviceMemory: navigator.deviceMemory,
           viewportWidth: window.innerWidth,
         })
@@ -79,13 +94,23 @@ const HeroSceneLoader = ({ heroRef }) => {
     }
   }, [])
 
-  if (supported !== true || lost) return <HeroSceneFallback />
+  const showScene = supported === true && !lost
+
   return (
-    <HeroScene
-      active={active}
-      heroRef={heroRef}
-      onContextLost={() => setLost(true)}
-    />
+    <>
+      <HeroSceneFallback hidden={showScene && ready} />
+      {showScene && (
+        <SceneErrorBoundary onError={() => setLost(true)}>
+          <HeroScene
+            active={active}
+            visible={ready}
+            heroRef={heroRef}
+            onContextLost={() => setLost(true)}
+            onReady={() => setReady(true)}
+          />
+        </SceneErrorBoundary>
+      )}
+    </>
   )
 }
 

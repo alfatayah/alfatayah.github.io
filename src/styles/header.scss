@@ -30,20 +30,41 @@
   }
 }
 
-.hero-scene--fallback img {
+// Fallback and canvas cross-fade on the scene's first frame
+.hero-scene--fallback {
+  transition: opacity 0.6s ease;
+
+  &.is-hidden {
+    opacity: 0;
+  }
+}
+
+.hero-scene--canvas {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+
+  &.is-ready {
+    opacity: 1;
+  }
+}
+
+// Placed to match the 3D object. The view is 4.37 units tall; the object has
+// radius 1.15 (diameter 52.6% of hero height) and the circle fills 75% of the
+// SVG box, so the box is 70% tall. Centre is 2.0 units right (45.8% of hero
+// height = 65% of the box) and 0.35 units up (8% = 11% of the box).
+.hero-scene--fallback .hero-fallback-art {
   position: absolute;
   top: 50%;
-  left: 62%;
-  width: 420px;
-  height: 420px;
-  transform: translate(-50%, -50%);
-  opacity: 0.9;
+  left: 50%;
+  height: 70%;
+  width: auto;
+  aspect-ratio: 1 / 1;
+  transform: translate(calc(-50% + 65%), calc(-50% - 11%));
 
   @include media("<tablet") {
-    left: 50%;
-    width: 260px;
-    height: 260px;
-    opacity: 0.55;
+    height: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.5;
   }
 }
 
