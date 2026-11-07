@@ -41,8 +41,7 @@ export default {
     "and experience",
   ],
   //   Header Paragraph
-  headerParagraph:
-    "Let's connect!",
+  headerParagraph: "Let's connect!",
 
   //Contact Email
   contactEmail: "fadhil.alfatayah@gmail.com",
@@ -52,102 +51,84 @@ export default {
   // Work Section ------------------------
   projects: [
     {
-      id: 1, //DO NOT CHANGE THIS (Please)😅
-      title: "Nusa Kamera", //Project Title - Add Your Project Title Here
-      para:
-        "Web Apps to provide information, product, booking and estimate order in rental camera ", // Add Your Service Type Here
-      //Project Image - Add Your Project Image Here
+      id: 1,
+      title: "Nusa Kamera",
+      tags: ["Laravel", "MySQL"],
+      para: "Web Apps to provide information, product, booking and estimate order in rental camera ",
       imageSrc: nusa,
       imageWidth: 981,
       imageHeight: 482,
-      //Project URL - Add Your Project Url Here
       // url: "",
     },
     {
-      id: 2, //DO NOT CHANGE THIS (Please)😅
-      title: "BAF Mobile", //Project Title - Add Your Project Title Here
-      para:
-        "Mobile apps to help customers submit credit product, track the installment credit and estimatation credit product", // Add Your Service Type Here
-      //Project Image - Add Your Project Image Here
+      id: 2,
+      title: "BAF Mobile",
+      tags: ["React Native", "REST API"],
+      para: "Mobile apps to help customers submit credit product, track the installment credit and estimatation credit product",
       imageSrc: mobile,
       imageWidth: 820,
       imageHeight: 643,
-      //Project URL - Add Your Project Url Here
       // url:
       //   "",
-    
     },
     {
-      id: 3, //DO NOT CHANGE THIS (Please)😅
-      title: "Staycation", //Project Title - Add Your Project Title Here
-      para:
-        "Web Apps to provide admin booking hotel to book hotel, check status room and validation payment for rent", // Add Your Service Type Here
-      //Project Image - Add Your Project Image Here
+      id: 3,
+      title: "Staycation",
+      tags: ["Laravel", "MySQL"],
+      para: "Web Apps to provide admin booking hotel to book hotel, check status room and validation payment for rent",
       imageSrc: stay,
       imageWidth: 687,
       imageHeight: 460,
-      //Project URL - Add Your Project Url Here
       // url: "",
     },
     {
-      id: 4, //DO NOT CHANGE THIS (Please)😅
-      title: "Nusa POS", //Project Title - Add Your Project Title Here
-      para:
-        "Website to provide point of sales and payment for rental product", // Add Your Service Type Here
-      //Project Image - Add Your Project Image Heres
+      id: 4,
+      title: "Nusa POS",
+      tags: ["React", "Express", "MongoDB"],
+      para: "Website to provide point of sales and payment for rental product",
       imageSrc: nusaPos,
       imageWidth: 1600,
       imageHeight: 807,
-      //Project URL - Add Your Project Url Here
       // url: "",
-     
     },
     {
-      id: 5, //DO NOT CHANGE THIS (Please)😅
-      title: "Global Agro Coco", //Project Title - Add Your Project Title Here
-      para:
-        "Landing Page Web to provide information about PT Global Agro Coco to sell them products",
-      //Project Image - Add Your Project Image Heres
+      id: 5,
+      title: "Global Agro Coco",
+      tags: ["Laravel", "Landing Page"],
+      para: "Landing Page Web to provide information about PT Global Agro Coco to sell them products",
       imageSrc: agro,
       imageWidth: 1600,
       imageHeight: 816,
-      //Project URL - Add Your Project Url Here
       // url: "",
-    }, 
+    },
     {
-      id: 6, //DO NOT CHANGE THIS (Please)😅
-      title: "Booking System Nusa", //Project Title - Add Your Project Title Here
-      para:
-        "Web Apps to provide a booking system for the rental products in Nusa Kamera",
-      //Project Image - Add Your Project Image Heres
+      id: 6,
+      title: "Booking System Nusa",
+      tags: ["React", "Express", "MongoDB"],
+      para: "Web Apps to provide a booking system for the rental products in Nusa Kamera",
       imageSrc: nusabooking,
       imageWidth: 1600,
       imageHeight: 822,
-      //Project URL - Add Your Project Url Here
       // url: "",
     },
     {
-      id: 7, //DO NOT CHANGE THIS (Please)😅
-      title: "ITAM", //Project Title - Add Your Project Title Here
-      para:
-        "IT Asset Management system to track company assets, assignments, maintenance and lifecycle in one place",
-      //Project Image - Add Your Project Image Heres
+      id: 7,
+      title: "ITAM",
+      tags: ["Laravel", "MySQL"],
+      para: "IT Asset Management system to track company assets, assignments, maintenance and lifecycle in one place",
       imageSrc: itamCover,
       imageWidth: 1280,
       imageHeight: 800,
-      //Project URL - Add Your Project Url Here
       // url: "",
     },
     {
-      id: 8, //DO NOT CHANGE THIS (Please)😅
-      title: "Camventory", //Project Title - Add Your Project Title Here
-      para:
-        "Inventory management app to track camera gear stock, availability, rentals and returns",
-      //Project Image - Add Your Project Image Heres
+      id: 8,
+      title: "Camventory",
+      tags: ["React Native", "Express", "MongoDB"],
+      para: "Inventory management app to track camera gear stock, availability, rentals and returns",
       imageSrc: camventoryCover,
       imageWidth: 1280,
       imageHeight: 800,
-      //Project URL - Add Your Project Url Here
       // url: "",
     },
   ],

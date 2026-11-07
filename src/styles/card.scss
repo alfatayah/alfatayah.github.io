@@ -108,3 +108,21 @@
     }
   }
 }
+// Technology tags on project cards
+.project-card .card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px;
+
+  li {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #555555;
+    border: 1px solid #e5e5e5;
+    border-radius: 999px;
+    padding: 3px 10px;
+  }
+}

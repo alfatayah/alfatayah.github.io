@@ -8,6 +8,7 @@ const Card = ({
   imgWidth,
   imgHeight,
   lazy = false,
+  tags = [],
   projectLink,
   onSelect,
 }) => {
@@ -35,6 +36,13 @@ const Card = ({
       <div className="card-content">
         <h3 className="card-title">{heading}</h3>
         <p className="card-description">{paragraph}</p>
+        {tags.length > 0 && (
+          <ul className="card-tags">
+            {tags.map(tag => (
+              <li key={tag}>{tag}</li>
+            ))}
+          </ul>
+        )}
         <div className="card-footer">
           <span className="card-link">
             Explore Project <span className="arrow">↗</span>

@@ -55,7 +55,8 @@ const Work = () => {
           <span className="work-label">Selected Projects</span>
           <h2 className="section-heading work-title">Work</h2>
           <p className="work-subtext">
-            A curated showcase of recent digital products, web platforms, and mobile applications.
+            A curated showcase of recent digital products, web platforms, and
+            mobile applications.
           </p>
         </motion.div>
 
@@ -75,6 +76,7 @@ const Work = () => {
                 imgWidth={project.imageWidth}
                 imgHeight={project.imageHeight}
                 lazy={index >= 3}
+                tags={project.tags}
                 projectLink={project.url}
                 onSelect={() => setSelectedProject(project)}
               />
@@ -130,6 +132,13 @@ const Work = () => {
                 <span className="work-label">Project Preview</span>
                 <h3 className="project-modal-title">{selectedProject.title}</h3>
                 <p className="project-modal-desc">{selectedProject.para}</p>
+                {selectedProject.tags && selectedProject.tags.length > 0 && (
+                  <ul className="project-modal-tags">
+                    {selectedProject.tags.map(tag => (
+                      <li key={tag}>{tag}</li>
+                    ))}
+                  </ul>
+                )}
                 {selectedProject.url && selectedProject.url !== "" && (
                   <a
                     href={selectedProject.url}
