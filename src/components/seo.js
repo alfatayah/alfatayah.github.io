@@ -29,14 +29,17 @@ function SEO({ description, lang, meta, title }) {
   const defaultTitle = site.siteMetadata?.title
   const siteUrl = site.siteMetadata?.siteUrl || ``
   const ogImage = `${siteUrl}/og-image.png`
+  // "Fadhil Alfatayah — AI Engineer…" → "Fadhil Alfatayah" for the suffix
+  const shortTitle = defaultTitle ? defaultTitle.split(` — `)[0] : ``
+  const pageTitle = title || defaultTitle
 
   return (
     <Helmet
       htmlAttributes={{
         lang,
       }}
-      title={title}
-      titleTemplate={defaultTitle ? `%s | ${defaultTitle}` : null}
+      title={pageTitle}
+      {...(title && shortTitle ? { titleTemplate: `%s | ${shortTitle}` } : {})}
       meta={[
         {
           name: `description`,
@@ -44,7 +47,7 @@ function SEO({ description, lang, meta, title }) {
         },
         {
           property: `og:title`,
-          content: title,
+          content: pageTitle,
         },
         {
           property: `og:description`,
@@ -84,7 +87,7 @@ function SEO({ description, lang, meta, title }) {
         },
         {
           name: `twitter:title`,
-          content: title,
+          content: pageTitle,
         },
         {
           name: `twitter:description`,
@@ -105,7 +108,7 @@ SEO.propTypes = {
   description: PropTypes.string,
   lang: PropTypes.string,
   meta: PropTypes.arrayOf(PropTypes.object),
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
 }
 
 export default SEO
