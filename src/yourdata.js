@@ -8,6 +8,10 @@ import aiIcon from "./images/ai-automation.svg"
 import pgvectorIcon from "./images/pgvector.svg"
 import laravelIcon from "./images/laravel.svg"
 
+// Project covers
+import itamCover from "./images/itam-cover.svg"
+import camventoryCover from "./images/camventory-cover.svg"
+
 // Social Icon
 import githubIcon from "./images/github.svg"
 import instagramIcon from "./images/instagram.svg"
@@ -115,7 +119,27 @@ export default {
       imageSrc: nusabooking,
       //Project URL - Add Your Project Url Here
       // url: "",
-    }, 
+    },
+    {
+      id: 7, //DO NOT CHANGE THIS (Please)😅
+      title: "ITAM", //Project Title - Add Your Project Title Here
+      para:
+        "IT Asset Management system to track company assets, assignments, maintenance and lifecycle in one place",
+      //Project Image - Add Your Project Image Heres
+      imageSrc: itamCover,
+      //Project URL - Add Your Project Url Here
+      // url: "",
+    },
+    {
+      id: 8, //DO NOT CHANGE THIS (Please)😅
+      title: "Camventory", //Project Title - Add Your Project Title Here
+      para:
+        "Inventory management app to track camera gear stock, availability, rentals and returns",
+      //Project Image - Add Your Project Image Heres
+      imageSrc: camventoryCover,
+      //Project URL - Add Your Project Url Here
+      // url: "",
+    },
   ],
 
   // End Work Section -----------------------

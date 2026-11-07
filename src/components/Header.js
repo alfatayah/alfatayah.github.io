@@ -3,6 +3,7 @@ import { motion } from "framer-motion"
 import data from "../yourdata"
 import scrollTo from "gatsby-plugin-smoothscroll"
 import HeroBackground from "./atoms/HeroBackground"
+import EyeFace from "./atoms/EyeFace"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -35,6 +36,9 @@ const Header = () => {
           initial="hidden"
           animate="visible"
         >
+          <motion.div className="hero-avatar" variants={itemVariants}>
+            <EyeFace />
+          </motion.div>
           <motion.p className="hero-name" variants={itemVariants}>
             AI engineer, full-stack developer, builder
           </motion.p>
