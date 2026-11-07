@@ -13,6 +13,41 @@ const HeroScene = loadable(() => import("./HeroScene"), {
 const HeroSceneLoader = ({ heroRef }) => {
   const [supported, setSupported] = useState(null)
   const [lost, setLost] = useState(false)
+  // Render loop runs only while the hero is on screen and the tab is visible.
+  // Starts false so a page opened at /#work does not spin an unseen scene.
+  const [active, setActive] = useState(false)
+
+  useEffect(() => {
+    const el = heroRef?.current
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setActive(true)
+      return undefined
+    }
+    let inView = false
+    let pageVisible = document.visibilityState === "visible"
+    const update = () => {
+      const next = inView && pageVisible
+      setActive(next)
+      if (process.env.NODE_ENV !== "production") window.__heroActive = next
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        inView = entry.isIntersecting
+        update()
+      },
+      { threshold: 0 }
+    )
+    io.observe(el)
+    const onVisibility = () => {
+      pageVisible = document.visibilityState === "visible"
+      update()
+    }
+    document.addEventListener("visibilitychange", onVisibility)
+    return () => {
+      io.disconnect()
+      document.removeEventListener("visibilitychange", onVisibility)
+    }
+  }, [heroRef])
 
   useEffect(() => {
     let webgl = false
@@ -33,7 +68,11 @@ const HeroSceneLoader = ({ heroRef }) => {
 
   if (supported !== true || lost) return <HeroSceneFallback />
   return (
-    <HeroScene active heroRef={heroRef} onContextLost={() => setLost(true)} />
+    <HeroScene
+      active={active}
+      heroRef={heroRef}
+      onContextLost={() => setLost(true)}
+    />
   )
 }
 

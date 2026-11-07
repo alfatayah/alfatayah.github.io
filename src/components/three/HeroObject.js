@@ -28,15 +28,18 @@ const HeroObject = ({ pointer, scroll }) => {
     if (!g) return
     const a = anim.current
     const p = pointer.current
+    const progress = scroll.current.progress // 0 at top, 1 once hero is gone
 
-    a.spin += delta * SPIN_SPEED
+    // scrolling away spins it faster, lifts it, and fades it out
+    a.spin += delta * SPIN_SPEED * (1 + progress * 2)
     a.tiltX = THREE.MathUtils.lerp(a.tiltX, -p.y * TILT_X, LERP)
     a.tiltY = THREE.MathUtils.lerp(a.tiltY, p.x * TILT_Y, LERP)
     g.rotation.set(a.tiltX, a.spin + a.tiltY, 0)
 
     const narrow = state.viewport.width < NARROW_VIEWPORT
     g.position.x = narrow ? 0 : POS_X
-    const opacityBase = narrow ? 0.5 : 1
+    g.position.y = POS_Y + progress * 1.2
+    const opacityBase = (narrow ? 0.5 : 1) * (1 - progress * 0.9)
     if (solidMat.current) solidMat.current.opacity = opacityBase
     if (wireMat.current) wireMat.current.opacity = opacityBase * 0.16
 
