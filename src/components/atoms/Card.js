@@ -1,7 +1,16 @@
 import React from "react"
 import { motion } from "framer-motion"
 
-const Card = ({ heading, paragraph, imgUrl, projectLink, onSelect }) => {
+const Card = ({
+  heading,
+  paragraph,
+  imgUrl,
+  imgWidth,
+  imgHeight,
+  lazy = false,
+  projectLink,
+  onSelect,
+}) => {
   const cardContent = (
     <motion.div
       className="project-card"
@@ -15,6 +24,10 @@ const Card = ({ heading, paragraph, imgUrl, projectLink, onSelect }) => {
           className="card-image"
           src={imgUrl}
           alt={heading}
+          width={imgWidth}
+          height={imgHeight}
+          loading={lazy ? "lazy" : "eager"}
+          decoding="async"
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
         />

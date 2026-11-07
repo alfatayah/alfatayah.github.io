@@ -66,12 +66,15 @@ const Work = () => {
           whileInView="visible"
           viewport={{ once: true, margin: "-40px" }}
         >
-          {data.projects.map(project => (
+          {data.projects.map((project, index) => (
             <motion.div key={project.id} variants={cardItemVariants}>
               <Card
                 heading={project.title}
                 paragraph={project.para}
                 imgUrl={project.imageSrc}
+                imgWidth={project.imageWidth}
+                imgHeight={project.imageHeight}
+                lazy={index >= 3}
                 projectLink={project.url}
                 onSelect={() => setSelectedProject(project)}
               />

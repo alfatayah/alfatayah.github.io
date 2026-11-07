@@ -18,19 +18,13 @@ import instagramIcon from "./images/instagram.svg"
 import twitterIcon from "./images/twitter.png"
 import linkindIcon from "./images/linkdin.svg"
 
-//portofolio
-// import nusa from "./images/nusakamera.jpg"
-// import stay from "./images/stay.jpg"
-// import mobile from "./images/mobile.jpg"
-// import agro from "./images/global.jpg"
-
-// image source
-const mobile = "https://user-images.githubusercontent.com/23058601/108582730-97c49280-7367-11eb-9473-50c3c6e11fba.jpg"
-const nusa = "https://user-images.githubusercontent.com/23058601/108582930-becf9400-7368-11eb-8d1e-7280d86d7437.jpg";
-const stay = "https://user-images.githubusercontent.com/23058601/108582920-afe8e180-7368-11eb-96c9-9293b0e58b96.jpg";
-const agro = "https://user-images.githubusercontent.com/23058601/108583283-03f4c580-736b-11eb-8dc2-b03faf1859f1.jpg";
-const nusaPos = "https://user-images.githubusercontent.com/23058601/152916544-187f4dfe-fafa-4f32-9b51-663959dfb2fc.png";
-const nusabooking = 'https://user-images.githubusercontent.com/23058601/225804230-25c49fa2-8421-41bb-8c0d-f561e629b68b.png'
+// Project screenshots (local, re-encoded JPEG ≤ 1600px wide)
+import nusa from "./images/projects/nusa-kamera.jpg"
+import mobile from "./images/projects/baf-mobile.jpg"
+import stay from "./images/projects/staycation.jpg"
+import nusaPos from "./images/projects/nusa-pos.jpg"
+import agro from "./images/projects/global-agro-coco.jpg"
+import nusabooking from "./images/projects/booking-system-nusa.jpg"
 
 export default {
   //(Please Do Not Remove The comma(,) after every variable)
@@ -64,6 +58,8 @@ export default {
         "Web Apps to provide information, product, booking and estimate order in rental camera ", // Add Your Service Type Here
       //Project Image - Add Your Project Image Here
       imageSrc: nusa,
+      imageWidth: 981,
+      imageHeight: 482,
       //Project URL - Add Your Project Url Here
       // url: "",
     },
@@ -74,6 +70,8 @@ export default {
         "Mobile apps to help customers submit credit product, track the installment credit and estimatation credit product", // Add Your Service Type Here
       //Project Image - Add Your Project Image Here
       imageSrc: mobile,
+      imageWidth: 820,
+      imageHeight: 643,
       //Project URL - Add Your Project Url Here
       // url:
       //   "",
@@ -86,6 +84,8 @@ export default {
         "Web Apps to provide admin booking hotel to book hotel, check status room and validation payment for rent", // Add Your Service Type Here
       //Project Image - Add Your Project Image Here
       imageSrc: stay,
+      imageWidth: 687,
+      imageHeight: 460,
       //Project URL - Add Your Project Url Here
       // url: "",
     },
@@ -96,6 +96,8 @@ export default {
         "Website to provide point of sales and payment for rental product", // Add Your Service Type Here
       //Project Image - Add Your Project Image Heres
       imageSrc: nusaPos,
+      imageWidth: 1600,
+      imageHeight: 807,
       //Project URL - Add Your Project Url Here
       // url: "",
      
@@ -107,6 +109,8 @@ export default {
         "Landing Page Web to provide information about PT Global Agro Coco to sell them products",
       //Project Image - Add Your Project Image Heres
       imageSrc: agro,
+      imageWidth: 1600,
+      imageHeight: 816,
       //Project URL - Add Your Project Url Here
       // url: "",
     }, 
@@ -117,6 +121,8 @@ export default {
         "Web Apps to provide a booking system for the rental products in Nusa Kamera",
       //Project Image - Add Your Project Image Heres
       imageSrc: nusabooking,
+      imageWidth: 1600,
+      imageHeight: 822,
       //Project URL - Add Your Project Url Here
       // url: "",
     },
@@ -127,6 +133,8 @@ export default {
         "IT Asset Management system to track company assets, assignments, maintenance and lifecycle in one place",
       //Project Image - Add Your Project Image Heres
       imageSrc: itamCover,
+      imageWidth: 1280,
+      imageHeight: 800,
       //Project URL - Add Your Project Url Here
       // url: "",
     },
@@ -137,6 +145,8 @@ export default {
         "Inventory management app to track camera gear stock, availability, rentals and returns",
       //Project Image - Add Your Project Image Heres
       imageSrc: camventoryCover,
+      imageWidth: 1280,
+      imageHeight: 800,
       //Project URL - Add Your Project Url Here
       // url: "",
     },
