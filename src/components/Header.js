@@ -1,8 +1,8 @@
-import React from "react"
+import React, { useRef } from "react"
 import { motion } from "framer-motion"
 import data from "../yourdata"
 import scrollTo from "gatsby-plugin-smoothscroll"
-import HeroBackground from "./atoms/HeroBackground"
+import HeroSceneLoader from "./three/HeroSceneLoader"
 import EyeFace from "./atoms/EyeFace"
 
 const containerVariants = {
@@ -26,9 +26,10 @@ const itemVariants = {
 }
 
 const Header = () => {
+  const heroRef = useRef(null)
   return (
-    <section className="hero-section" id="home">
-      <HeroBackground />
+    <section className="hero-section" id="home" ref={heroRef}>
+      <HeroSceneLoader heroRef={heroRef} />
       <div className="container">
         <motion.div
           className="header-wrapper"
