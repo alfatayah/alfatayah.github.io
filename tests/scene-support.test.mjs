@@ -27,6 +27,25 @@ test("falls back on reduced motion, no webgl, or low memory", () => {
   )
 })
 
+test("falls back on phone-sized viewports, unknown width counts as wide", () => {
+  assert.equal(
+    shouldRenderScene({ reducedMotion: false, webgl: true, viewportWidth: 412 }),
+    false
+  )
+  assert.equal(
+    shouldRenderScene({ reducedMotion: false, webgl: true, viewportWidth: 767 }),
+    false
+  )
+  assert.equal(
+    shouldRenderScene({ reducedMotion: false, webgl: true, viewportWidth: 768 }),
+    true
+  )
+  assert.equal(
+    shouldRenderScene({ reducedMotion: false, webgl: true, viewportWidth: undefined }),
+    true
+  )
+})
+
 test("normalizePointer maps viewport to -1..1 with y up", () => {
   assert.deepEqual(normalizePointer(0, 0, 800, 600), { x: -1, y: 1 })
   assert.deepEqual(normalizePointer(800, 600, 800, 600), { x: 1, y: -1 })

@@ -50,20 +50,33 @@ const HeroSceneLoader = ({ heroRef }) => {
   }, [heroRef])
 
   useEffect(() => {
-    let webgl = false
-    try {
-      webgl = !!document.createElement("canvas").getContext("webgl")
-    } catch (e) {
-      webgl = false
+    // Decide (and fetch the three.js chunk) only once the browser is idle, so
+    // the hero copy and LCP are never behind ~190 KB of WebGL code.
+    const decide = () => {
+      let webgl = false
+      try {
+        webgl = !!document.createElement("canvas").getContext("webgl")
+      } catch (e) {
+        webgl = false
+      }
+      setSupported(
+        shouldRenderScene({
+          reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)")
+            .matches,
+          webgl,
+          deviceMemory: navigator.deviceMemory,
+          viewportWidth: window.innerWidth,
+        })
+      )
     }
-    setSupported(
-      shouldRenderScene({
-        reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)")
-          .matches,
-        webgl,
-        deviceMemory: navigator.deviceMemory,
-      })
-    )
+    const idle = window.requestIdleCallback
+    const handle = idle
+      ? idle(decide, { timeout: 2000 })
+      : window.setTimeout(decide, 300)
+    return () => {
+      if (idle) window.cancelIdleCallback(handle)
+      else window.clearTimeout(handle)
+    }
   }, [])
 
   if (supported !== true || lost) return <HeroSceneFallback />

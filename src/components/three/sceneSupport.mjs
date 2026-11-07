@@ -1,14 +1,27 @@
 // Pure helpers for the hero 3D scene. No imports, so they run under
 // `node --test` and inside the browser bundle alike.
 
+// Measured: with the scene on a 412px viewport Lighthouse mobile scored 79-92
+// (TBT 160-230 ms, LCP 2.9-4.1 s); with the fallback 95-96 (TBT 10 ms).
+export const MIN_SCENE_VIEWPORT = 768 // px; phones get the static fallback
+
 /**
  * Decide whether the WebGL scene should be mounted at all.
- * Unknown deviceMemory (Firefox, Safari) counts as capable.
+ * Unknown deviceMemory (Firefox, Safari) and unknown viewport width count as
+ * capable. Phone-sized viewports always get the fallback: parsing three.js
+ * on a throttled mobile CPU costs ~1.8 s of main-thread time.
  */
-export function shouldRenderScene({ reducedMotion, webgl, deviceMemory }) {
+export function shouldRenderScene({
+  reducedMotion,
+  webgl,
+  deviceMemory,
+  viewportWidth,
+}) {
   if (reducedMotion) return false
   if (!webgl) return false
   if (typeof deviceMemory === "number" && deviceMemory < 4) return false
+  if (typeof viewportWidth === "number" && viewportWidth < MIN_SCENE_VIEWPORT)
+    return false
   return true
 }
 

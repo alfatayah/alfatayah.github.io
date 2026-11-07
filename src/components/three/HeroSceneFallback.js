@@ -1,5 +1,5 @@
 import React from "react"
-import heroFallback from "../../images/hero-fallback.svg"
+import heroFallback from "../../images/hero-fallback.png"
 
 // Static stand-in for the WebGL scene: used in the SSR HTML, while the scene
 // chunk loads, and permanently when the device should not run WebGL.
