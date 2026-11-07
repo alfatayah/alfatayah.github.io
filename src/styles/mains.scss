@@ -1,6 +1,7 @@
 @charset "utf-8";
 @import "./include-media.scss";
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
+// Inter is loaded from <head> (see seo.js) with preconnect, not via @import:
+// an @import inside the stylesheet made the font CSS a render-blocking chain.
 
 // Atoms
 @import "./card.scss";

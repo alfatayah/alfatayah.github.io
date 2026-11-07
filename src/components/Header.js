@@ -5,51 +5,27 @@ import scrollTo from "gatsby-plugin-smoothscroll"
 import HeroSceneLoader from "./three/HeroSceneLoader"
 import EyeFace from "./atoms/EyeFace"
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.1,
-    },
-  },
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: [0.215, 0.61, 0.355, 1] },
-  },
-}
-
+// The hero copy enters with a CSS keyframe stagger (see header.scss) rather
+// than a JS-driven animation: with Framer's initial={{ opacity: 0 }} the
+// heading stayed invisible until React hydrated, which made it the page's
+// LCP element at ~3.5 s. CSS starts at first paint and honours
+// prefers-reduced-motion.
 const Header = () => {
   const heroRef = useRef(null)
   return (
     <section className="hero-section" id="home" ref={heroRef}>
       <HeroSceneLoader heroRef={heroRef} />
       <div className="container">
-        <motion.div
-          className="header-wrapper"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.div className="hero-avatar" variants={itemVariants}>
+        <div className="header-wrapper">
+          <div className="hero-avatar hero-enter">
             <EyeFace />
-          </motion.div>
-          <motion.p className="hero-name" variants={itemVariants}>
+          </div>
+          <p className="hero-name hero-enter">
             AI engineer, full-stack developer, builder
-          </motion.p>
-          <motion.h1 variants={itemVariants}>
-            Building products people love to use
-          </motion.h1>
-          <motion.p className="hero-paragraph" variants={itemVariants}>
-            {data.headerParagraph}
-          </motion.p>
-          <motion.div className="hero-cta-group" variants={itemVariants}>
+          </p>
+          <h1 className="hero-enter">Building products people love to use</h1>
+          <p className="hero-paragraph hero-enter">{data.headerParagraph}</p>
+          <div className="hero-cta-group hero-enter">
             <motion.button
               className="btn-primary"
               onClick={() => scrollTo("#work")}
@@ -68,8 +44,8 @@ const Header = () => {
             >
               Get in Touch
             </motion.button>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
     </section>
   )

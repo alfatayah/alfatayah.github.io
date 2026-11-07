@@ -68,6 +68,33 @@
   }
 }
 
+// Hero entrance: CSS so the heading paints at first paint (it is the LCP
+// element) instead of waiting for hydration. Same curve/offset as before.
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-enter {
+  animation: hero-rise 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) both;
+
+  &:nth-child(1) { animation-delay: 0.1s; }
+  &:nth-child(2) { animation-delay: 0.25s; }
+  &:nth-child(3) { animation-delay: 0.4s; }
+  &:nth-child(4) { animation-delay: 0.55s; }
+  &:nth-child(5) { animation-delay: 0.7s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
 .header-wrapper {
   position: relative;
   z-index: 1;
