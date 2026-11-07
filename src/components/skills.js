@@ -23,7 +23,7 @@ const itemVariants = {
 
 const Skills = () => {
   return (
-    <section className="section" id="skill" style={{ borderTop: "1px solid #e5e5e5", borderBottom: "1px solid #e5e5e5", background: "#fafafa" }}>
+    <section className="section skills-section" id="skill">
       <div className="container">
         <div className="skills-container">
           <motion.div
