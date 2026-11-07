@@ -142,8 +142,6 @@ export default {
     "I specialize in mobile and web development using modern frameworks such as React Native, React, Express, and Laravel to deliver seamless and scalable user experiences.",
   aboutParaThree:
     "Constantly expanding my skillset into AI automation and intelligent workflows, I enjoy solving real-world problems through clean code and modern tech stacks.",
-  aboutImage:
-    "https://images.unsplash.com/photo-1519713958759-6254243c4a53?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
 
   //   End About Section ---------------------
 
