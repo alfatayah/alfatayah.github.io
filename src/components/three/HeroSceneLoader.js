@@ -12,6 +12,7 @@ const HeroScene = loadable(() => import("./HeroScene"), {
 
 const HeroSceneLoader = ({ heroRef }) => {
   const [supported, setSupported] = useState(null)
+  const [lost, setLost] = useState(false)
 
   useEffect(() => {
     let webgl = false
@@ -30,8 +31,10 @@ const HeroSceneLoader = ({ heroRef }) => {
     )
   }, [])
 
-  if (supported !== true) return <HeroSceneFallback />
-  return <HeroScene active heroRef={heroRef} />
+  if (supported !== true || lost) return <HeroSceneFallback />
+  return (
+    <HeroScene active heroRef={heroRef} onContextLost={() => setLost(true)} />
+  )
 }
 
 export default HeroSceneLoader
