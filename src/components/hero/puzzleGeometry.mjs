@@ -118,3 +118,40 @@ export const pieces = (grid = GRID) => {
     }
   })
 }
+
+// --- Interactive mode -------------------------------------------------------
+
+// A dropped piece snaps home when its offset is within this many viewBox units.
+export const SNAP_RADIUS = 18
+
+export const isHome = ({ x, y }, radius = SNAP_RADIUS) =>
+  Math.hypot(x, y) <= radius
+
+// Deterministic 0..1 hash so every "shuffle" click (seed) gives a new but
+// reproducible layout without Math.random.
+const unit = (seed, i, salt) => {
+  const n = Math.sin(seed * 9301 + i * 49297 + salt * 233) * 43758.5453
+  return n - Math.floor(n)
+}
+
+// Offsets (relative to each piece's home) for a shuffled board: a cyclic
+// shift of the cells so no piece sits on its own cell, plus ±16 jitter,
+// clamped so every piece stays inside the viewBox. No rotation: the
+// board stays solvable by eye.
+export const shuffleLayout = (seed, grid = GRID) => {
+  const { cols, rows, cellW, cellH } = grid
+  const total = cols * rows
+  const W = cols * cellW
+  const H = rows * cellH
+  const shift = 1 + (Math.abs(Math.floor(seed)) % (total - 1))
+  return [...Array(total).keys()].map(i => {
+    const target = (i + shift) % total
+    const homeX = (i % cols) * cellW
+    const homeY = Math.floor(i / cols) * cellH
+    let tx = (target % cols) * cellW + (unit(seed, i, 1) * 2 - 1) * 16
+    let ty = Math.floor(target / cols) * cellH + (unit(seed, i, 2) * 2 - 1) * 16
+    tx = Math.min(W - cellW, Math.max(0, tx))
+    ty = Math.min(H - cellH, Math.max(0, ty))
+    return { x: round(tx - homeX), y: round(ty - homeY) }
+  })
+}

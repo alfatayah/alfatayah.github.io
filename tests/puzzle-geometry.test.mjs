@@ -8,6 +8,9 @@ import {
   pieceOrder,
   enterDelay,
   pieces,
+  shuffleLayout,
+  isHome,
+  SNAP_RADIUS,
 } from "../src/components/hero/puzzleGeometry.mjs"
 
 test("outer edges are straight, inner edges are tabs or blanks", () => {
@@ -91,4 +94,31 @@ test("pieces() carry their own centre for the rotation pivot", () => {
   assert.equal(all[5].oy, 165)
   assert.equal(all[0].ox, 60)
   assert.equal(all[0].oy, 55)
+})
+
+test("shuffleLayout moves every piece off its home cell and keeps it in the viewBox", () => {
+  const layout = shuffleLayout(1)
+  assert.equal(layout.length, 12)
+  layout.forEach(({ x, y }, i) => {
+    assert.ok(Math.hypot(x, y) > 40, `piece ${i} still near home`)
+    const col = i % GRID.cols
+    const row = Math.floor(i / GRID.cols)
+    const ax = col * GRID.cellW + x
+    const ay = row * GRID.cellH + y
+    assert.ok(ax >= 0 && ax <= 480 - GRID.cellW, `piece ${i} x ${ax}`)
+    assert.ok(ay >= 0 && ay <= 330 - GRID.cellH, `piece ${i} y ${ay}`)
+  })
+})
+
+test("shuffleLayout is deterministic per seed and differs between seeds", () => {
+  assert.deepEqual(shuffleLayout(3), shuffleLayout(3))
+  assert.notDeepEqual(shuffleLayout(3), shuffleLayout(4))
+})
+
+test("isHome snaps only within the radius", () => {
+  assert.equal(SNAP_RADIUS, 18)
+  assert.equal(isHome({ x: 10, y: -12 }), true) // 15.6 away
+  assert.equal(isHome({ x: 18, y: 0 }), true)
+  assert.equal(isHome({ x: 13, y: 13 }), false) // 18.4 away
+  assert.equal(isHome({ x: 0, y: 0 }), true)
 })
