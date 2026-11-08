@@ -31,20 +31,23 @@ hover lift + image zoom, button hover springs.
 
 ### Copy
 
-`src/yourdata.js` gains:
+`src/components/hero/heroRoles.mjs` exports `HERO_ROLES` (the four phrases
+below), `ROLE_LEAD = "I build"` and `rolesSentence()` (the screen-reader
+sentence). `yourdata.js` cannot host them because it imports image assets
+that `node --test` cannot load.
 
 ```js
-headerRoles: [
+export const HERO_ROLES = [
   "AI automations",
   "React Native apps",
   "Laravel backends",
   "n8n workflows",
-],
+]
 ```
 
 Exactly four entries (the CSS keyframes below are cut for four), each at most
-24 characters. The existing `headerTagline` array stays untouched (it is no
-longer rendered but other code may still import it).
+24 characters. The existing `headerTagline` array in `yourdata.js` stays
+untouched (it is no longer rendered but other code may still import it).
 
 ### Markup (`src/components/Header.js`)
 
@@ -69,8 +72,8 @@ shift) and becomes:
 </p>
 ```
 
-The visually-hidden sentence is built from `headerRoles` at render time
-(join with ", " and " and " before the last). The animated items are
+The visually-hidden sentence is `rolesSentence()` (join with ", " and
+" and " before the last). The animated items are
 `aria-hidden` so screen readers hear one stable sentence, not a changing one.
 
 ### Styles (`src/styles/header.scss`, plus `.visually-hidden` in `mains.scss`)
