@@ -1,6 +1,6 @@
-// Pure geometry for the hero puzzle: which edges are tabs or blanks, the
-// jigsaw outline of each piece, where each piece starts before flying in,
-// and the order they arrive. No DOM, no randomness: the server-rendered
+// Pure geometry shared by the hero puzzle, the skills grid and the puzzle
+// divider: which edges are tabs or blanks, the jigsaw outline of each piece,
+// where each piece starts before flying in, and the order they arrive. No DOM, no randomness: the server-rendered
 // HTML and the client must produce byte-identical output.
 
 export const GRID = { cols: 4, rows: 3, cellW: 120, cellH: 110, knob: 14 }
@@ -117,6 +117,33 @@ export const pieces = (grid = GRID) => {
       delay: enterDelay(order.indexOf(index)),
     }
   })
+}
+
+// Start offset + entrance delay for skill card `index` of `total`, laid out
+// in a cols×rows grid. Reuses scatterOffset (scaled down: the skills column
+// is narrower than the hero mockup) and pieceOrder (centre-out). A card the
+// grid has no rank for (a ninth skill) takes its own index as rank.
+export const skillScatter = (
+  index,
+  total,
+  { cols = 4, rows = 2, scale = 0.6 } = {}
+) => {
+  const { dx, dy, rot } = scatterOffset(index, total)
+  const rank = pieceOrder(cols, rows).indexOf(index)
+  return {
+    x: round(dx * scale),
+    y: round(dy * scale),
+    rotate: rot,
+    delay: enterDelay(rank === -1 ? index : rank),
+  }
+}
+
+// Open path for a section divider: a horizontal rule across `width` with one
+// knob (tab, bulging upward) centred on it. Baseline at height − 6 so the
+// knob's true 2.49·knob protrusion stays inside the box.
+export const dividerPath = ({ width = 56, height = 40, knob = 12 } = {}) => {
+  const y = height - 6
+  return `M0 ${y} ${edge(0, y, width, y, 0, -1, 1, knob)}`
 }
 
 // --- Interactive mode -------------------------------------------------------

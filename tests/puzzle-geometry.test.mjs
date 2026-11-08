@@ -11,6 +11,8 @@ import {
   shuffleLayout,
   isHome,
   SNAP_RADIUS,
+  skillScatter,
+  dividerPath,
 } from "../src/components/hero/puzzleGeometry.mjs"
 
 test("outer edges are straight, inner edges are tabs or blanks", () => {
@@ -121,4 +123,49 @@ test("isHome snaps only within the radius", () => {
   assert.equal(isHome({ x: 18, y: 0 }), true)
   assert.equal(isHome({ x: 13, y: 13 }), false) // 18.4 away
   assert.equal(isHome({ x: 0, y: 0 }), true)
+})
+
+test("skillScatter scales the hero scatter down and keeps the spin", () => {
+  for (let i = 0; i < 8; i++) {
+    const s = skillScatter(i, 8)
+    const mag = Math.hypot(s.x, s.y)
+    assert.ok(mag >= 96 && mag <= 156, `card ${i} magnitude ${mag}`)
+    assert.ok(s.rotate >= -25 && s.rotate <= 25, `card ${i} rotate ${s.rotate}`)
+    assert.equal(s.rotate, scatterOffset(i, 8).rot)
+  }
+})
+
+test("skillScatter delays run centre-out on the 4x2 grid", () => {
+  const d = [...Array(8).keys()].map(i => skillScatter(i, 8).delay)
+  // centre columns (indices 1,2 / 5,6) before the corners (0,3 / 4,7)
+  assert.ok(
+    Math.max(d[1], d[2], d[5], d[6]) < Math.min(d[0], d[3], d[4], d[7]),
+    JSON.stringify(d)
+  )
+  assert.equal(d[1], 0)
+  assert.equal(d[7], enterDelay(7))
+})
+
+test("skillScatter falls back to the index rank for a card beyond the grid", () => {
+  assert.equal(skillScatter(8, 9).delay, enterDelay(8))
+})
+
+test("dividerPath is a rule with one upward knob that fits a 56x40 box", () => {
+  const d = dividerPath()
+  assert.ok(d.startsWith("M0 34 L"), d.slice(0, 12))
+  assert.ok(d.endsWith("L56 34"), d.slice(-10))
+  assert.equal((d.match(/A/g) || []).length, 1)
+  assert.ok(d.includes("A12 12 0 1 1 "), d)
+  // strip the arc flags so the remaining numbers are pure x y pairs
+  const nums = d
+    .replace(/A12 12 0 1 1 /g, "")
+    .match(/-?[\d.]+/g)
+    .map(Number)
+  nums.forEach((n, i) => {
+    if (i % 2 === 0) assert.ok(n >= 0 && n <= 56, `x=${n}`)
+    else assert.ok(n >= 2 && n <= 34, `y=${n}`)
+  })
+  // the arc peak is not a listed coordinate: centre sits 1.49·knob above the
+  // baseline, so the peak is 34 − 2.49·12 ≈ 4.1 > 0 and the stroke stays inside
+  assert.ok(34 - 2.49 * 12 > 1.5)
 })
