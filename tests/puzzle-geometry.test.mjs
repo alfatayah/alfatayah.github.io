@@ -83,3 +83,12 @@ test("enterDelay and pieces() wire everything together", () => {
   assert.ok(all[5].delay < all[0].delay) // centre piece enters before corner
   assert.ok(all.every(p => p.d.startsWith("M") && typeof p.dx === "number"))
 })
+
+test("pieces() carry their own centre for the rotation pivot", () => {
+  const all = pieces()
+  // index 5 = row 1, col 1 → centre of that cell in viewBox units
+  assert.equal(all[5].ox, 180)
+  assert.equal(all[5].oy, 165)
+  assert.equal(all[0].ox, 60)
+  assert.equal(all[0].oy, 55)
+})

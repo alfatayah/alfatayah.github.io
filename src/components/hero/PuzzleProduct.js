@@ -130,6 +130,8 @@ const PuzzleProduct = () => {
                 "--dx": `${p.dx}px`,
                 "--dy": `${p.dy}px`,
                 "--rot": `${p.rot}deg`,
+                "--ox": `${p.ox}px`,
+                "--oy": `${p.oy}px`,
                 "--delay": `${p.delay}s`,
               }}
             >

@@ -110,6 +110,9 @@ export const pieces = (grid = GRID) => {
       row,
       col,
       d: piecePath({ row, col, ...grid }),
+      // own centre, in viewBox units: the pivot for the entrance rotation
+      ox: round((col + 0.5) * grid.cellW),
+      oy: round((row + 0.5) * grid.cellH),
       ...scatterOffset(index, total),
       delay: enterDelay(order.indexOf(index)),
     }

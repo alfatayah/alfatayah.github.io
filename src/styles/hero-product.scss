@@ -21,8 +21,10 @@
 }
 
 .hero-piece {
-  transform-box: fill-box;
-  transform-origin: center;
+  // view-box units + the piece's own centre: fill-box would use the bbox of
+  // the whole (clipped) artwork copy and spin every piece around the middle
+  transform-box: view-box;
+  transform-origin: var(--ox) var(--oy);
   animation: hero-piece-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
   animation-delay: var(--delay);
 }
