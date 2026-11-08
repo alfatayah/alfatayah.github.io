@@ -35,6 +35,96 @@
   stroke-width: 1;
 }
 
+// --- Interactive mode (after "Shuffle puzzle") -----------------------------
+// Pieces are positioned from state via --x/--y; the entrance keyframe and the
+// idle float are off so the board holds still while the visitor drags.
+.hero-product.is-playing,
+.hero-product.is-solved {
+  .hero-piece {
+    animation: none;
+    transform: translate(var(--x), var(--y));
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+.hero-product.is-playing {
+  .hero-product-float {
+    animation: none;
+  }
+
+  .hero-product-svg {
+    touch-action: none; // finger drags move pieces, not the page
+  }
+
+  .hero-piece {
+    cursor: grab;
+  }
+
+  .hero-piece.is-locked {
+    cursor: default;
+  }
+
+  .hero-piece.is-dragging {
+    cursor: grabbing;
+    transition: none;
+    transform: translate(var(--x), var(--y)) scale(1.04);
+  }
+
+  .hero-piece.is-dragging .hero-piece-seam {
+    stroke: #111111;
+  }
+}
+
+// Completed by hand: seams flash dark once, then settle.
+.hero-product.is-solved .hero-piece-seam {
+  animation: hero-seam-flash 0.7s ease-out;
+}
+
+@keyframes hero-seam-flash {
+  0% {
+    stroke: #111111;
+  }
+  100% {
+    stroke: #e5e5e5;
+  }
+}
+
+.hero-product-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  justify-content: flex-end;
+
+  @include media("<tablet") {
+    justify-content: center;
+  }
+}
+
+.hero-product-btn {
+  padding: 7px 14px;
+  background: transparent;
+  color: var(--color-gray);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: var(--font-main);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    border-color: var(--color-black);
+    color: var(--color-black);
+  }
+}
+
+.hero-product-status {
+  font-size: 0.8125rem;
+  color: var(--color-gray-light);
+  min-height: 1em;
+}
+
 @keyframes hero-piece-in {
   from {
     opacity: 0;
@@ -58,7 +148,13 @@
 
 @media (prefers-reduced-motion: reduce) {
   .hero-piece,
-  .hero-product-float {
+  .hero-product-float,
+  .hero-product.is-solved .hero-piece-seam {
     animation: none;
+  }
+
+  .hero-product.is-playing .hero-piece,
+  .hero-product.is-solved .hero-piece {
+    transition: none;
   }
 }

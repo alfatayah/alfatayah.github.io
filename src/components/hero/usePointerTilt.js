@@ -6,9 +6,16 @@ import { useEffect } from "react"
 // only this element's transform; the float animation lives on a child.
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v))
 
-const usePointerTilt = (ref, { maxDeg = 4, reach = 420 } = {}) => {
+const usePointerTilt = (
+  ref,
+  { maxDeg = 4, reach = 420, disabled = false } = {}
+) => {
   useEffect(() => {
     if (typeof window === "undefined") return undefined
+    if (disabled) {
+      if (ref.current) ref.current.style.transform = ""
+      return undefined
+    }
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)")
     if (reduce.matches) return undefined
 
@@ -52,7 +59,7 @@ const usePointerTilt = (ref, { maxDeg = 4, reach = 420 } = {}) => {
       document.documentElement.removeEventListener("pointerout", onLeave)
       if (frame !== null) window.cancelAnimationFrame(frame)
     }
-  }, [ref, maxDeg, reach])
+  }, [ref, maxDeg, reach, disabled])
 }
 
 export default usePointerTilt

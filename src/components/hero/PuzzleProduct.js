@@ -1,6 +1,7 @@
 import React, { useRef } from "react"
 import { pieces } from "./puzzleGeometry.mjs"
 import usePointerTilt from "./usePointerTilt"
+import usePuzzleGame from "./usePuzzleGame"
 
 // Twelve jigsaw pieces that fly in and assemble into a monochrome app
 // window. The artwork is drawn once (in <defs>) and each piece shows its
@@ -103,45 +104,96 @@ const Artwork = () => (
   </g>
 )
 
+const VIEW_W = 480
+
 const PuzzleProduct = () => {
   const tiltRef = useRef(null)
-  usePointerTilt(tiltRef)
+  const svgRef = useRef(null)
+  const game = usePuzzleGame(svgRef, PIECES.length, VIEW_W)
+  const playing = game.mode === "playing"
+  usePointerTilt(tiltRef, { disabled: playing })
+
+  // Dragged piece is rendered last so it paints above its neighbours.
+  const ordered =
+    game.active === null
+      ? PIECES
+      : [...PIECES.filter(p => p.index !== game.active), PIECES[game.active]]
+
+  const productClass = [
+    "hero-product",
+    playing && "is-playing",
+    game.mode === "solved" && "is-solved",
+  ]
+    .filter(Boolean)
+    .join(" ")
+
   return (
-    <div className="hero-product" ref={tiltRef} aria-hidden="true">
-      <div className="hero-product-float">
-        <svg
-          className="hero-product-svg"
-          viewBox="0 0 480 330"
-          focusable="false"
+    <div className="hero-product-wrap">
+      <div className={productClass} ref={tiltRef}>
+        <div className="hero-product-float" aria-hidden="true">
+          <svg
+            ref={svgRef}
+            className="hero-product-svg"
+            viewBox={`0 0 ${VIEW_W} 330`}
+            focusable="false"
+          >
+            <defs>
+              <Artwork />
+              {PIECES.map(p => (
+                <clipPath key={p.index} id={`hero-piece-${p.index}`}>
+                  <path d={p.d} />
+                </clipPath>
+              ))}
+            </defs>
+            {ordered.map(p => {
+              const offset = game.offsets ? game.offsets[p.index] : null
+              const locked = game.locked ? game.locked[p.index] : false
+              const cls = [
+                "hero-piece",
+                locked && "is-locked",
+                game.active === p.index && "is-dragging",
+              ]
+                .filter(Boolean)
+                .join(" ")
+              return (
+                <g
+                  key={p.index}
+                  className={cls}
+                  onPointerDown={
+                    playing ? game.onPointerDown(p.index) : undefined
+                  }
+                  style={{
+                    "--dx": `${p.dx}px`,
+                    "--dy": `${p.dy}px`,
+                    "--rot": `${p.rot}deg`,
+                    "--ox": `${p.ox}px`,
+                    "--oy": `${p.oy}px`,
+                    "--delay": `${p.delay}s`,
+                    "--x": offset ? `${offset.x}px` : "0px",
+                    "--y": offset ? `${offset.y}px` : "0px",
+                  }}
+                >
+                  <g clipPath={`url(#hero-piece-${p.index})`}>
+                    <use href="#hero-product-art" />
+                  </g>
+                  <path className="hero-piece-seam" d={p.d} />
+                </g>
+              )
+            })}
+          </svg>
+        </div>
+      </div>
+      <div className="hero-product-controls">
+        <button
+          type="button"
+          className="hero-product-btn"
+          onClick={playing ? game.solve : game.shuffle}
         >
-          <defs>
-            <Artwork />
-            {PIECES.map(p => (
-              <clipPath key={p.index} id={`hero-piece-${p.index}`}>
-                <path d={p.d} />
-              </clipPath>
-            ))}
-          </defs>
-          {PIECES.map(p => (
-            <g
-              key={p.index}
-              className="hero-piece"
-              style={{
-                "--dx": `${p.dx}px`,
-                "--dy": `${p.dy}px`,
-                "--rot": `${p.rot}deg`,
-                "--ox": `${p.ox}px`,
-                "--oy": `${p.oy}px`,
-                "--delay": `${p.delay}s`,
-              }}
-            >
-              <g clipPath={`url(#hero-piece-${p.index})`}>
-                <use href="#hero-product-art" />
-              </g>
-              <path className="hero-piece-seam" d={p.d} />
-            </g>
-          ))}
-        </svg>
+          {playing ? "Solve for me" : "Shuffle puzzle"}
+        </button>
+        <span className="hero-product-status" aria-live="polite">
+          {playing ? `${game.placed} of ${PIECES.length} placed` : ""}
+        </span>
       </div>
     </div>
   )
