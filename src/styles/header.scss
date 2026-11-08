@@ -66,14 +66,82 @@
 .hero-enter {
   animation: hero-rise 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) both;
 
-  &:nth-child(1) { animation-delay: 0.1s; }
-  &:nth-child(2) { animation-delay: 0.25s; }
-  &:nth-child(3) { animation-delay: 0.4s; }
-  &:nth-child(4) { animation-delay: 0.55s; }
-  &:nth-child(5) { animation-delay: 0.7s; }
+  &:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  &:nth-child(2) {
+    animation-delay: 0.25s;
+  }
+  &:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  &:nth-child(4) {
+    animation-delay: 0.55s;
+  }
+  &:nth-child(5) {
+    animation-delay: 0.7s;
+  }
 
   @media (prefers-reduced-motion: reduce) {
     animation: none;
+  }
+}
+
+// Rotating role: four phrases stacked in one grid cell (so the line is as
+// wide as the longest phrase and never reflows), each shown for a quarter
+// of a 10 s cycle via animation-delay.
+.hero-role {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45em;
+
+  @include media("<tablet") {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+.hero-role-stack {
+  display: inline-grid;
+  text-align: left;
+}
+
+.hero-role-item {
+  grid-area: 1 / 1;
+  color: var(--color-black);
+  opacity: 0;
+  animation: hero-role-cycle 10s linear infinite;
+  animation-delay: calc(var(--i) * 2.5s);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+
+    &:first-child {
+      opacity: 1;
+    }
+  }
+}
+
+@keyframes hero-role-cycle {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  4% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  21% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  25% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-8px);
   }
 }
 

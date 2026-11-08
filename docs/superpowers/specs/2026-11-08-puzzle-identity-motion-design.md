@@ -262,7 +262,7 @@ no divider there, so nothing doubles up.
 
 - Unit: `skillScatter` magnitude 96–156 and centre-out delays; `dividerPath`
   starts `M0 34`, ends `L56 34`, one arc, every y coordinate within 2–34;
-  `headerRoles` has exactly 4 entries of ≤ 24 characters.
+  `HERO_ROLES` has exactly 4 entries of ≤ 24 characters.
 - Browser (dev server, `.claude/launch.json` → `gatsby-develop`): at 375, 800
   and 1280 px — role line cycles without shifting the h1; skills fly in once
   and settle aligned to the grid; dividers draw once; nothing causes
