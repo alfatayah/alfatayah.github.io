@@ -1,24 +1,21 @@
-import React, { useRef } from "react"
+import React from "react"
 import { motion } from "framer-motion"
 import data from "../yourdata"
 import scrollTo from "gatsby-plugin-smoothscroll"
-import HeroSceneLoader from "./three/HeroSceneLoader"
-import EyeFace from "./atoms/EyeFace"
 import PuzzleProduct from "./hero/PuzzleProduct"
+import EyeFace from "./atoms/EyeFace"
 
 // The hero copy enters with a CSS keyframe stagger (see header.scss) rather
 // than a JS-driven animation: with Framer's initial={{ opacity: 0 }} the
 // heading stayed invisible until React hydrated, which made it the page's
 // LCP element at ~3.5 s. CSS starts at first paint and honours
-// prefers-reduced-motion.
-const Header = () => {
-  const heroRef = useRef(null)
-  return (
-    <section className="hero-section" id="home" ref={heroRef}>
-      <HeroSceneLoader heroRef={heroRef} />
-      <PuzzleProduct />
-      <div className="container">
-        <div className="header-wrapper">
+// prefers-reduced-motion. The puzzle mockup on the right follows the same
+// rule (see hero-product.scss).
+const Header = () => (
+  <section className="hero-section" id="home">
+    <div className="container">
+      <div className="hero-grid">
+        <div className="hero-copy">
           <div className="hero-avatar hero-enter">
             <EyeFace />
           </div>
@@ -48,9 +45,12 @@ const Header = () => {
             </motion.button>
           </div>
         </div>
+        <div className="hero-visual">
+          <PuzzleProduct />
+        </div>
       </div>
-    </section>
-  )
-}
+    </div>
+  </section>
+)
 
 export default Header

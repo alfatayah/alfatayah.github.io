@@ -16,55 +16,31 @@
   }
 }
 
-// 3D scene (or its static fallback) sits behind the hero copy
-.hero-scene {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-
-  canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-}
-
-// Fallback and canvas cross-fade on the scene's first frame
-.hero-scene--fallback {
-  transition: opacity 0.6s ease;
-
-  &.is-hidden {
-    opacity: 0;
-  }
-}
-
-.hero-scene--canvas {
-  opacity: 0;
-  transition: opacity 0.6s ease;
-
-  &.is-ready {
-    opacity: 1;
-  }
-}
-
-// Placed to match the 3D object. The view is 4.37 units tall; the object has
-// radius 1.15 (diameter 52.6% of hero height) and the circle fills 75% of the
-// SVG box, so the box is 70% tall. Centre is 2.0 units right (45.8% of hero
-// height = 65% of the box) and 0.35 units up (8% = 11% of the box).
-.hero-scene--fallback .hero-fallback-art {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  height: 70%;
-  width: auto;
-  aspect-ratio: 1 / 1;
-  transform: translate(calc(-50% + 65%), calc(-50% - 11%));
+// Two columns from tablet up: copy left, puzzle mockup right. On phones
+// the mockup stacks above the centred copy.
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 48px;
+  align-items: center;
 
   @include media("<tablet") {
-    height: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0.5;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+.hero-visual {
+  width: 100%;
+  max-width: 520px;
+  justify-self: end;
+
+  @include media("<tablet") {
+    order: -1;
+    width: 85%;
+    max-width: 360px;
+    margin: 0 auto 28px;
+    justify-self: center;
   }
 }
 
@@ -95,25 +71,24 @@
   }
 }
 
-.header-wrapper {
-  position: relative;
-  z-index: 1;
+.hero-copy {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
+  text-align: left;
   width: 100%;
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 0 16px;
+
+  @include media("<tablet") {
+    align-items: center;
+    text-align: center;
+  }
 
   .hero-avatar {
     position: relative;
-    z-index: 2; // above the dotted hero background
     flex-shrink: 0;
     width: 136px;
     height: 136px;
-    margin: 0 auto 28px;
+    margin: 0 0 28px;
     border-radius: 50%;
     background: #ffffff;
     border: 1px solid var(--color-border);
@@ -175,7 +150,7 @@
     line-height: 1.7;
     color: var(--color-gray);
     margin: 0 0 28px 0;
-    max-width: 560px;
+    max-width: 480px;
 
     @include media("<tablet") {
       font-size: 0.9375rem;
@@ -187,7 +162,7 @@
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
 
     .btn-primary {
       padding: 12px 28px;
@@ -228,6 +203,7 @@
 
     @include media("<tablet") {
       flex-direction: column;
+      justify-content: center;
       width: 100%;
       max-width: 300px;
 
