@@ -1,29 +1,7 @@
 import React from "react"
 import { motion, useReducedMotion } from "framer-motion"
 import data from "../yourdata"
-import { skillScatter } from "./hero/puzzleGeometry.mjs"
-
-// The cards fly in from the hero's scatter pattern (centre-out, each with its
-// own delay) and spring into the grid like puzzle pieces; under reduced
-// motion they only fade, still centre-out.
-const gridVariants = { hidden: {}, visible: {} }
-
-const itemVariants = {
-  hidden: c => ({ opacity: 0, x: c.x, y: c.y, rotate: c.rotate }),
-  visible: c => ({
-    opacity: 1,
-    x: 0,
-    y: 0,
-    rotate: 0,
-    transition: {
-      type: "spring",
-      stiffness: 260,
-      damping: 24,
-      delay: c.delay,
-      opacity: { duration: 0.25, delay: c.delay },
-    },
-  }),
-}
+import { gridVariants, itemVariants, skillCustom } from "./skillsMotion.mjs"
 
 const Skills = () => {
   const reduce = useReducedMotion()
@@ -49,15 +27,12 @@ const Skills = () => {
             viewport={{ once: true, margin: "-40px" }}
           >
             {data.skills.map((skill, index) => {
-              const scatter = skillScatter(index, data.skills.length)
               return (
                 <motion.div
                   className="skill-card"
                   key={skill.id}
                   variants={itemVariants}
-                  custom={
-                    reduce ? { ...scatter, x: 0, y: 0, rotate: 0 } : scatter
-                  }
+                  custom={skillCustom(index, data.skills.length, reduce)}
                   whileHover={{ scale: 1.05, y: -3 }}
                   transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 >
