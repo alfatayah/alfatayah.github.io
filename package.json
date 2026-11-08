@@ -5,9 +5,6 @@
   "version": "0.1.0",
   "homepage": "https://alfatayah.github.io",
   "dependencies": {
-    "@loadable/component": "^5.16.7",
-    "@react-three/drei": "^9.122.0",
-    "@react-three/fiber": "^8.18.0",
     "framer-motion": "^12.42.2",
     "gatsby": "^5.7.0",
     "gatsby-plugin-manifest": "^5.7.0",
@@ -23,8 +20,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
-    "sass": "^1.80.0",
-    "three": "^0.187.0"
+    "sass": "^1.80.0"
   },
   "devDependencies": {
     "prettier": "2.8.4"
