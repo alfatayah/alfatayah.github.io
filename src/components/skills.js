@@ -1,27 +1,32 @@
 import React from "react"
-import { motion } from "framer-motion"
+import { motion, useReducedMotion } from "framer-motion"
 import data from "../yourdata"
+import { skillScatter } from "./hero/puzzleGeometry.mjs"
 
-const gridVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.08,
-    },
-  },
-}
+// The cards fly in from the hero's scatter pattern (centre-out, each with its
+// own delay) and spring into the grid like puzzle pieces; under reduced
+// motion they only fade, still centre-out.
+const gridVariants = { hidden: {}, visible: {} }
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
+  hidden: c => ({ opacity: 0, x: c.x, y: c.y, rotate: c.rotate }),
+  visible: c => ({
     opacity: 1,
+    x: 0,
     y: 0,
-    transition: { duration: 0.4, ease: "easeOut" },
-  },
+    rotate: 0,
+    transition: {
+      type: "spring",
+      stiffness: 260,
+      damping: 24,
+      delay: c.delay,
+      opacity: { duration: 0.25, delay: c.delay },
+    },
+  }),
 }
 
 const Skills = () => {
+  const reduce = useReducedMotion()
   return (
     <section className="section skills-section" id="skill">
       <div className="container">
@@ -43,20 +48,26 @@ const Skills = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-40px" }}
           >
-            {data.skills.map(skill => (
-              <motion.div
-                className="skill-card"
-                key={skill.id}
-                variants={itemVariants}
-                whileHover={{ scale: 1.05, y: -3 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              >
-                <div className="icon-wrapper">
-                  <img src={skill.img} alt={skill.para} />
-                </div>
-                <span className="skill-name">{skill.para}</span>
-              </motion.div>
-            ))}
+            {data.skills.map((skill, index) => {
+              const scatter = skillScatter(index, data.skills.length)
+              return (
+                <motion.div
+                  className="skill-card"
+                  key={skill.id}
+                  variants={itemVariants}
+                  custom={
+                    reduce ? { ...scatter, x: 0, y: 0, rotate: 0 } : scatter
+                  }
+                  whileHover={{ scale: 1.05, y: -3 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                >
+                  <div className="icon-wrapper">
+                    <img src={skill.img} alt={skill.para} />
+                  </div>
+                  <span className="skill-name">{skill.para}</span>
+                </motion.div>
+              )
+            })}
           </motion.div>
         </div>
       </div>

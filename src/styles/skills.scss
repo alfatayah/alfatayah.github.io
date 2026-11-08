@@ -1,4 +1,6 @@
 .skills-section {
+  // in-flight cards start up to 156px outside the grid; never widen the page
+  overflow: hidden;
   border-top: 1px solid var(--color-border);
   border-bottom: 1px solid var(--color-border);
   background: var(--color-bg-alt);
