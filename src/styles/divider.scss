@@ -1,8 +1,10 @@
 // A rule with one puzzle knob: grows outward from the knob when scrolled
 // into view. Negative margin keeps the section gap close to the old one.
+// The knob's baseline sits at y = 34 of the 40 px SVG, so the lines are
+// bottom-aligned and lifted by 40 − 34 − 0.5 px to meet it exactly.
 .puzzle-divider {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   width: 100%;
   max-width: 1100px;
   height: 40px;
@@ -17,6 +19,7 @@
 .puzzle-divider-line {
   flex: 1;
   height: 1px;
+  margin-bottom: 5.5px;
   background: var(--color-border);
 
   &.is-left {
