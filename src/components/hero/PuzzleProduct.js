@@ -1,5 +1,6 @@
-import React from "react"
+import React, { useRef } from "react"
 import { pieces } from "./puzzleGeometry.mjs"
+import usePointerTilt from "./usePointerTilt"
 
 // Twelve jigsaw pieces that fly in and assemble into a monochrome app
 // window. The artwork is drawn once (in <defs>) and each piece shows its
@@ -102,38 +103,46 @@ const Artwork = () => (
   </g>
 )
 
-const PuzzleProduct = () => (
-  <div className="hero-product" aria-hidden="true">
-    <div className="hero-product-float">
-      <svg className="hero-product-svg" viewBox="0 0 480 330" focusable="false">
-        <defs>
-          <Artwork />
+const PuzzleProduct = () => {
+  const tiltRef = useRef(null)
+  usePointerTilt(tiltRef)
+  return (
+    <div className="hero-product" ref={tiltRef} aria-hidden="true">
+      <div className="hero-product-float">
+        <svg
+          className="hero-product-svg"
+          viewBox="0 0 480 330"
+          focusable="false"
+        >
+          <defs>
+            <Artwork />
+            {PIECES.map(p => (
+              <clipPath key={p.index} id={`hero-piece-${p.index}`}>
+                <path d={p.d} />
+              </clipPath>
+            ))}
+          </defs>
           {PIECES.map(p => (
-            <clipPath key={p.index} id={`hero-piece-${p.index}`}>
-              <path d={p.d} />
-            </clipPath>
-          ))}
-        </defs>
-        {PIECES.map(p => (
-          <g
-            key={p.index}
-            className="hero-piece"
-            style={{
-              "--dx": `${p.dx}px`,
-              "--dy": `${p.dy}px`,
-              "--rot": `${p.rot}deg`,
-              "--delay": `${p.delay}s`,
-            }}
-          >
-            <g clipPath={`url(#hero-piece-${p.index})`}>
-              <use href="#hero-product-art" />
+            <g
+              key={p.index}
+              className="hero-piece"
+              style={{
+                "--dx": `${p.dx}px`,
+                "--dy": `${p.dy}px`,
+                "--rot": `${p.rot}deg`,
+                "--delay": `${p.delay}s`,
+              }}
+            >
+              <g clipPath={`url(#hero-piece-${p.index})`}>
+                <use href="#hero-product-art" />
+              </g>
+              <path className="hero-piece-seam" d={p.d} />
             </g>
-            <path className="hero-piece-seam" d={p.d} />
-          </g>
-        ))}
-      </svg>
+          ))}
+        </svg>
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 export default PuzzleProduct
