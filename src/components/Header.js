@@ -4,6 +4,7 @@ import data from "../yourdata"
 import scrollTo from "gatsby-plugin-smoothscroll"
 import HeroSceneLoader from "./three/HeroSceneLoader"
 import EyeFace from "./atoms/EyeFace"
+import PuzzleProduct from "./hero/PuzzleProduct"
 
 // The hero copy enters with a CSS keyframe stagger (see header.scss) rather
 // than a JS-driven animation: with Framer's initial={{ opacity: 0 }} the
@@ -15,6 +16,7 @@ const Header = () => {
   return (
     <section className="hero-section" id="home" ref={heroRef}>
       <HeroSceneLoader heroRef={heroRef} />
+      <PuzzleProduct />
       <div className="container">
         <div className="header-wrapper">
           <div className="hero-avatar hero-enter">
