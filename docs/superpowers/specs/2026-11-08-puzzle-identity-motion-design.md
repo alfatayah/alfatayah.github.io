@@ -145,26 +145,31 @@ the hero, the skills grid and the divider.
 Keep the section structure, heading reveal and `whileHover`. Replace the
 grid/item variants:
 
-- Grid: `variants={{ hidden: {}, visible: {} }}` (no `staggerChildren`; each
-  item carries its own delay), `initial="hidden"`, `whileInView="visible"`,
+- Variants live in `src/components/skillsMotion.mjs` (pure, tested) and
+  `skills.js` only wires them. The centre-out delay is orchestrated by the
+  grid, never by the item: Framer reuses an item variant's own transition
+  when a hover gesture ends, so a `delay` there makes the un-hover lag by the
+  entrance delay (up to 0.49 s on the corner cards).
+- Grid: `gridVariants = { hidden: {}, visible: { transition: { delayChildren:
+  (i, n) => skillScatter(i, n).delay } } }` (motion-dom 12 accepts a function
+  of `(index, numChildren)`), `initial="hidden"`, `whileInView="visible"`,
   `viewport={{ once: true, margin: "-40px" }}` as today.
-- Item: `custom={skillScatter(i, data.skills.length)}` and
+- Item: `custom={skillCustom(i, data.skills.length, reduce)}` and
   ```js
   const itemVariants = {
     hidden: c => ({ opacity: 0, x: c.x, y: c.y, rotate: c.rotate }),
-    visible: c => ({
+    visible: () => ({
       opacity: 1, x: 0, y: 0, rotate: 0,
       transition: {
         type: "spring", stiffness: 260, damping: 24,
-        delay: c.delay,
-        opacity: { duration: 0.25, delay: c.delay },
+        opacity: { duration: 0.25 },
       },
     }),
   }
   ```
-- Reduced motion: `const reduce = useReducedMotion()` (Framer). When true,
-  `custom` is `{ x: 0, y: 0, rotate: 0, delay: c.delay }` so the cards only
-  fade, still centre-out.
+- Reduced motion: `const reduce = useReducedMotion()` (Framer). `skillCustom`
+  returns `{ x: 0, y: 0, rotate: 0 }` when true, so the cards only fade, still
+  centre-out.
 - `.skills-section { overflow: hidden }` in `skills.scss`, so in-flight cards
   (up to 156 px outside the grid) never widen the page on phones.
 
@@ -218,13 +223,17 @@ Children inherit the wrapper's variant state.
 ### Styles (`src/styles/divider.scss`, imported in `mains.scss` after
 `card.scss`)
 
-- `.puzzle-divider` — `display: flex; align-items: center; width: 100%;
+- `.puzzle-divider` — `display: flex; align-items: flex-end; width: 100%;
   max-width: 1100px; height: 40px; margin: -12px auto; padding: 0 40px`
   (`0 20px` under `<tablet`). The negative margin keeps the gap between
   sections close to today's (section paddings already provide space).
-- `.puzzle-divider-line` — `flex: 1; height: 1px; background:
-  var(--color-border)`; `.is-left { transform-origin: 100% 50% }`,
-  `.is-right { transform-origin: 0 50% }`.
+- `.puzzle-divider-line` — `flex: 1; height: 1px; margin-bottom: 5.5px;
+  background: var(--color-border)`; `.is-left { transform-origin: 100% 50% }`,
+  `.is-right { transform-origin: 0 50% }`. The SVG fills the 40 px row and
+  its horizontal segments sit at the path baseline (y = 34), so the lines
+  are bottom-aligned and lifted by 40 − 34 − 0.5 px: their centre coincides
+  with the baseline. (`align-items: center` would put them at y = 20, a
+  14 px step above the knob's stubs.)
 - `.puzzle-divider-knob` — `flex: none; display: block; overflow: visible`;
   `path { fill: none; stroke: var(--color-border); stroke-width: 1.5;
   stroke-linecap: round }`.
@@ -265,11 +274,14 @@ no divider there, so nothing doubles up.
   `HERO_ROLES` has exactly 4 entries of ≤ 24 characters.
 - Browser (dev server, `.claude/launch.json` → `gatsby-develop`): at 375, 800
   and 1280 px — role line cycles without shifting the h1; skills fly in once
-  and settle aligned to the grid; dividers draw once; nothing causes
-  horizontal scroll. With reduced motion emulated: first role static, skills
+  and settle aligned to the grid, and un-hovering a corner card returns
+  `y` and `scale` together; dividers draw once with the lines' centre y equal
+  to the path's bottom y (|Δ| < 1 px); nothing causes horizontal scroll. With reduced motion emulated: first role static, skills
   fade only, dividers static.
 - Lighthouse (mobile preset, `gatsby serve -p 9000`, three runs, median):
-  performance ≥ 0.88, CLS ≤ 0.01, LCP element still the h1.
+  performance ≥ 0.88, CLS ≤ 0.01, LCP timing unchanged within noise. (The
+  LCP element is not the h1 today: the hero copy fades in from opacity 0, so
+  Chrome elects the About paragraph or the nav logo; pre-existing behaviour.)
 - Final fresh-context code review before merge, as for the puzzle hero.
 
 ## Out of scope

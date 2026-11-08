@@ -28,7 +28,7 @@
 2. A ninth skill card (`data.skills.length === 9`): `pieceOrder(4, 2)` has no rank for index 8, `indexOf` returns −1 and the delay would go negative. Pinned by the fallback test in Task 1 (rank falls back to the index).
 3. Phone at 320–375 px: the role line must wrap under the centred copy without pushing the `h1` down after first paint. Checked in Task 3's browser step (h1 top unchanged across 3 s).
 4. In-flight skill cards start up to 156 px outside the grid: on a 375 px phone they would widen the page. Pinned by `.skills-section { overflow: hidden }` and the `scrollWidth === innerWidth` check in Task 4.
-5. The divider's knob is a radius-`knob` arc whose true protrusion is ≈ 2.49·knob (hero review finding); with the wrong baseline it leaves the 40 px viewBox and gets clipped. Pinned by the `dividerPath` arithmetic test in Task 1 and the visual check in Task 5.
+5. The divider's knob is a radius-`knob` arc whose true protrusion is ≈ 2.49·knob (hero review finding); with the wrong baseline it leaves the 40 px viewBox and gets clipped, and the flanking lines must meet that baseline (y = 34), not the centre of the 40 px row (y = 20): a 14 px step reads as a broken rule. Pinned by the `dividerPath` arithmetic test in Task 1, `tests/divider-layout.test.mjs` (lines bottom-aligned and lifted by 40 − 34 − 0.5 px) and a line-centre-vs-path-bottom measurement (|Δ| < 1 px) in Task 5's browser check.
 
 ---
 
