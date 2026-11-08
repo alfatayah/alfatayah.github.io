@@ -8,12 +8,15 @@ import Work from "../components/Work"
 import About from "../components/about"
 import Skills from "../components/skills"
 import Footer from "../components/Footer"
+import PuzzleDivider from "../components/atoms/PuzzleDivider"
 
 const IndexPage = () => (
   <Layout>
     <SEO />
     <Header></Header>
+    <PuzzleDivider />
     <About></About>
+    <PuzzleDivider />
     <Work></Work>
     <Skills></Skills>
     <Footer></Footer>

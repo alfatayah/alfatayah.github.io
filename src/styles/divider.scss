@@ -1,0 +1,41 @@
+// A rule with one puzzle knob: grows outward from the knob when scrolled
+// into view. Negative margin keeps the section gap close to the old one.
+.puzzle-divider {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 1100px;
+  height: 40px;
+  margin: -12px auto;
+  padding: 0 40px;
+
+  @include media("<tablet") {
+    padding: 0 20px;
+  }
+}
+
+.puzzle-divider-line {
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+
+  &.is-left {
+    transform-origin: 100% 50%;
+  }
+  &.is-right {
+    transform-origin: 0 50%;
+  }
+}
+
+.puzzle-divider-knob {
+  flex: none;
+  display: block;
+  overflow: visible;
+
+  path {
+    fill: none;
+    stroke: var(--color-border);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+}
