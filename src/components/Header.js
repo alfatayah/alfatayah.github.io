@@ -3,7 +3,6 @@ import { motion } from "framer-motion"
 import data from "../yourdata"
 import scrollTo from "gatsby-plugin-smoothscroll"
 import PuzzleProduct from "./hero/PuzzleProduct"
-import EyeFace from "./atoms/EyeFace"
 
 // The hero copy enters with a CSS keyframe stagger (see header.scss) rather
 // than a JS-driven animation: with Framer's initial={{ opacity: 0 }} the
@@ -16,9 +15,6 @@ const Header = () => (
     <div className="container">
       <div className="hero-grid">
         <div className="hero-copy">
-          <div className="hero-avatar hero-enter">
-            <EyeFace />
-          </div>
           <p className="hero-name hero-enter">
             AI engineer, full-stack developer, builder
           </p>
